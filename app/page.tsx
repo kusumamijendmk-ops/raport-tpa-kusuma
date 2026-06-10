@@ -3311,13 +3311,13 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                             : "border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50"
                                         }`}
                                       >
-                                        <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold font-mono transition-colors ${
+                                        <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-colors ${
                                           isTabActive ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"
                                         }`}>
                                           {katIdx + 1}
                                         </span>
                                         <span className="truncate max-w-[150px] sm:max-w-xs">{kat.namaKategori}</span>
-                                        <span className={`text-[9.5px] font-bold px-1.5 py-0.5 rounded-full ${
+                                        <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
                                           isTabActive ? "bg-indigo-600 text-white" : "bg-slate-200 text-slate-500"
                                         }`}>
                                           {count} TP
@@ -3366,12 +3366,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                           return (
                                             <div key={tp.id} className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100 last:border-0 last:pb-0">
                                               <div className="flex-1">
-                                                <p className="text-xs font-semibold text-slate-700 leading-relaxed">
+                                                <p className="text-sm font-semibold text-slate-700 leading-relaxed">
                                                   <span className="text-indigo-600/70 font-bold mr-1.5 font-mono">TP-{tpIdx + 1}</span>
                                                   {tp.deskripsi}
                                                 </p>
                                                 {tp.aktivitasMetode && (
-                                                  <p className="text-[10px] text-slate-400 italic mt-0.5">Metode: {tp.aktivitasMetode}</p>
+                                                  <p className="text-xs text-slate-400 italic mt-1">Metode: {tp.aktivitasMetode}</p>
                                                 )}
                                               </div>
 
@@ -3382,7 +3382,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                                       key={lbl.id}
                                                       type="button"
                                                       onClick={() => handleSetGradeIntra(s.id, tp.id, currentGrade === lbl.namaLabel ? "" : lbl.namaLabel)}
-                                                      className={`px-3 py-1.5 text-[10.5px] font-bold rounded-lg transition-all cursor-pointer ${
+                                                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                                                         currentGrade === lbl.namaLabel 
                                                           ? "bg-indigo-600 text-white shadow-sm" 
                                                           : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
@@ -3401,10 +3401,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                       {/* Aggregated Description Textbox for Category */}
                                       <div className="space-y-2 pt-2 border-t border-slate-100">
                                         <div className="flex items-center justify-between font-sans">
-                                          <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                                             Narasi Rekapitulasi - {kat.namaKategori}
                                           </label>
-                                          <span className="text-[10px] text-slate-400 font-medium font-sans">Rekap aspek</span>
+                                          <span className="text-[11px] text-slate-400 font-medium font-sans">Rekap aspek</span>
                                         </div>
 
                                         <div className="relative group">
@@ -3413,7 +3413,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                             onChange={(e) => handleUpdateDescriptionIntra(s.id, kat.id, e.target.value)}
                                             placeholder={`Tuliskan deskripsi narasi perkembangan gabungan (rekap) untuk aspek ${kat.namaKategori}...`}
                                             rows={3}
-                                            className="w-full text-xs border border-slate-200 p-3 pr-12 rounded-xl bg-white focus:outline-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner font-sans min-h-[85px]"
+                                            className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-white focus:outline-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner font-sans min-h-[100px]"
                                           />
                                           <button
                                             type="button"
@@ -3522,7 +3522,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                               <div>
                                 <h4 className="text-lg font-bold text-indigo-950 font-display">{s.namaSiswa}</h4>
-                                <span className="text-[10px] text-slate-400 block uppercase font-bold tracking-widest text-emerald-600">Capaian Projek Profil (P5)</span>
+                                <span className="text-xs text-slate-400 block uppercase font-bold tracking-widest text-emerald-600">Capaian Projek Profil (P5)</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <button
@@ -3553,10 +3553,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                     <div key={sub.id || `sub-card-${subIdx}`} className="space-y-3 pb-8 border-b border-slate-50 last:border-0 last:pb-0">
                                       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                                         <div className="flex-1">
-                                          <div className="flex items-center gap-2 mb-1">
-                                            <span className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase font-sans">SUB-{subIdx + 1}</span>
+                                          <div className="flex items-center gap-2 mb-1.5">
+                                            <span className="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-0.5 rounded uppercase font-sans">SUB-{subIdx + 1}</span>
                                           </div>
-                                          <p className="text-sm font-medium text-slate-800 leading-relaxed">{sub.namaSubdimensi}</p>
+                                          <p className="text-base font-bold text-slate-800 leading-relaxed">{sub.namaSubdimensi}</p>
                                         </div>
 
                                         <div className="flex-shrink-0 font-sans">
@@ -3566,7 +3566,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                                 key={lbl.id}
                                                 type="button"
                                                 onClick={() => handleSetGradeKokuri(s.id, sub.id, currentGrade === lbl.namaLabel ? "" : lbl.namaLabel)}
-                                                className={`px-4 py-2 text-[11px] font-bold rounded-lg transition-all transform hover:scale-105 cursor-pointer ${
+                                                className={`px-4 py-2 text-xs font-bold rounded-lg transition-all transform hover:scale-105 cursor-pointer ${
                                                   currentGrade === lbl.namaLabel 
                                                     ? "bg-indigo-600 text-white shadow-md" 
                                                     : "text-slate-500 hover:text-slate-800 hover:bg-white"
@@ -3581,12 +3581,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                                       {/* REFERENCE/RUBRIC ACUAN FROM MASTER DATA */}
                                       {showKokuriRubrikRef && (
-                                        <div className="bg-slate-50/70 p-3 rounded-xl border border-slate-100/90 space-y-2.5 font-sans">
-                                          <div className="flex items-center gap-1.5 text-[10px] font-extrabold text-indigo-700 uppercase tracking-widest pl-1">
+                                        <div className="bg-slate-50/70 p-4 rounded-xl border border-slate-100/90 space-y-3 font-sans">
+                                          <div className="flex items-center gap-1.5 text-xs font-extrabold text-indigo-700 uppercase tracking-widest pl-1">
                                             <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
                                             <span>Acuan Rubrik Penilaian Subdimensi P5 (Rujukan Guru)</span>
                                           </div>
-                                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                                             {state.labelP5.map((label) => {
                                               const colors = [
                                                 { bg: "bg-emerald-500", text: "text-emerald-700", border: "border-emerald-100", light: "bg-emerald-50/45" },
@@ -3599,9 +3599,9 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                               const desc = sub.capaian?.[label.id] || (label.namaLabel === "Berkembang" ? sub.descBerkembang : label.namaLabel === "Cakap" ? sub.descCakap : label.namaLabel === "Mahir" ? sub.descMahir : "");
 
                                               return (
-                                                <div key={label.id} className={`${color.light} p-2.5 rounded-lg border ${color.border} flex flex-col justify-start gap-1`}>
-                                                  <span className={`block text-[9px] font-extrabold ${color.text} uppercase tracking-wider`}>{label.namaLabel}</span>
-                                                  <p className="text-[10px] text-slate-705 leading-relaxed italic pr-1">{desc || "Deskripsi indikator tidak diatur."}</p>
+                                                <div key={label.id} className={`${color.light} p-3 rounded-lg border ${color.border} flex flex-col justify-start gap-1.5 transition-all hover:bg-white shadow-sm`}>
+                                                  <span className={`block text-[11px] font-black ${color.text} uppercase tracking-wider`}>{label.namaLabel}</span>
+                                                  <p className="text-xs text-slate-700 leading-relaxed italic pr-1">{desc || "Deskripsi indikator tidak diatur."}</p>
                                                 </div>
                                               );
                                             })}
@@ -3615,7 +3615,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                           onChange={(e) => handleUpdateDescriptionKokuri(s.id, sub.id, e.target.value)}
                                           placeholder={`Tuliskan narasi perkembangan untuk subdimensi Projek ini...`}
                                           rows={3}
-                                          className="w-full text-xs border border-slate-200 p-3 pr-12 rounded-xl bg-slate-50/30 focus:bg-white focus:outline-indigo-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner"
+                                          className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-slate-50/30 focus:bg-white focus:outline-indigo-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner min-h-[100px]"
                                         />
                                         <button
                                           onClick={() => composeAiItemText(s.id, sub.id, "kokuri")}
