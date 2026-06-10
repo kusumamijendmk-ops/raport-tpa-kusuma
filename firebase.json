@@ -1,0 +1,6 @@
+{
+  "projectId": "gen-lang-client-0799457628",
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+}
