@@ -5,7 +5,7 @@ import {
   Home, Users, GraduationCap, BookOpen, PenTool, Printer, Settings, Plus, Trash2, 
   Sparkles, Download, Upload, Check, Search, Award, CheckCircle, 
   MapPin, UserCheck, ChevronRight, ChevronDown, FileText, Calendar, Edit3, ShieldAlert,
-  Folder, Save, Zap, LayoutDashboard, Menu, X
+  Folder, Save, Zap, LayoutDashboard, Menu, X, LogOut
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
@@ -1602,7 +1602,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
           )}
           <div className="text-center space-y-2">
             <h1 className="text-2xl font-bold text-slate-800 font-display">Aplikasi Raport PAUD</h1>
-            <p className="text-sm text-neutral-500">Pendidikan Anak Usia Dini - Kurikulum Merdeka</p>
+            <p className="text-sm text-neutral-500">Tempat Penitipan Anak - Kurikulum Merdeka</p>
           </div>
 
           <div className="pt-2">
@@ -1643,7 +1643,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
               <button
                 type="submit"
                 disabled={loginLoading}
-                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 shadow transition-all cursor-pointer"
+                className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 shadow transition-all cursor-pointer"
               >
                 {loginLoading ? (
                   <>
@@ -1673,10 +1673,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
               <img src={loaderLogo} alt="Logo Loading" className="w-20 h-20 object-contain rounded-xl p-1 bg-white shadow-md border border-slate-100 animate-bounce" />
             </div>
           ) : (
-            <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <div className="w-12 h-12 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
           )}
           {loaderLogo && (
-            <div className="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
           )}
           <div>
             <p className="text-slate-850 font-bold font-display">{state.dataSekolah?.namaSekolah || "Menghubungkan ke Cloud Firestore..."}</p>
@@ -1731,12 +1731,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
       )}
 
       {/* SIDEBAR NAVIGATION - Hidden during printing */}
-      <aside className={`fixed md:sticky md:top-0 md:h-screen w-64 bg-indigo-900 text-indigo-100 flex-shrink-0 flex flex-col no-print z-50 md:z-10 border-r border-indigo-950 shadow-md transition-transform duration-300 ${
+      <aside className={`fixed md:sticky md:top-0 md:h-screen w-64 bg-[#086B00] text-white flex-shrink-0 flex flex-col no-print z-50 md:z-10 border-r border-[#065000] shadow-md transition-transform duration-300 ${
         isSidebarOpenOnMobile ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       }`}>
-        <div className="p-5 border-b border-indigo-800/60 bg-indigo-950/40 flex items-center justify-between">
+        <div className="p-5 border-b border-white/10 bg-black/10 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white border border-white/25 font-bold shadow-md overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white border border-white/20 font-bold shadow-md overflow-hidden">
               {state.dataSekolah?.logoSidebar ? (
                 <img src={state.dataSekolah.logoSidebar} alt="Logo" className="w-full h-full object-cover" />
               ) : (
@@ -1744,14 +1744,13 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
               )}
             </div>
             <div>
-              <h1 className="font-semibold tracking-tight leading-tight text-white font-display">Raport PAUD</h1>
-              <p className="text-xs text-indigo-300">Pendidikan Anak Usia Dini</p>
+              <h1 className="font-bold tracking-tight leading-tight text-white font-display text-base">E - Raport PAUD</h1>
+              <p className="text-[10px] text-green-100/80 font-semibold uppercase tracking-wider">Pendidikan Anak Usia Dini</p>
             </div>
           </div>
           <button
-            type="button"
             onClick={() => setIsSidebarOpenOnMobile(false)}
-            className="md:hidden p-1.5 text-indigo-200 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+            className="md:hidden p-1.5 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
             title="Tutup menu"
             aria-label="Tutup menu"
           >
@@ -1759,41 +1758,40 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
           </button>
         </div>
         
-        <div className="px-5 py-2 mt-2 text-[11px] bg-indigo-950/40 mx-4 rounded-lg text-indigo-200">
-          <span className="font-semibold block truncate">{state.dataSekolah.namaSekolah || "Nama Sekolah"}</span>
-          <div className="opacity-85">T.A. {state.dataSekolah.thAjaran}</div>
+        <div className="px-5 py-2.5 mt-3 text-[11px] bg-white/10 mx-4 rounded-xl text-white border border-white/5">
+          <span className="font-bold block truncate mb-0.5">{state.dataSekolah.namaSekolah || "Nama Sekolah"}</span>
+          <div className="opacity-80 font-semibold text-[10px]">Tahun Pelajaran {state.dataSekolah.thAjaran}</div>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
           <button
             onClick={() => { setActiveTab("dashboard"); setIsSidebarOpenOnMobile(false); }}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-              activeTab === "dashboard" ? "bg-white/10 text-white shadow-inner font-semibold" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-all ${
+              activeTab === "dashboard" ? "bg-white/20 text-white shadow-md font-bold" : "text-white/80 hover:bg-white/10 hover:text-white font-semibold"
             }`}
           >
             <Home className="w-4 h-4" /> Dashboard
           </button>
 
-          {/* COLLAPSIBLE MASTER DATA ACCORDION */}
           <div className="space-y-1">
             <button
               type="button"
               onClick={() => setIsMasterDataExpanded(!isMasterDataExpanded)}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-all text-left cursor-pointer font-sans ${
-                isMasterDataExpanded ? "text-white" : "text-indigo-200/80"
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-white/5 transition-all text-left cursor-pointer font-sans ${
+                isMasterDataExpanded ? "text-white" : "text-white/60"
               }`}
             >
               <span>Master Data</span>
-              <ChevronDown className={`w-3.5 h-3.5 text-indigo-300 transition-transform duration-200 ${isMasterDataExpanded ? "rotate-180" : ""}`} />
+              <ChevronDown className={`w-3.5 h-3.5 text-white/50 transition-transform duration-200 ${isMasterDataExpanded ? "rotate-180" : ""}`} />
             </button>
             
             {isMasterDataExpanded && (
-              <div className="pl-2 space-y-1 border-l border-indigo-800/40 ml-4 animate-fadeIn">
+              <div className="pl-2 space-y-1.5 border-l-2 border-white/10 ml-4 animate-fadeIn">
                 {currentUserProfile?.role === 'admin' && (
                   <button
                     onClick={() => { setActiveTab("kelas"); setIsSidebarOpenOnMobile(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all cursor-pointer ${
-                      activeTab === "kelas" ? "bg-white/10 text-white font-semibold shadow-inner" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+                    className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all cursor-pointer ${
+                      activeTab === "kelas" ? "bg-white/20 text-white font-bold shadow-md" : "text-emerald-900/70 hover:bg-black/5 hover:text-slate-950"
                     }`}
                   >
                     <Home className="w-4 h-4 rotate-45" /> Data Kelas
@@ -1802,8 +1800,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                 
                 <button
                   onClick={() => { setActiveTab("siswa"); setIsSidebarOpenOnMobile(false); }}
-                  className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all cursor-pointer ${
-                    activeTab === "siswa" ? "bg-white/10 text-white font-semibold shadow-inner" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+                  className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all cursor-pointer ${
+                    activeTab === "siswa" ? "bg-white/20 text-white font-bold shadow-md" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
                   }`}
                 >
                   <Users className="w-4 h-4" /> Data Siswa
@@ -1813,8 +1811,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                   <>
                     <button
                       onClick={() => { setActiveTab("intra"); setIsSidebarOpenOnMobile(false); }}
-                      className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all cursor-pointer ${
-                        activeTab === "intra" ? "bg-white/10 text-white font-semibold shadow-inner" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+                      className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all cursor-pointer ${
+                        activeTab === "intra" ? "bg-white/20 text-white font-bold shadow-md" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
                       }`}
                     >
                       <BookOpen className="w-4 h-4" /> Intrakurikuler
@@ -1822,8 +1820,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                     <button
                       onClick={() => { setActiveTab("kokuri"); setIsSidebarOpenOnMobile(false); }}
-                      className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all cursor-pointer ${
-                        activeTab === "kokuri" ? "bg-white/10 text-white font-semibold shadow-inner" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+                      className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all cursor-pointer ${
+                        activeTab === "kokuri" ? "bg-white/20 text-white font-bold shadow-md" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
                       }`}
                     >
                       <Award className="w-4 h-4" /> Kokurikuler
@@ -1834,49 +1832,48 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
             )}
           </div>
 
-          {/* COLLAPSIBLE PENILAIAN ACCORDION */}
           <div className="space-y-1">
             <button
               type="button"
               onClick={() => setIsPenilaianExpanded(!isPenilaianExpanded)}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-all text-left cursor-pointer font-sans ${
-                isPenilaianExpanded ? "text-white" : "text-indigo-200/80"
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-white/5 transition-all text-left cursor-pointer font-sans ${
+                isPenilaianExpanded ? "text-white" : "text-white/60"
               }`}
             >
               <span>Penilaian</span>
-              <ChevronDown className={`w-3.5 h-3.5 text-indigo-300 transition-transform duration-200 ${isPenilaianExpanded ? "rotate-180" : ""}`} />
+              <ChevronDown className={`w-3.5 h-3.5 text-white/50 transition-transform duration-200 ${isPenilaianExpanded ? "rotate-180" : ""}`} />
             </button>
 
             {isPenilaianExpanded && (
-              <div className="pl-2 space-y-1 border-l border-indigo-800/40 ml-4 animate-fadeIn">
+              <div className="pl-2 space-y-1.5 border-l-2 border-white/10 ml-4 animate-fadeIn">
             <button
               onClick={() => { setActiveTab("nilai"); setNilaiSubTab("intra"); setIsSidebarOpenOnMobile(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                activeTab === "nilai" && nilaiSubTab === "intra" ? "bg-white/10 text-white shadow-inner font-semibold" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all ${
+                activeTab === "nilai" && nilaiSubTab === "intra" ? "bg-white/20 text-white shadow-md font-bold" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
               }`}
             >
               <BookOpen className="w-4 h-4" /> Nilai Intrakurikuler
             </button>
             <button
               onClick={() => { setActiveTab("nilai"); setNilaiSubTab("kokuri"); setIsSidebarOpenOnMobile(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                activeTab === "nilai" && nilaiSubTab === "kokuri" ? "bg-white/10 text-white shadow-inner font-semibold" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all ${
+                activeTab === "nilai" && nilaiSubTab === "kokuri" ? "bg-white/20 text-white shadow-md font-bold" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
               }`}
             >
               <Award className="w-4 h-4" /> Nilai Kokurikuler
             </button>
             <button
               onClick={() => { setActiveTab("nilai"); setNilaiSubTab("catatan"); setIsSidebarOpenOnMobile(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                activeTab === "nilai" && nilaiSubTab === "catatan" ? "bg-white/10 text-white shadow-inner font-semibold" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all ${
+                activeTab === "nilai" && nilaiSubTab === "catatan" ? "bg-white/20 text-white shadow-md font-bold" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
               }`}
             >
               <Sparkles className="w-4 h-4" /> Catatan Siswa (AI)
             </button>
             <button
               onClick={() => { setActiveTab("nilai"); setNilaiSubTab("kehadiran"); setIsSidebarOpenOnMobile(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                activeTab === "nilai" && nilaiSubTab === "kehadiran" ? "bg-white/10 text-white shadow-inner font-semibold" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all ${
+                activeTab === "nilai" && nilaiSubTab === "kehadiran" ? "bg-white/20 text-white shadow-md font-bold" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
               }`}
             >
               <UserCheck className="w-4 h-4" /> Kehadiran
@@ -1892,13 +1889,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                 onClick={() => { 
                   setActiveTab("cetak"); 
                   setIsSidebarOpenOnMobile(false);
-                  // pre-select first student if available
                   if (state.siswa.length > 0 && !printSiswaId) {
                     setPrintSiswaId(state.siswa[0].id);
                   }
                 }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === "cetak" ? "bg-white/10 text-white shadow-inner font-semibold" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all ${
+                  activeTab === "cetak" ? "bg-white/20 text-white shadow-md font-bold" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
                 }`}
               >
                 <Printer className="w-4 h-4" /> Cetak Raport PAUD
@@ -1906,8 +1902,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
               <button
                 onClick={() => { setActiveTab("pengaturan"); setIsSidebarOpenOnMobile(false); }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === "pengaturan" ? "bg-white/10 text-white shadow-inner font-semibold" : "text-indigo-100/70 hover:bg-white/5 hover:text-white"
+                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all ${
+                  activeTab === "pengaturan" ? "bg-white/20 text-white shadow-md font-bold" : "text-white/70 hover:bg-white/5 hover:text-white font-semibold"
                 }`}
               >
                 <Settings className="w-4 h-4" /> Pengaturan Sekolah
@@ -1917,12 +1913,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
         </nav>
 
         {/* ACTIVE USER PROFILE & SIGN OUT */}
-        <div className="p-4 mx-4 mb-4 bg-indigo-950 rounded-2xl text-xs text-indigo-300 font-medium border border-indigo-800/40 flex-shrink-0">
-          <div className="text-indigo-400 text-[10px] font-bold uppercase mb-1">Pengguna Masuk</div>
-          <div className="text-white text-xs font-bold truncate leading-tight">{currentUserProfile?.nama || currentUser?.displayName}</div>
-          <div className="opacity-80 text-[11px] font-mono mt-0.5 text-indigo-200">
-            Peran: <span className={`px-1 rounded-sm text-[10px] font-bold ${
-              currentUserProfile?.role === "admin" ? "bg-purple-900 border border-purple-800 text-purple-200" : "bg-teal-900 border border-teal-800 text-teal-200"
+        <div className="p-4 mx-4 mb-4 bg-white/10 rounded-2xl text-xs text-white/90 font-medium border border-white/10 flex-shrink-0">
+          <div className="text-white/60 text-[10px] font-black uppercase mb-1 tracking-widest">Pengguna Masuk</div>
+          <div className="text-white text-xs font-bold truncate leading-tight uppercase">{currentUserProfile?.nama || currentUser?.displayName}</div>
+          <div className="opacity-80 text-[11px] font-mono mt-1 text-white/70">
+            Peran: <span className={`px-1.5 py-0.5 rounded-md text-[9px] font-black ${
+              currentUserProfile?.role === "admin" ? "bg-white text-[#086B00]" : "bg-white text-teal-800"
             }`}>{currentUserProfile?.role?.toUpperCase()}</span>
           </div>
           <button
@@ -1934,9 +1930,9 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                 console.error("Gagal keluar:", signOutErr);
               }
             }}
-            className="mt-3 w-full bg-red-600/30 hover:bg-red-600 border border-red-500/20 text-red-200 hover:text-white py-1.5 px-3 rounded-lg text-[10px] font-bold block text-center transition cursor-pointer"
+            className="w-full mt-3 py-2 bg-white/10 hover:bg-white/20 text-white font-black rounded-xl text-[10px] uppercase tracking-widest transition flex items-center justify-center gap-2 border border-white/10"
           >
-            Keluar
+            <LogOut className="w-3.5 h-3.5" /> Keluar Sesi
           </button>
         </div>
       </aside>
@@ -1983,7 +1979,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                 <h2 className="text-xl font-bold text-slate-800 font-display">Dashboard Overview</h2>
                 <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
                   <div className="flex items-center gap-4 flex-1">
-                    <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100">
+                    <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm border border-emerald-100">
                       <Calendar className="w-7 h-7" />
                     </div>
                     <div>
@@ -2336,7 +2332,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                             setActiveIntraCategoryTab(state.kategoriIntrakurikuler[0].id);
                                           }
                                         }}
-                                        className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-150 flex items-center justify-center text-indigo-600 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 hover:shadow-sm transition-all duration-150 cursor-pointer"
+                                        className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-150 flex items-center justify-center text-emerald-600 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-sm transition-all duration-150 cursor-pointer"
                                         title="Isi Nilai Intrakurikuler"
                                       >
                                         <Edit3 className="w-3.5 h-3.5" />
@@ -2389,7 +2385,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                     setKelasForm({ namaKelas: "", waliKelas: "", nuptkNgty: "" });
                     setShowAddKelas(!showAddKelas);
                   }}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition"
                 >
                   <Plus className="w-4 h-4" /> Tambah Kelas
                 </button>
@@ -2400,7 +2396,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={(e) => { if(e.target === e.currentTarget) setShowAddKelas(false); }}>
                   <form onSubmit={handleSaveKelas} className="bg-white p-6 rounded-xl border border-indigo-100 shadow-xl space-y-4 max-w-2xl w-full">
                     <div className="flex items-center gap-2 border-b border-indigo-50 pb-2 mb-2">
-                      <span className="text-indigo-600 text-lg">🏫</span>
+                      <span className="text-emerald-600 text-lg">🏫</span>
                       <strong className="text-slate-800 text-sm font-semibold">{editingKelas ? "Edit Kelompok Kelas" : "Tambah Kelompok Kelas Baru"}</strong>
                     </div>
 
@@ -2451,7 +2447,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       </button>
                       <button
                         type="submit"
-                        className="px-4 py-2 text-xs bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold"
+                        className="px-4 py-2 text-xs bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-semibold"
                       >
                         Simpan Kelas
                       </button>
@@ -2495,7 +2491,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                     setKelasForm({ namaKelas: k.namaKelas, waliKelas: k.waliKelas, nuptkNgty: k.nuptkNgty });
                                     setShowAddKelas(true);
                                   }}
-                                  className="text-slate-600 hover:text-indigo-600 p-1 rounded hover:bg-slate-100"
+                                  className="text-slate-600 hover:text-emerald-600 p-1 rounded hover:bg-slate-100"
                                   title="Edit Kelas"
                                 >
                                   <Edit3 className="w-4 h-4" />
@@ -2563,7 +2559,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       });
                       setShowAddSiswa(!showAddSiswa);
                     }}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition"
                   >
                     <Plus className="w-4 h-4" /> Registrasi Siswa Baru
                   </button>
@@ -2576,7 +2572,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                   <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in duration-200">
                     <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                       <div className="flex items-center gap-2">
-                        <Users className="text-indigo-600 w-5 h-5" />
+                      <Users className="text-emerald-600 w-5 h-5" />
                         <h3 className="text-slate-800 font-bold font-display">{editingSiswa ? "Ubah Biodata Siswa" : "Registrasi Siswa Baru"}</h3>
                       </div>
                       <button 
@@ -2807,7 +2803,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       <button
                         type="submit"
                         form="siswa-form"
-                        className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl shadow-md shadow-indigo-100 transition flex items-center gap-2 cursor-pointer"
+                        className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-100 transition flex items-center gap-2 cursor-pointer"
                       >
                         <Save className="w-4 h-4" />
                         {editingSiswa ? "Simpan Perubahan" : "Simpan Data Siswa"}
@@ -2891,7 +2887,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   setShowAddSiswa(true);
                                   window.scrollTo({ top: 0, behavior: "smooth" });
                                 }}
-                                className="text-slate-600 hover:text-indigo-600 p-1.5 rounded hover:bg-slate-100"
+                                className="text-slate-600 hover:text-emerald-600 p-1.5 rounded hover:bg-slate-100"
                                 title="Edit Biodata"
                               >
                                 <Edit3 className="w-4 h-4" />
@@ -2944,7 +2940,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       setEditingTp(null);
                       setShowAddTp(true);
                     }}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition"
                   >
                     <Plus className="w-4 h-4" /> Tambah TP
                   </button>
@@ -2955,7 +2951,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
                 <span className="text-xs font-semibold text-slate-600">Filter Kelompok Kelas:</span>
                 {currentUserProfile?.role === "guru" ? (
-                  <div className="text-xs bg-indigo-50 border border-indigo-150 px-3 py-2 rounded-lg text-indigo-700 font-semibold flex items-center gap-1.5 shadow-sm">
+                  <div className="text-xs bg-emerald-50 border border-emerald-150 px-3 py-2 rounded-lg text-emerald-700 font-semibold flex items-center gap-1.5 shadow-sm">
                     <GraduationCap className="w-3.5 h-3.5" />
                     Kelas Anda: {state.kelas.find(k => k.id === selectedKelasFilterIntra)?.namaKelas || "KB KUSUMA"}
                   </div>
@@ -2983,7 +2979,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                     <div className="bg-slate-50 border-b border-slate-200 px-5 py-3 flex justify-between items-center">
                       <div className="flex items-center gap-3">
                         <strong className="text-slate-800 text-sm font-semibold">{kat.namaKategori}</strong>
-                        <span className="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-bold uppercase">{classTps.length} TP</span>
+                        <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold uppercase">{classTps.length} TP</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <button
@@ -2993,7 +2989,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                             setShowAddKategori(true);
                             window.scrollTo({ top: 0, behavior: "smooth" });
                           }}
-                          className="text-slate-400 hover:text-indigo-600 p-1.5 rounded-md hover:bg-white transition shadow-sm"
+                          className="text-slate-400 hover:text-emerald-600 p-1.5 rounded-md hover:bg-white transition shadow-sm"
                           title="Ubah Kategori"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
@@ -3039,7 +3035,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                         setShowAddTp(true);
                                         window.scrollTo({ top: 0, behavior: "smooth" });
                                       }}
-                                      className="text-slate-400 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-indigo-50 transition-colors"
+                                      className="text-slate-400 hover:text-emerald-600 p-1.5 rounded-lg hover:bg-emerald-50 transition-colors"
                                       title="Ubah TP"
                                     >
                                       <Edit3 className="w-4 h-4" />
@@ -3093,7 +3089,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       setEditingSub(null);
                       setShowAddSub(true);
                     }}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition"
                   >
                     <Plus className="w-4 h-4" /> Tambah Subdimensi Projek
                   </button>
@@ -3143,7 +3139,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           <div key={sub.id || `sub-div-${idx}`} className="flex justify-between items-start gap-4 p-4 border border-slate-150 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow">
                             <div className="flex-1 space-y-3">
                               <div className="flex items-center gap-3">
-                                <span className="font-mono text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">Sub #{idx + 1}</span>
+                                <span className="font-mono text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Sub #{idx + 1}</span>
                                 <h4 className="text-sm font-bold text-slate-800 leading-relaxed">{sub.namaSubdimensi}</h4>
                               </div>
                               
@@ -3188,7 +3184,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   });
                                   setShowAddSub(true);
                                 }}
-                                className="text-slate-400 hover:text-indigo-600 p-2 rounded-lg hover:bg-indigo-50 transition-colors"
+                                className="text-slate-400 hover:text-emerald-600 p-2 rounded-lg hover:bg-emerald-50 transition-colors"
                                 title="Ubah Subdimensi"
                               >
                                 <Edit3 className="w-4 h-4" />
@@ -3749,14 +3745,14 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 placeholder="Ketik deskripsi perkembangan ananda di sini secara bebas..."
                                 value={noteText}
                                 onChange={(e) => handleSaveCatatan(s.id, e.target.value)}
-                                className="w-full text-sm font-medium border border-slate-200 p-4 rounded-xl focus:outline-indigo-600 leading-relaxed text-slate-700 bg-slate-50/20 shadow-inner h-64"
+                                className="w-full text-sm font-medium border border-slate-200 p-4 rounded-xl focus:outline-emerald-600 leading-relaxed text-slate-700 bg-slate-50/20 shadow-inner h-64"
                               />
                             </div>
 
                             {/* AI ACTION PANEL FOR THIS STUDENT */}
-                            <div className="p-5 bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 rounded-2xl space-y-4 shadow-sm">
+                            <div className="p-5 bg-gradient-to-br from-emerald-50 to-white border border-emerald-100 rounded-2xl space-y-4 shadow-sm">
                               <div className="flex items-center gap-2">
-                                <div className="p-1.5 bg-indigo-600 rounded-lg text-white">
+                                <div className="p-1.5 bg-emerald-600 rounded-lg text-white">
                                   <Sparkles className="w-4 h-4" />
                                 </div>
                                 <div>
@@ -3772,7 +3768,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   placeholder="Contoh: Tekankan pada perkembangan sosialnya yang luar biasa..."
                                   value={aiPromptCustom}
                                   onChange={(e) => setAiPromptCustom(e.target.value)}
-                                  className="w-full bg-white text-xs border border-slate-200 px-4 py-2.5 rounded-xl focus:outline-indigo-600 placeholder:text-neutral-300 font-medium"
+                                  className="w-full bg-white text-xs border border-slate-200 px-4 py-2.5 rounded-xl focus:outline-emerald-600 placeholder:text-neutral-300 font-medium"
                                 />
                               </div>
 
@@ -3780,7 +3776,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 type="button"
                                 disabled={matchesGenerating}
                                 onClick={() => composeAiText(s.id)}
-                                className="w-full bg-indigo-600 hover:bg-slate-900 text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-100 transition-all font-display active:scale-95 disabled:opacity-50"
+                                className="w-full bg-emerald-600 hover:bg-slate-900 text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-100 transition-all font-display active:scale-95 disabled:opacity-50"
                               >
                                 {matchesGenerating ? (
                                   <>
@@ -3789,7 +3785,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   </>
                                 ) : (
                                   <>
-                                    <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
+                                    <Zap className="w-4 h-4 text-emerald-300 fill-emerald-300" />
                                     Susun Otomatis dengan AI Assistant
                                   </>
                                 )}
@@ -4093,7 +4089,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 <td className="text-slate-950 font-black">: {printKelasItem?.namaKelas || "AL FARABI"}</td>
                               </tr>
                               <tr>
-                                <td className="text-slate-500 font-bold">Sem / Th. Ajaran</td>
+                                <td className="text-slate-500 font-bold">Sem / Tahun Pelajaran</td>
                                 <td className="text-slate-950 font-semibold">: {state.dataSekolah.semester} / {state.dataSekolah.thAjaran}</td>
                               </tr>
                               <tr>
@@ -4531,7 +4527,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                     </tr>
                                     <tr>
                                       <td className="px-3.5 py-1.5 text-slate-705 border-r border-slate-950">3. Tanpa Keterangan (Alpa)</td>
-                                      <td className="px-3.5 py-1.5 text-center text-slate-950">{printAbsensi.tanpaKeterangan} Hari</td>
+                                      <td className="px-3.5 py-1.5 text-center text-slate-950">{printAbsensi.tanpaKet} Hari</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -4703,13 +4699,13 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">Tahun Ajaran Aktif</label>
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Tahun Pelajaran Aktif</label>
                       <input
                         type="text"
                         placeholder="Contoh: 2025/2026"
                         value={state.dataSekolah.thAjaran}
                         onChange={(e) => handleUpdateSchool("thAjaran", e.target.value)}
-                        className="w-full text-sm border border-slate-200 px-3 py-2 rounded-lg font-medium focus:outline-indigo-600"
+                        className="w-full text-sm border border-slate-200 px-3 py-2 rounded-lg font-medium focus:outline-emerald-600"
                       />
                     </div>
 
@@ -4727,7 +4723,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                    {/* BACKUP & RESTORE SIDEBAR */}
                 <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between h-fit space-y-4">
                   <div>
-                    <span className="text-xs font-bold text-indigo-800 tracking-wider block uppercase border-b border-slate-100 pb-2">Amankan Cadangan Laporan</span>
+                    <span className="text-xs font-bold text-emerald-800 tracking-wider block uppercase border-b border-slate-100 pb-2">Amankan Cadangan Laporan</span>
                     <p className="text-xs text-neutral-500 leading-relaxed mt-2.5">
                       Seluruh data Anda kini disimpan secara otomatis pada Cloud Firestore database secara real-time. Untuk keamanan luring atau migrasi instan, Anda dapat mencadangkan basis data kapan saja ke berkas .JSON lokal.
                     </p>
@@ -4738,7 +4734,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       onClick={handleExportData}
                       className="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 px-4 rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow transition"
                     >
-                      <Download className="w-4 h-4 text-indigo-400" /> Unduh Backup Database (.JSON)
+                      <Download className="w-4 h-4 text-emerald-400" /> Unduh Backup Database (.JSON)
                     </button>
 
                     {currentUserProfile?.role === "admin" && (
@@ -4817,7 +4813,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                     <div className="flex justify-end">
                       <button
                         type="submit"
-                        className="py-1.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow"
+                        className="py-1.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow"
                       >
                         <Plus className="w-3.5 h-3.5" /> Tambahkan Pengguna
                       </button>
