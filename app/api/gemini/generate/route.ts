@@ -1,9 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 
-// Initialize the Google Gen AI client with server-side secrets
+// Initialize the Google Gen AI client with server-side secrets (fallback)
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: process.env.GEMINI_API_KEY || "dummy",
   httpOptions: {
     headers: {
       'User-Agent': 'aistudio-build',
@@ -13,7 +13,7 @@ const ai = new GoogleGenAI({
 
 export async function POST(req: NextRequest) {
   try {
-    const { prompt, context } = await req.json();
+    const { prompt, context, useGroq, groqApiKey, groqModel } = await req.json();
 
     if (!context || !context.namaSiswa) {
       return NextResponse.json(
@@ -42,6 +42,44 @@ Petunjuk Tambahan dari Guru: "${prompt || "Anak aktif, ceria, dan bersosialisasi
 
 Tolong formulasikan narasi raport komprehensif yang rapi dan menginspirasi orang tua.`;
 
+    if (useGroq && groqApiKey) {
+      // Use Groq API
+      const modelToUse = groqModel || "llama-3.3-70b-versatile";
+      try {
+        const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${groqApiKey}`
+          },
+          body: JSON.stringify({
+            model: modelToUse,
+            messages: [
+              { role: "system", content: systemInstruction },
+              { role: "user", content: fullPrompt }
+            ],
+            temperature: 0.7
+          })
+        });
+
+        if (!groqResponse.ok) {
+          const errText = await groqResponse.text();
+          throw new Error(`Groq API error (status ${groqResponse.status}): ${errText}`);
+        }
+
+        const groqData = await groqResponse.json();
+        const text = groqData.choices?.[0]?.message?.content || "Gagal membuat narasi menggunakan model Groq.";
+        return NextResponse.json({ text });
+      } catch (err: any) {
+        console.error("Groq Fetch Error:", err);
+        return NextResponse.json(
+          { error: `Kesalahan memanggil Groq: ${err?.message || err}` },
+          { status: 502 }
+        );
+      }
+    }
+
+    // Default to Gemini API
     const response = await ai.models.generateContent({
       model: "gemini-3.5-flash",
       contents: fullPrompt,
@@ -54,10 +92,11 @@ Tolong formulasikan narasi raport komprehensif yang rapi dan menginspirasi orang
     const text = response.text || "Gagal membuat narasi. Silakan coba kembali.";
     return NextResponse.json({ text });
   } catch (error: any) {
-    console.error("Gemini Error:", error);
+    console.error("AI Generation Error:", error);
     return NextResponse.json(
       { error: error?.message || "Terjadi kesalahan internal server dalam memproses AI." },
       { status: 500 }
     );
   }
 }
+

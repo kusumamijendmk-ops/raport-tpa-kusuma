@@ -1266,7 +1266,7 @@ export default function RaportPAUD() {
   };
 
   // --- ACTIONS: SCHOOL & SETTINGS ---
-  const handleUpdateSchool = async (field: keyof DataSekolah, val: string) => {
+  const handleUpdateSchool = async (field: keyof DataSekolah, val: any) => {
     if (currentUserProfile?.role !== "admin") {
       alert("Akses Ditolak: Hanya Admin yang dapat mengubah identitas data sekolah!");
       return;
@@ -1276,7 +1276,7 @@ export default function RaportPAUD() {
       const schoolRef = doc(db, "dataSekolah", "default");
       
       // Prevent Firestore 1MB limits by rejecting values that exceed safe margins
-      if (field === "logo" && val.length > 600000) {
+      if (field === "logo" && typeof val === "string" && val.length > 600000) {
         alert("Ukuran file logo terlalu besar. Silakan upload ulang file gambar yang lebih kecil (di bawah 500 KB).");
         return;
       }
@@ -1401,7 +1401,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
             namaKelas: state.kelas.find(k => k.id === siswaItem.idKelas)?.namaKelas || "PAUD",
             intrakurikuler: [], // Minimal context as we use manual prompt
             kokurikuler: []
-          }
+          },
+          useGroq: state.dataSekolah.useGroq,
+          groqApiKey: state.dataSekolah.groqApiKey,
+          groqModel: state.dataSekolah.groqModel
         })
       });
 
@@ -1412,9 +1415,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
         } else {
           handleUpdateDescriptionKokuri(idSiswa, idItem, data.text);
         }
+      } else {
+        alert("Gagal memproses AI: " + (data.error || "Umpan balik tidak ditemukan."));
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      alert("Error memproses AI: " + (e?.message || e));
     } finally {
       setGeneratingAiItem(null);
     }
@@ -1458,7 +1464,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
             namaKelas: classItem?.namaKelas || "PAUD",
             intrakurikuler: studentIntras,
             kokurikuler: studentKokuris
-          }
+          },
+          useGroq: state.dataSekolah.useGroq,
+          groqApiKey: state.dataSekolah.groqApiKey,
+          groqModel: state.dataSekolah.groqModel
         })
       });
 
@@ -3307,18 +3316,18 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                         onClick={() => setActiveIntraCategoryTab(kat.id)}
                                         className={`px-4 py-2.5 text-xs sm:text-sm font-semibold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
                                           isTabActive 
-                                            ? "border-indigo-600 text-indigo-800 bg-indigo-50/20 font-bold" 
+                                            ? "border-[#086B00] text-[#086B00] bg-emerald-50/20 font-bold" 
                                             : "border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50"
                                         }`}
                                       >
                                         <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-colors ${
-                                          isTabActive ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"
+                                          isTabActive ? "bg-[#086B00] text-white" : "bg-slate-100 text-slate-600"
                                         }`}>
                                           {katIdx + 1}
                                         </span>
                                         <span className="truncate max-w-[150px] sm:max-w-xs">{kat.namaKategori}</span>
                                         <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                                          isTabActive ? "bg-indigo-600 text-white" : "bg-slate-200 text-slate-500"
+                                          isTabActive ? "bg-[#086B00] text-white" : "bg-slate-200 text-slate-500"
                                         }`}>
                                           {count} TP
                                         </span>
@@ -3350,7 +3359,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   return (
                                     <div key={kat.id} className="bg-slate-50/40 p-5 rounded-2xl border border-slate-150 space-y-4 shadow-sm animate-fadeIn">
                                       <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
-                                        <span className="w-6 h-6 rounded-full bg-indigo-50 text-indigo-700 flex items-center justify-center text-xs font-bold font-mono shadow-sm">
+                                        <span className="w-6 h-6 rounded-full bg-emerald-50 text-[#086B00] flex items-center justify-center text-xs font-bold font-mono shadow-sm">
                                           {katIdx + 1}
                                         </span>
                                         <h5 className="text-sm font-bold text-slate-800 font-display">
@@ -3367,7 +3376,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                             <div key={tp.id} className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100 last:border-0 last:pb-0">
                                               <div className="flex-1">
                                                 <p className="text-sm font-semibold text-slate-700 leading-relaxed">
-                                                  <span className="text-indigo-600/70 font-bold mr-1.5 font-mono">TP-{tpIdx + 1}</span>
+                                                  <span className="text-[#086B00] font-bold mr-1.5 font-mono">TP-{tpIdx + 1}</span>
                                                   {tp.deskripsi}
                                                 </p>
                                                 {tp.aktivitasMetode && (
@@ -3384,7 +3393,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                                       onClick={() => handleSetGradeIntra(s.id, tp.id, currentGrade === lbl.namaLabel ? "" : lbl.namaLabel)}
                                                       className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                                                         currentGrade === lbl.namaLabel 
-                                                          ? "bg-indigo-600 text-white shadow-sm" 
+                                                          ? "bg-[#086B00] text-white shadow-sm" 
                                                           : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
                                                       }`}
                                                     >
@@ -3413,14 +3422,14 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                             onChange={(e) => handleUpdateDescriptionIntra(s.id, kat.id, e.target.value)}
                                             placeholder={`Tuliskan deskripsi narasi perkembangan gabungan (rekap) untuk aspek ${kat.namaKategori}...`}
                                             rows={3}
-                                            className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-white focus:outline-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner font-sans min-h-[100px]"
+                                            className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-white focus:outline-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner font-sans min-h-[100px]"
                                           />
                                           <button
                                             type="button"
                                             onClick={() => composeAiItemText(s.id, kat.id, "intra")}
                                             disabled={!hasAnyGrades || isGenerating}
                                             title={hasAnyGrades ? "Tulis rekap deskripsi otomatis dengan AI" : "Beri minimal satu predikat TP di atas untuk mengaktifkan AI"}
-                                            className="absolute right-3 top-3 p-2 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-indigo-100 cursor-pointer"
+                                            className="absolute right-3 top-3 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100 cursor-pointer"
                                           >
                                             {isGenerating ? (
                                               <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
@@ -3530,7 +3539,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   onClick={() => setShowKokuriRubrikRef(!showKokuriRubrikRef)}
                                   className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 border transition-all cursor-pointer ${
                                     showKokuriRubrikRef 
-                                      ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100/70"
+                                      ? "bg-emerald-50 border-emerald-200 text-[#086B00] hover:bg-emerald-100/70"
                                       : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                                   }`}
                                 >
@@ -3568,7 +3577,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                                 onClick={() => handleSetGradeKokuri(s.id, sub.id, currentGrade === lbl.namaLabel ? "" : lbl.namaLabel)}
                                                 className={`px-4 py-2 text-xs font-bold rounded-lg transition-all transform hover:scale-105 cursor-pointer ${
                                                   currentGrade === lbl.namaLabel 
-                                                    ? "bg-indigo-600 text-white shadow-md" 
+                                                    ? "bg-[#086B00] text-white shadow-md" 
                                                     : "text-slate-500 hover:text-slate-800 hover:bg-white"
                                                 }`}
                                               >
@@ -3582,8 +3591,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                       {/* REFERENCE/RUBRIC ACUAN FROM MASTER DATA */}
                                       {showKokuriRubrikRef && (
                                         <div className="bg-slate-50/70 p-4 rounded-xl border border-slate-100/90 space-y-3 font-sans">
-                                          <div className="flex items-center gap-1.5 text-xs font-extrabold text-indigo-700 uppercase tracking-widest pl-1">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                                          <div className="flex items-center gap-1.5 text-xs font-extrabold text-emerald-850 uppercase tracking-widest pl-1">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-[#086B00] animate-pulse"></span>
                                             <span>Acuan Rubrik Penilaian Subdimensi P5 (Rujukan Guru)</span>
                                           </div>
                                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -3615,13 +3624,13 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                           onChange={(e) => handleUpdateDescriptionKokuri(s.id, sub.id, e.target.value)}
                                           placeholder={`Tuliskan narasi perkembangan untuk subdimensi Projek ini...`}
                                           rows={3}
-                                          className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-slate-50/30 focus:bg-white focus:outline-indigo-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner min-h-[100px]"
+                                          className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-slate-50/30 focus:bg-white focus:outline-emerald-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner min-h-[100px]"
                                         />
                                         <button
                                           onClick={() => composeAiItemText(s.id, sub.id, "kokuri")}
                                           disabled={!currentGrade || isGenerating}
                                           title="Tulis deskripsi dengan AI"
-                                          className="absolute right-3 top-3 p-2 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-indigo-100"
+                                          className="absolute right-3 top-3 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100"
                                         >
                                           {isGenerating ? (
                                             <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
@@ -4352,9 +4361,14 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                               const assessment = state.nilaiIntrakurikuler.find(n => n.idSiswa === printSiswa.id && n.idTp === tp.id);
                                               const score = assessment?.nilai || "Cakap";
 
-                                              let ratingStyle = "text-amber-850 bg-amber-50 border-amber-250";
-                                              if (score === "Mahir") ratingStyle = "text-emerald-850 bg-emerald-50 border-emerald-250";
-                                              if (score === "Cakap") ratingStyle = "text-blue-850 bg-blue-50 border-blue-250";
+                                              let ratingStyle = "text-slate-950 bg-slate-50 border-slate-600 border-2";
+                                              if (score.toLowerCase().includes("berkembang")) {
+                                                ratingStyle = "text-yellow-950 bg-yellow-50/80 border-yellow-500 border-2";
+                                              } else if (score.toLowerCase().includes("cakap")) {
+                                                ratingStyle = "text-blue-950 bg-blue-50/80 border-blue-500 border-2";
+                                              } else if (score.toLowerCase().includes("mahir")) {
+                                                ratingStyle = "text-green-950 bg-green-50/80 border-green-500 border-2";
+                                              }
 
                                               return (
                                                 <tr key={tp.id} className="align-top">
@@ -4439,9 +4453,15 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                           const score = assessment?.nilai || "Cakap";
                                           const deskripsiAss = assessment?.deskripsi || "";
 
-                                          let badgeStyle = "text-amber-800 bg-amber-50 border-amber-250";
-                                          if (score === "Mahir") badgeStyle = "text-emerald-800 bg-emerald-50 border-emerald-250";
-                                          if (score === "Cakap") badgeStyle = "text-blue-800 bg-blue-50 border-blue-250";
+                                          let badgeStyle = "text-slate-950 bg-slate-50 border-slate-600 border-2";
+                                          if (score.toLowerCase().includes("berkembang")) {
+                                            badgeStyle = "text-yellow-950 bg-yellow-50/80 border-yellow-500 border-2";
+                                          } else if (score.toLowerCase().includes("cakap")) {
+                                            badgeStyle = "text-blue-950 bg-blue-50/80 border-blue-500 border-2";
+                                          } else if (score.toLowerCase().includes("mahir")) {
+                                            badgeStyle = "text-green-950 bg-green-50/80 border-green-500 border-2";
+                                          }
+
 
                                           return (
                                             <tr key={sub.id} className="hover:bg-slate-50/10 align-top">
@@ -4710,13 +4730,61 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">Tanggal Cetak Raport</label>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1">Tanggal Cetak Raport</label>
                       <input
                         type="date"
                         value={state.dataSekolah.tglRaport}
                         onChange={(e) => handleUpdateSchool("tglRaport", e.target.value)}
-                        className="w-full text-sm border border-slate-200 px-3 py-2 rounded-lg font-medium focus:outline-indigo-600"
+                        className="w-full text-sm border border-slate-200 px-3 py-2 rounded-lg font-medium focus:outline-emerald-600 focus:ring-1 focus:ring-emerald-600 text-slate-800"
                       />
+                    </div>
+
+                    <div className="md:col-span-2 border-t border-slate-100 pt-4 mt-2">
+                      <span className="text-xs font-bold text-emerald-800 tracking-wider block uppercase mb-3">Integrasi Model AI Penilai (Gemini / Groq)</span>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-800 mb-1.5">Pilihan Engine Penilaian Otomatis</label>
+                          <select
+                            value={state.dataSekolah.useGroq ? "groq" : "gemini"}
+                            onChange={(e) => handleUpdateSchool("useGroq", e.target.value === "groq")}
+                            className="w-full text-sm border border-slate-200 px-3 py-2 rounded-lg bg-white font-medium focus:outline-emerald-600 focus:ring-1 focus:ring-emerald-600 text-slate-800"
+                          >
+                            <option value="gemini">Google Gemini AI (Bawaan Aplikasi)</option>
+                            <option value="groq">Groq AI (Menggunakan API Key Pribadi)</option>
+                          </select>
+                        </div>
+
+                        {state.dataSekolah.useGroq && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-xl bg-emerald-50/40 border border-emerald-100 animate-fade-in text-slate-800">
+                            <div className="md:col-span-2">
+                              <label className="block text-xs font-semibold text-emerald-950 mb-1">Groq API Key *</label>
+                              <input
+                                type="password"
+                                placeholder="gsk_..."
+                                value={state.dataSekolah.groqApiKey || ""}
+                                onChange={(e) => handleUpdateSchool("groqApiKey", e.target.value)}
+                                className="w-full text-sm border border-slate-200 px-3 py-2 rounded-lg font-mono focus:outline-emerald-600 focus:ring-1 focus:ring-emerald-600 text-slate-800 bg-white"
+                              />
+                              <p className="text-[11px] text-emerald-800/80 mt-1">Dapatkan kunci API Anda secara gratis atau berbayar di console.groq.com</p>
+                            </div>
+
+                            <div className="md:col-span-2">
+                              <label className="block text-xs font-semibold text-emerald-950 mb-1">Model Groq yang Digunakan</label>
+                              <select
+                                value={state.dataSekolah.groqModel || "llama-3.3-70b-versatile"}
+                                onChange={(e) => handleUpdateSchool("groqModel", e.target.value)}
+                                className="w-full text-sm border border-slate-200 px-3 py-2 rounded-lg bg-white font-medium focus:outline-emerald-600 focus:ring-1 focus:ring-emerald-600 text-slate-800"
+                              >
+                                <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (Sangat Cerdas, Direkomendasikan)</option>
+                                <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (Sangat Cepat)</option>
+                                <option value="mixtral-8x7b-32768">Mixtral 8x7B (Handal)</option>
+                                <option value="gemma2-9b-it">Gemma 2 9B (Optimasi Google)</option>
+                              </select>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

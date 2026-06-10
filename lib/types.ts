@@ -93,6 +93,9 @@ export interface DataSekolah {
   thAjaran: string; // e.g., "2025/2026"
   tglRaport: string; // e.g., "2026-06-20"
   npsn?: string;
+  useGroq?: boolean;
+  groqApiKey?: string;
+  groqModel?: string;
 }
 
 export interface AppState {

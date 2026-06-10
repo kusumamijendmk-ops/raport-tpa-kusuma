@@ -7,6 +7,22 @@
 @theme {
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+
+  /* Custom overrides to make all gray text sharp, dark, and highly legible as requested */
+  --color-slate-300: #475569; /* originally #cbd5e1, set to #475569 (slate-600) */
+  --color-slate-400: #334155; /* originally #94a3b8, set to #334155 (slate-700) */
+  --color-slate-500: #1e293b; /* originally #64748b, set to #1e293b (slate-800) */
+  --color-slate-600: #0f172a; /* originally #475569, set to #0f172a (slate-900) */
+  
+  --color-gray-300: #4b5563; /* originally #d1d5db, set to #4b5563 */
+  --color-gray-400: #374151; /* originally #9ca3af, set to #374151 */
+  --color-gray-500: #1f2937; /* originally #6b7280, set to #1f2937 */
+  --color-gray-600: #111827; /* originally #4b5563, set to #111827 */
+  
+  --color-neutral-300: #525252; /* originally #d4d4d4, set to #525252 */
+  --color-neutral-400: #404040; /* originally #a3a3a3, set to #404040 */
+  --color-neutral-500: #262626; /* originally #737373, set to #262626 */
+  --color-neutral-600: #171717; /* originally #525252, set to #171717 */
 }
 
 @layer utilities {
