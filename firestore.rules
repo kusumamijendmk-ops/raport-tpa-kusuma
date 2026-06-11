@@ -18,7 +18,7 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
-    // Academic Data
+    // Academic Data (Legacy Flat Collections, kept for backward compatibility and fallback)
     match /kelas/{docId} {
       allow read: if isSignedIn();
       allow write: if isAdmin();
@@ -62,6 +62,45 @@ service cloud.firestore {
     match /dataSekolah/{docId} {
       allow read: if isSignedIn();
       allow write: if isAdmin();
+    }
+
+    // Year-Scoped and Semester-Scoped Academic Data
+    match /tahun_pelajaran/{year} {
+      match /kelas/{docId} {
+        allow read, list: if isSignedIn();
+        allow write, create, update, delete: if isAdmin();
+      }
+      match /siswa/{docId} {
+        allow read, list: if isSignedIn();
+        allow write, create, update, delete: if isGuru();
+      }
+      match /tujuanPembelajaran/{docId} {
+        allow read, list: if isSignedIn();
+        allow write, create, update, delete: if isAdmin();
+      }
+      match /subdimensiKokurikuler/{docId} {
+        allow read, list: if isSignedIn();
+        allow write, create, update, delete: if isAdmin();
+      }
+      
+      match /semester/{semesterId} {
+        match /nilaiIntrakurikuler/{docId} {
+          allow read, list: if isSignedIn();
+          allow write, create, update, delete: if isGuru();
+        }
+        match /nilaiKokurikuler/{docId} {
+          allow read, list: if isSignedIn();
+          allow write, create, update, delete: if isGuru();
+        }
+        match /catatanAnak/{docId} {
+          allow read, list: if isSignedIn();
+          allow write, create, update, delete: if isGuru();
+        }
+        match /kehadiran/{docId} {
+          allow read, list: if isSignedIn();
+          allow write, create, update, delete: if isGuru();
+        }
+      }
     }
 
     // Default Deny

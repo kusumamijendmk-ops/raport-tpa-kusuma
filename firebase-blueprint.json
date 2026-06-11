@@ -155,37 +155,37 @@
       "schema": "User",
       "description": "Koleksi data pengguna sekolah"
     },
-    "/kelas/{kelasId}": {
+    "/tahun_pelajaran/{year}/kelas/{kelasId}": {
       "schema": "Kelas",
-      "description": "Koleksi kelompok kelas"
+      "description": "Koleksi kelompok kelas scoped oleh tahun pelajaran"
     },
-    "/siswa/{siswaId}": {
+    "/tahun_pelajaran/{year}/siswa/{siswaId}": {
       "schema": "Siswa",
-      "description": "Koleksi data anak didik"
+      "description": "Koleksi data anak didik scoped oleh tahun pelajaran"
     },
-    "/tujuanPembelajaran/{tpId}": {
+    "/tahun_pelajaran/{year}/tujuanPembelajaran/{tpId}": {
       "schema": "TujuanPembelajaran",
-      "description": "Koleksi butir tujuan pembelajaran"
+      "description": "Koleksi butir tujuan pembelajaran scoped oleh tahun pelajaran"
     },
-    "/subdimensiKokurikuler/{subId}": {
+    "/tahun_pelajaran/{year}/subdimensiKokurikuler/{subId}": {
       "schema": "SubdimensiKokurikuler",
-      "description": "Koleksi subdimensi P5 kokurikuler"
+      "description": "Koleksi subdimensi P5 kokurikuler scoped oleh tahun pelajaran"
     },
-    "/nilaiIntrakurikuler/{nilaiId}": {
+    "/tahun_pelajaran/{year}/semester/{semester}/nilaiIntrakurikuler/{nilaiId}": {
       "schema": "NilaiIntrakurikuler",
-      "description": "Koleksi nilai intrakurikuler siswa"
+      "description": "Koleksi nilai intrakurikuler siswa scoped oleh tahun pelajaran dan semester"
     },
-    "/nilaiKokurikuler/{nilaiId}": {
+    "/tahun_pelajaran/{year}/semester/{semester}/nilaiKokurikuler/{nilaiId}": {
       "schema": "NilaiKokurikuler",
-      "description": "Koleksi nilai kokurikuler siswa"
+      "description": "Koleksi nilai kokurikuler siswa scoped oleh tahun pelajaran dan semester"
     },
-    "/catatanAnak/{catatanId}": {
+    "/tahun_pelajaran/{year}/semester/{semester}/catatanAnak/{catatanId}": {
       "schema": "CatatanAnak",
-      "description": "Koleksi deskripsi kualitatif / catatan rapor"
+      "description": "Koleksi deskripsi kualitatif / catatan rapor scoped oleh tahun pelajaran dan semester"
     },
-    "/kehadiran/{kehadiranId}": {
+    "/tahun_pelajaran/{year}/semester/{semester}/kehadiran/{kehadiranId}": {
       "schema": "Kehadiran",
-      "description": "Koleksi kehadiran/absensi siswa"
+      "description": "Koleksi kehadiran/absensi siswa scoped oleh tahun pelajaran dan semester"
     },
     "/labelP5/{labelId}": {
       "schema": "LabelP5",

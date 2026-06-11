@@ -116,6 +116,7 @@ export default function RaportPAUD() {
   const [selectedKelasFilterKehadiran, setSelectedKelasFilterKehadiran] = useState<string>("");
   const [selectedSiswaIdKehadiran, setSelectedSiswaIdKehadiran] = useState<string>("");
   const [selectedSiswaIdCatatan, setSelectedSiswaIdCatatan] = useState<string>("");
+  const [sourceYearImport, setSourceYearImport] = useState<string>("");
 
   // Modals / Input toggles
   const [showAddSiswa, setShowAddSiswa] = useState(false);
@@ -194,6 +195,8 @@ export default function RaportPAUD() {
   };
 
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const prevYearRef = React.useRef<string | null>(null);
+  const prevSemRef = React.useRef<string | null>(null);
 
   // Initialize auth listener
   useEffect(() => {
@@ -309,11 +312,30 @@ export default function RaportPAUD() {
     }
   }, [state.kelas, currentUserProfile]);
 
-  // 2. Real-time Firestore synchronized listeners
+  // --- YEAR AND SEMESTER UTILITY HELPERS ---
+  const getNormYear = () => {
+    return (state.dataSekolah?.thAjaran || "2025/2026").replace(/\//g, "_").replace(/\s+/g, "_");
+  };
+
+  const getNormSem = () => {
+    return (state.dataSekolah?.semester || "2 (Genap)").replace(/\//g, "_").replace(/\s+/g, "_");
+  };
+
+  // Helper references to clean up path creation
+  const getKelasRef = (id: string) => doc(db, "tahun_pelajaran", getNormYear(), "kelas", id);
+  const getSiswaRef = (id: string) => doc(db, "tahun_pelajaran", getNormYear(), "siswa", id);
+  const getTpRef = (id: string) => doc(db, "tahun_pelajaran", getNormYear(), "tujuanPembelajaran", id);
+  const getSubdimensiRef = (id: string) => doc(db, "tahun_pelajaran", getNormYear(), "subdimensiKokurikuler", id);
+
+  const getNilaiIntraRef = (idSiswa: string, idTp: string) => doc(db, "tahun_pelajaran", getNormYear(), "semester", getNormSem(), "nilaiIntrakurikuler", `${idSiswa}_${idTp}`);
+  const getNilaiKokuriRef = (idSiswa: string, idSubdimensi: string) => doc(db, "tahun_pelajaran", getNormYear(), "semester", getNormSem(), "nilaiKokurikuler", `${idSiswa}_${idSubdimensi}`);
+  const getCatatanRef = (idSiswa: string) => doc(db, "tahun_pelajaran", getNormYear(), "semester", getNormSem(), "catatanAnak", idSiswa);
+  const getKehadiranRef = (idSiswa: string) => doc(db, "tahun_pelajaran", getNormYear(), "semester", getNormSem(), "kehadiran", idSiswa);
+
+  // 2a. Real-time Firestore synchronized listeners (Global configurations)
   useEffect(() => {
     if (!currentUser || !currentUserProfile) return;
 
-    // Listen to users list if the user is an admin
     let unsubscribeUsers = () => {};
     if (currentUserProfile?.role === "admin") {
       unsubscribeUsers = onSnapshot(collection(db, "users"), (snapshot) => {
@@ -327,60 +349,18 @@ export default function RaportPAUD() {
       });
     }
 
-    // Real-time synchronization
-    const unmKelas = onSnapshot(collection(db, "kelas"), (snap) => {
-      const items: Kelas[] = [];
-      snap.forEach((doc) => items.push(doc.data() as Kelas));
-      setState(prev => ({ ...prev, kelas: items }));
-      
-      if (items.length > 0) {
-        setSelectedKelasFilter(prev => prev || items[0].id);
-        setSelectedKelasFilterIntra(prev => prev || items[0].id);
-        setSelectedKelasFilterKokuri(prev => prev || items[0].id);
-        setPrintKelasId(prev => prev || items[0].id);
-      }
-    }, (error) => handleFirestoreError(error, OperationType.LIST, "kelas"));
-
-    const unmSiswa = onSnapshot(collection(db, "siswa"), (snap) => {
-      const items: Siswa[] = [];
-      snap.forEach((doc) => items.push(doc.data() as Siswa));
-      setState(prev => ({ ...prev, siswa: items }));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, "siswa"));
-
     const unmKategoriIntra = onSnapshot(collection(db, "kategoriIntrakurikuler"), async (snap) => {
       const items: KategoriIntrakurikuler[] = [];
       snap.forEach((doc) => items.push(doc.data() as KategoriIntrakurikuler));
       
-      if (items.length === 0 && !snap.metadata.fromCache) {
-        // Auto-seed Categories for backward compatibility
-        try {
-          // Check if TP exists to ensure we aren't seeding a completely erased DB unnecessarily
-          const tpQ = await getDocs(collection(db, "tujuanPembelajaran"));
-          if (!tpQ.empty && currentUserProfile?.role === "admin") {
-             for (const kat of initialKategoriIntrakurikuler) {
-               await setDoc(doc(db, "kategoriIntrakurikuler", kat.id), kat);
-             }
-          } else if (!tpQ.empty) {
-             setState(prev => ({ ...prev, kategoriIntrakurikuler: initialKategoriIntrakurikuler }));
-             return;
-          }
-        } catch(e) {}
+      if (items.length === 0 && !snap.metadata.fromCache && currentUserProfile?.role === "admin") {
+        for (const kat of initialKategoriIntrakurikuler) {
+          await setDoc(doc(db, "kategoriIntrakurikuler", kat.id), kat);
+        }
       }
       
-      setState(prev => ({ ...prev, kategoriIntrakurikuler: items }));
+      setState(prev => ({ ...prev, kategoriIntrakurikuler: items.length > 0 ? items : initialKategoriIntrakurikuler }));
     }, (error) => handleFirestoreError(error, OperationType.LIST, "kategoriIntrakurikuler"));
-
-    const unmTp = onSnapshot(collection(db, "tujuanPembelajaran"), (snap) => {
-      const items: TujuanPembelajaran[] = [];
-      snap.forEach((doc) => items.push(doc.data() as TujuanPembelajaran));
-      setState(prev => ({ ...prev, tujuanPembelajaran: items }));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, "tujuanPembelajaran"));
-
-    const unmSub = onSnapshot(collection(db, "subdimensiKokurikuler"), (snap) => {
-      const items: SubdimensiKokurikuler[] = [];
-      snap.forEach((doc) => items.push(doc.data() as SubdimensiKokurikuler));
-      setState(prev => ({ ...prev, subdimensiKokurikuler: items }));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, "subdimensiKokurikuler"));
 
     const unmLabelP5 = onSnapshot(collection(db, "labelP5"), async (snap) => {
       const items: LabelP5[] = [];
@@ -402,31 +382,6 @@ export default function RaportPAUD() {
       
       setState(prev => ({ ...prev, labelP5: items.sort((a,b) => a.order - b.order) }));
     }, (error) => handleFirestoreError(error, OperationType.LIST, "labelP5"));
-
-    const unmNilaiIntra = onSnapshot(collection(db, "nilaiIntrakurikuler"), (snap) => {
-      const items: NilaiIntrakurikuler[] = [];
-      snap.forEach((doc) => items.push(doc.data() as NilaiIntrakurikuler));
-      setState(prev => ({ ...prev, nilaiIntrakurikuler: items }));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, "nilaiIntrakurikuler"));
-
-    const unmNilaiKokuri = onSnapshot(collection(db, "nilaiKokurikuler"), (snap) => {
-      const items: NilaiKokurikuler[] = [];
-      snap.forEach((doc) => items.push(doc.data() as NilaiKokurikuler));
-      setState(prev => ({ ...prev, nilaiKokurikuler: items }));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, "nilaiKokurikuler"));
-
-    const unmCatatan = onSnapshot(collection(db, "catatanAnak"), (snap) => {
-      const items: CatatanAnak[] = [];
-      snap.forEach((doc) => items.push(doc.data() as CatatanAnak));
-      setState(prev => ({ ...prev, catatanAnak: items }));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, "catatanAnak"));
-
-    const unmKehadiran = onSnapshot(collection(db, "kehadiran"), (snap) => {
-      const items: Kehadiran[] = [];
-      snap.forEach((doc) => items.push(doc.data() as Kehadiran));
-      setState(prev => ({ ...prev, kehadiran: items }));
-      setDbLoading(false);
-    }, (error) => handleFirestoreError(error, OperationType.LIST, "kehadiran"));
 
     const unmDataSekolah = onSnapshot(collection(db, "dataSekolah"), (snap) => {
       let ds: DataSekolah = {
@@ -452,19 +407,131 @@ export default function RaportPAUD() {
 
     return () => {
       unsubscribeUsers();
+      unmKategoriIntra();
+      unmLabelP5();
+      unmDataSekolah();
+    };
+  }, [currentUser, currentUserProfile]);
+
+  // 2b. Listen to yearly-scoped and semester-scoped data collections
+  useEffect(() => {
+    if (!currentUser || !currentUserProfile) return;
+    
+    const thAjaran = state.dataSekolah.thAjaran;
+    const semester = state.dataSekolah.semester;
+    if (!thAjaran) return;
+
+    const normYear = thAjaran.replace(/\//g, "_").replace(/\s+/g, "_");
+    const normSem = (semester || "2_Genap").replace(/\//g, "_").replace(/\s+/g, "_");
+
+    console.log(`Subscribing to year-scoped and semester-scoped collections: ${normYear} / ${normSem}`);
+
+    if (prevYearRef.current !== normYear) {
+      // If year changed, everything clears out (master data and grading data)
+      setState(prev => ({ 
+        ...prev, 
+        kelas: [], 
+        siswa: [], 
+        tujuanPembelajaran: [], 
+        subdimensiKokurikuler: [], 
+        nilaiIntrakurikuler: [], 
+        nilaiKokurikuler: [], 
+        catatanAnak: [], 
+        kehadiran: [] 
+      }));
+    } else if (prevSemRef.current !== normSem) {
+      // If only semester changed within the same year, only grading data clears out, master data stays
+      setState(prev => ({ 
+        ...prev, 
+        nilaiIntrakurikuler: [], 
+        nilaiKokurikuler: [], 
+        catatanAnak: [], 
+        kehadiran: [] 
+      }));
+    }
+    
+    prevYearRef.current = normYear;
+    prevSemRef.current = normSem;
+
+    // Yearly Collections
+    const kCol = collection(db, "tahun_pelajaran", normYear, "kelas");
+    const sCol = collection(db, "tahun_pelajaran", normYear, "siswa");
+    const tpCol = collection(db, "tahun_pelajaran", normYear, "tujuanPembelajaran");
+    const subCol = collection(db, "tahun_pelajaran", normYear, "subdimensiKokurikuler");
+
+    // Semester Collections (dependent on both thAjaran and semester)
+    const niCol = collection(db, "tahun_pelajaran", normYear, "semester", normSem, "nilaiIntrakurikuler");
+    const nkCol = collection(db, "tahun_pelajaran", normYear, "semester", normSem, "nilaiKokurikuler");
+    const cCol = collection(db, "tahun_pelajaran", normYear, "semester", normSem, "catatanAnak");
+    const khCol = collection(db, "tahun_pelajaran", normYear, "semester", normSem, "kehadiran");
+
+    const unmKelas = onSnapshot(kCol, (snap) => {
+      const items: Kelas[] = [];
+      snap.forEach((doc) => items.push(doc.data() as Kelas));
+      setState(prev => ({ ...prev, kelas: items }));
+      
+      if (items.length > 0) {
+        setSelectedKelasFilter(prev => prev || items[0].id);
+        setSelectedKelasFilterIntra(prev => prev || items[0].id);
+        setSelectedKelasFilterKokuri(prev => prev || items[0].id);
+        setPrintKelasId(prev => prev || items[0].id);
+      }
+    }, (error) => handleFirestoreError(error, OperationType.LIST, `tahun_pelajaran/${normYear}/kelas`));
+
+    const unmSiswa = onSnapshot(sCol, (snap) => {
+      const items: Siswa[] = [];
+      snap.forEach((doc) => items.push(doc.data() as Siswa));
+      setState(prev => ({ ...prev, siswa: items }));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, `tahun_pelajaran/${normYear}/siswa`));
+
+    const unmTp = onSnapshot(tpCol, (snap) => {
+      const items: TujuanPembelajaran[] = [];
+      snap.forEach((doc) => items.push(doc.data() as TujuanPembelajaran));
+      setState(prev => ({ ...prev, tujuanPembelajaran: items }));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, `tahun_pelajaran/${normYear}/tujuanPembelajaran`));
+
+    const unmSub = onSnapshot(subCol, (snap) => {
+      const items: SubdimensiKokurikuler[] = [];
+      snap.forEach((doc) => items.push(doc.data() as SubdimensiKokurikuler));
+      setState(prev => ({ ...prev, subdimensiKokurikuler: items }));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, `tahun_pelajaran/${normYear}/subdimensiKokurikuler`));
+
+    const unmNilaiIntra = onSnapshot(niCol, (snap) => {
+      const items: NilaiIntrakurikuler[] = [];
+      snap.forEach((doc) => items.push(doc.data() as NilaiIntrakurikuler));
+      setState(prev => ({ ...prev, nilaiIntrakurikuler: items }));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, `tahun_pelajaran/${normYear}/semester/${normSem}/nilaiIntrakurikuler`));
+
+    const unmNilaiKokuri = onSnapshot(nkCol, (snap) => {
+      const items: NilaiKokurikuler[] = [];
+      snap.forEach((doc) => items.push(doc.data() as NilaiKokurikuler));
+      setState(prev => ({ ...prev, nilaiKokurikuler: items }));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, `tahun_pelajaran/${normYear}/semester/${normSem}/nilaiKokurikuler`));
+
+    const unmCatatan = onSnapshot(cCol, (snap) => {
+      const items: CatatanAnak[] = [];
+      snap.forEach((doc) => items.push(doc.data() as CatatanAnak));
+      setState(prev => ({ ...prev, catatanAnak: items }));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, `tahun_pelajaran/${normYear}/semester/${normSem}/catatanAnak`));
+
+    const unmKehadiran = onSnapshot(khCol, (snap) => {
+      const items: Kehadiran[] = [];
+      snap.forEach((doc) => items.push(doc.data() as Kehadiran));
+      setState(prev => ({ ...prev, kehadiran: items }));
+      setDbLoading(false);
+    }, (error) => handleFirestoreError(error, OperationType.LIST, `tahun_pelajaran/${normYear}/semester/${normSem}/kehadiran`));
+
+    return () => {
       unmKelas();
       unmSiswa();
-      unmKategoriIntra();
       unmTp();
       unmSub();
-      unmLabelP5();
       unmNilaiIntra();
       unmNilaiKokuri();
       unmCatatan();
       unmKehadiran();
-      unmDataSekolah();
     };
-  }, [currentUser, currentUserProfile]);
+  }, [currentUser, currentUserProfile, state.dataSekolah.thAjaran, state.dataSekolah.semester]);
 
   // Seeding Template data to initial empty firestore DB
   const handleSeedDatabase = async () => {
@@ -481,31 +548,31 @@ export default function RaportPAUD() {
       await setDoc(doc(db, "dataSekolah", "default"), seedData.dataSekolah);
 
       for (const k of seedData.kelas) {
-        await setDoc(doc(db, "kelas", k.id), k);
+        await setDoc(getKelasRef(k.id), k);
       }
       for (const s of seedData.siswa) {
-        await setDoc(doc(db, "siswa", s.id), s);
+        await setDoc(getSiswaRef(s.id), s);
       }
       for (const tp of seedData.tujuanPembelajaran) {
-        await setDoc(doc(db, "tujuanPembelajaran", tp.id), tp);
+        await setDoc(getTpRef(tp.id), tp);
       }
       for (const sub of seedData.subdimensiKokurikuler) {
-        await setDoc(doc(db, "subdimensiKokurikuler", sub.id), sub);
+        await setDoc(getSubdimensiRef(sub.id), sub);
       }
       for (const ni of seedData.nilaiIntrakurikuler) {
-        await setDoc(doc(db, "nilaiIntrakurikuler", `${ni.idSiswa}_${ni.idTp}`), ni);
+        await setDoc(getNilaiIntraRef(ni.idSiswa, ni.idTp), ni);
       }
       for (const nk of seedData.nilaiKokurikuler) {
-        await setDoc(doc(db, "nilaiKokurikuler", `${nk.idSiswa}_${nk.idSubdimensi}`), nk);
+        await setDoc(getNilaiKokuriRef(nk.idSiswa, nk.idSubdimensi), nk);
       }
       for (const kat of seedData.kategoriIntrakurikuler) {
         await setDoc(doc(db, "kategoriIntrakurikuler", kat.id), kat);
       }
       for (const c of seedData.catatanAnak) {
-        await setDoc(doc(db, "catatanAnak", c.idSiswa), c);
+        await setDoc(getCatatanRef(c.idSiswa), c);
       }
       for (const kh of seedData.kehadiran) {
-        await setDoc(doc(db, "kehadiran", kh.idSiswa), kh);
+        await setDoc(getKehadiranRef(kh.idSiswa), kh);
       }
 
       alert("Inisialisasi database template sukses!");
@@ -743,12 +810,12 @@ export default function RaportPAUD() {
 
     try {
       if (editingKelas) {
-        const docRef = doc(db, "kelas", editingKelas.id);
+        const docRef = getKelasRef(editingKelas.id);
         await setDoc(docRef, { ...editingKelas, ...kelasForm });
         setEditingKelas(null);
       } else {
         const id = "K-" + Date.now();
-        const docRef = doc(db, "kelas", id);
+        const docRef = getKelasRef(id);
         const newK: Kelas = {
           id,
           namaKelas: kelasForm.namaKelas,
@@ -777,10 +844,10 @@ export default function RaportPAUD() {
   const confirmDeleteKelas = async () => {
     if (!kelasToDelete) return;
     try {
-      await deleteDoc(doc(db, 'kelas', kelasToDelete.id));
+      await deleteDoc(getKelasRef(kelasToDelete.id));
       const studentsToCleanup = state.siswa.filter(s => s.idKelas === kelasToDelete.id);
       for (const student of studentsToCleanup) {
-        await updateDoc(doc(db, 'siswa', student.id), { idKelas: "" });
+        await updateDoc(getSiswaRef(student.id), { idKelas: "" });
       }
       showToast(`Kelas ${kelasToDelete.namaKelas} berhasil dihapus!`, "success");
       setKelasToDelete(null);
@@ -895,11 +962,11 @@ export default function RaportPAUD() {
           idKelas: String(idKelas || ""),
         };
 
-        const docRef = doc(db, "siswa", newId);
+        const docRef = getSiswaRef(newId);
         await setDoc(docRef, newS);
 
         if (!isUpdate) {
-          const attRef = doc(db, "kehadiran", newId);
+          const attRef = getKehadiranRef(newId);
           await setDoc(attRef, { idSiswa: newId, sakit: 0, ijin: 0, tanpaKet: 0 });
         }
 
@@ -927,12 +994,12 @@ export default function RaportPAUD() {
 
     try {
       if (editingSiswa) {
-        const docRef = doc(db, "siswa", editingSiswa.id);
+        const docRef = getSiswaRef(editingSiswa.id);
         await setDoc(docRef, { ...editingSiswa, ...siswaForm as Siswa });
         setEditingSiswa(null);
       } else {
         const id = "S-" + Date.now();
-        const docRef = doc(db, "siswa", id);
+        const docRef = getSiswaRef(id);
         const newS: Siswa = {
           id,
           namaSiswa: siswaForm.namaSiswa || "",
@@ -954,7 +1021,7 @@ export default function RaportPAUD() {
         };
         await setDoc(docRef, newS);
 
-        const attRef = doc(db, "kehadiran", id);
+        const attRef = getKehadiranRef(id);
         await setDoc(attRef, { idSiswa: id, sakit: 0, ijin: 0, tanpaKet: 0 });
       }
 
@@ -972,17 +1039,17 @@ export default function RaportPAUD() {
     if (!siswaToDelete) return;
     const id = siswaToDelete.id;
     try {
-      await deleteDoc(doc(db, "siswa", id));
+      await deleteDoc(getSiswaRef(id));
       const relatedIntra = state.nilaiIntrakurikuler.filter(n => n.idSiswa === id);
       for (const item of relatedIntra) {
-        await deleteDoc(doc(db, "nilaiIntrakurikuler", `${id}_${item.idTp}`));
+        await deleteDoc(getNilaiIntraRef(id, item.idTp));
       }
       const relatedKokuri = state.nilaiKokurikuler.filter(n => n.idSiswa === id);
       for (const item of relatedKokuri) {
-        await deleteDoc(doc(db, "nilaiKokurikuler", `${id}_${item.idSubdimensi}`));
+        await deleteDoc(getNilaiKokuriRef(id, item.idSubdimensi));
       }
-      await deleteDoc(doc(db, "catatanAnak", id));
-      await deleteDoc(doc(db, "kehadiran", id));
+      await deleteDoc(getCatatanRef(id));
+      await deleteDoc(getKehadiranRef(id));
 
       if (printSiswaId === id) setPrintSiswaId("");
       showToast(`Berhasil menghapus data siswa ${siswaToDelete.namaSiswa}!`, "success");
@@ -1037,10 +1104,10 @@ export default function RaportPAUD() {
 
       const relatedTp = state.tujuanPembelajaran.filter(tp => tp.idKategori === id);
       for (const item of relatedTp) {
-        await deleteDoc(doc(db, "tujuanPembelajaran", item.id));
+        await deleteDoc(getTpRef(item.id));
         const relatedNilai = state.nilaiIntrakurikuler.filter(n => n.idTp === item.id);
         for (const n of relatedNilai) {
-          await deleteDoc(doc(db, "nilaiIntrakurikuler", `${n.idSiswa}_${item.id}`));
+          await deleteDoc(getNilaiIntraRef(n.idSiswa, item.id));
         }
       }
 
@@ -1071,7 +1138,7 @@ export default function RaportPAUD() {
           idKelas: tpForm.idKelas,
           aktivitasMetode: tpForm.aktivitasMetode
         };
-        await setDoc(doc(db, "tujuanPembelajaran", editingTp.id), updatedTp);
+        await setDoc(getTpRef(editingTp.id), updatedTp);
         showToast("Berhasil mengubah Tujuan Pembelajaran (TP)!", "success");
         setEditingTp(null);
       } else {
@@ -1083,7 +1150,7 @@ export default function RaportPAUD() {
           idKelas: tpForm.idKelas,
           aktivitasMetode: tpForm.aktivitasMetode
         };
-        await setDoc(doc(db, "tujuanPembelajaran", id), newTp);
+        await setDoc(getTpRef(id), newTp);
         showToast("Berhasil menambahkan Tujuan Pembelajaran (TP)!", "success");
       }
       setTpForm({ ...tpForm, deskripsi: "", aktivitasMetode: "" });
@@ -1104,10 +1171,10 @@ export default function RaportPAUD() {
   const handleConfirmDeleteTp = async () => {
     if (!tpToDelete) return;
     try {
-      await deleteDoc(doc(db, "tujuanPembelajaran", tpToDelete.id));
+      await deleteDoc(getTpRef(tpToDelete.id));
       const relatedNilai = state.nilaiIntrakurikuler.filter(n => n.idTp === tpToDelete.id);
       for (const item of relatedNilai) {
-        await deleteDoc(doc(db, "nilaiIntrakurikuler", `${item.idSiswa}_${tpToDelete.id}`));
+        await deleteDoc(getNilaiIntraRef(item.idSiswa, tpToDelete.id));
       }
       showToast("Berhasil menghapus Tujuan Pembelajaran (TP)!", "success");
       setTpToDelete(null);
@@ -1138,7 +1205,7 @@ export default function RaportPAUD() {
         descMahir: subForm.descMahir || "",
         capaian: subForm.capaian || {}
       };
-      await setDoc(doc(db, "subdimensiKokurikuler", id), newSub);
+      await setDoc(getSubdimensiRef(id), newSub);
       setSubForm({ namaSubdimensi: "", idKelas: subForm.idKelas, descBerkembang: "", descCakap: "", descMahir: "", capaian: {} });
       setEditingSub(null);
       setShowAddSub(false);
@@ -1156,10 +1223,10 @@ export default function RaportPAUD() {
 
     if (confirm("Hapus Subdimensi Kokurikuler ini beserta nilainya?")) {
       try {
-        await deleteDoc(doc(db, "subdimensiKokurikuler", id));
+        await deleteDoc(getSubdimensiRef(id));
         const relatedNilai = state.nilaiKokurikuler.filter(n => n.idSubdimensi === id);
         for (const item of relatedNilai) {
-          await deleteDoc(doc(db, "nilaiKokurikuler", `${item.idSiswa}_${id}`));
+          await deleteDoc(getNilaiKokuriRef(item.idSiswa, id));
         }
       } catch (err) {
         handleFirestoreError(err, OperationType.DELETE, `subdimensiKokurikuler/${id}`);
@@ -1206,8 +1273,7 @@ export default function RaportPAUD() {
   // --- ACTIONS: SAVE GRADES ---
   const handleSetGradeIntra = async (idSiswa: string, idTp: string, val: string) => {
     try {
-      const docId = `${idSiswa}_${idTp}`;
-      const docRef = doc(db, "nilaiIntrakurikuler", docId);
+      const docRef = getNilaiIntraRef(idSiswa, idTp);
       if (val === "") {
         // If we clear the grade, we might still want to keep the description, 
         // but usually, clearing grade means clearing the assessment. 
@@ -1228,8 +1294,7 @@ export default function RaportPAUD() {
 
   const handleUpdateDescriptionIntra = async (idSiswa: string, idTp: string, text: string) => {
     try {
-      const docId = `${idSiswa}_${idTp}`;
-      const docRef = doc(db, "nilaiIntrakurikuler", docId);
+      const docRef = getNilaiIntraRef(idSiswa, idTp);
       await setDoc(docRef, { idSiswa, idTp, deskripsi: text }, { merge: true });
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, "nilaiIntrakurikuler/deskripsi");
@@ -1238,8 +1303,7 @@ export default function RaportPAUD() {
 
   const handleSetGradeKokuri = async (idSiswa: string, idSubdimensi: string, val: string) => {
     try {
-      const docId = `${idSiswa}_${idSubdimensi}`;
-      const docRef = doc(db, "nilaiKokurikuler", docId);
+      const docRef = getNilaiKokuriRef(idSiswa, idSubdimensi);
       if (val === "") {
         const snap = await getDoc(docRef);
         if (snap.exists() && snap.data().deskripsi) {
@@ -1257,8 +1321,7 @@ export default function RaportPAUD() {
 
   const handleUpdateDescriptionKokuri = async (idSiswa: string, idSubdimensi: string, text: string) => {
     try {
-      const docId = `${idSiswa}_${idSubdimensi}`;
-      const docRef = doc(db, "nilaiKokurikuler", docId);
+      const docRef = getNilaiKokuriRef(idSiswa, idSubdimensi);
       await setDoc(docRef, { idSiswa, idSubdimensi, deskripsi: text }, { merge: true });
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, "nilaiKokurikuler/deskripsi");
@@ -1356,7 +1419,7 @@ export default function RaportPAUD() {
   // --- ACTIONS: NOTES & AI ASSIST ---
   const handleSaveCatatan = async (idSiswa: string, text: string) => {
     try {
-      await setDoc(doc(db, "catatanAnak", idSiswa), { idSiswa, catatan: text });
+      await setDoc(getCatatanRef(idSiswa), { idSiswa, catatan: text });
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, "catatanAnak");
     }
@@ -1496,7 +1559,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
         ijin: field === "ijin" ? Math.max(0, val) : current.ijin,
         tanpaKet: field === "tanpaKet" ? Math.max(0, val) : current.tanpaKet,
       };
-      await setDoc(doc(db, "kehadiran", idSiswa), nextVal);
+      await setDoc(getKehadiranRef(idSiswa), nextVal);
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, "kehadiran");
     }
@@ -1531,39 +1594,39 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
           await setDoc(doc(db, "dataSekolah", "default"), parsed.dataSekolah);
           
           for (const k of parsed.kelas) {
-            await setDoc(doc(db, "kelas", k.id), k);
+            await setDoc(getKelasRef(k.id), k);
           }
           for (const s of parsed.siswa) {
-            await setDoc(doc(db, "siswa", s.id), s);
+            await setDoc(getSiswaRef(s.id), s);
           }
           if (parsed.tujuanPembelajaran) {
             for (const tp of parsed.tujuanPembelajaran) {
-              await setDoc(doc(db, "tujuanPembelajaran", tp.id), tp);
+              await setDoc(getTpRef(tp.id), tp);
             }
           }
           if (parsed.subdimensiKokurikuler) {
             for (const sub of parsed.subdimensiKokurikuler) {
-              await setDoc(doc(db, "subdimensiKokurikuler", sub.id), sub);
+              await setDoc(getSubdimensiRef(sub.id), sub);
             }
           }
           if (parsed.nilaiIntrakurikuler) {
             for (const ni of parsed.nilaiIntrakurikuler) {
-              await setDoc(doc(db, "nilaiIntrakurikuler", `${ni.idSiswa}_${ni.idTp}`), ni);
+              await setDoc(getNilaiIntraRef(ni.idSiswa, ni.idTp), ni);
             }
           }
           if (parsed.nilaiKokurikuler) {
             for (const nk of parsed.nilaiKokurikuler) {
-              await setDoc(doc(db, "nilaiKokurikuler", `${nk.idSiswa}_${nk.idSubdimensi}`), nk);
+              await setDoc(getNilaiKokuriRef(nk.idSiswa, nk.idSubdimensi), nk);
             }
           }
           if (parsed.catatanAnak) {
             for (const c of parsed.catatanAnak) {
-              await setDoc(doc(db, "catatanAnak", c.idSiswa), c);
+              await setDoc(getCatatanRef(c.idSiswa), c);
             }
           }
           if (parsed.kehadiran) {
             for (const kh of parsed.kehadiran) {
-              await setDoc(doc(db, "kehadiran", kh.idSiswa), kh);
+              await setDoc(getKehadiranRef(kh.idSiswa), kh);
             }
           }
           alert("Data sekolah berhasil dipulihkan (Import sukses)!");
@@ -1577,6 +1640,85 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleImportPreviousData = async (type: 'siswa' | 'intra' | 'kokuri', sourceYear: string) => {
+    if (!sourceYear) {
+      alert("Silakan masukkan Tahun Pelajaran Asal terlebih dahulu (contoh: 2024/2025).");
+      return;
+    }
+    
+    if (currentUserProfile?.role !== "admin") {
+      alert("Akses Ditolak: Hanya Admin yang dapat mengambil data.");
+      return;
+    }
+
+    const normSource = sourceYear.trim().replace(/\//g, "_").replace(/\s+/g, "_");
+    const normDest = state.dataSekolah.thAjaran.trim().replace(/\//g, "_").replace(/\s+/g, "_");
+
+    if (normSource === normDest) {
+      alert("Tahun Pelajaran asal dan tujuan tidak boleh sama!");
+      return;
+    }
+
+    try {
+      setDbLoading(true);
+
+      if (type === 'siswa') {
+        const kelasColRef = collection(db, "tahun_pelajaran", normSource, "kelas");
+        const kelasSnap = await getDocs(kelasColRef);
+        
+        let copiedKelasCount = 0;
+        for (const d of kelasSnap.docs) {
+          const item = d.data();
+          await setDoc(getKelasRef(d.id), item);
+          copiedKelasCount++;
+        }
+
+        const siswaColRef = collection(db, "tahun_pelajaran", normSource, "siswa");
+        const siswaSnap = await getDocs(siswaColRef);
+        
+        let copiedSiswaCount = 0;
+        for (const d of siswaSnap.docs) {
+          const item = d.data();
+          await setDoc(getSiswaRef(d.id), item);
+          copiedSiswaCount++;
+        }
+
+        showToast(`Berhasil mengambil ${copiedKelasCount} Kelas dan ${copiedSiswaCount} Siswa lama dari Tahun Pelajaran ${sourceYear}!`, "success");
+      } 
+      else if (type === 'intra') {
+        const tpColRef = collection(db, "tahun_pelajaran", normSource, "tujuanPembelajaran");
+        const tpSnap = await getDocs(tpColRef);
+
+        let copiedTpCount = 0;
+        for (const d of tpSnap.docs) {
+          const item = d.data();
+          await setDoc(getTpRef(d.id), item);
+          copiedTpCount++;
+        }
+
+        showToast(`Berhasil mengambil ${copiedTpCount} Tujuan Pembelajaran lama dari Tahun Pelajaran ${sourceYear}!`, "success");
+      } 
+      else if (type === 'kokuri') {
+        const subColRef = collection(db, "tahun_pelajaran", normSource, "subdimensiKokurikuler");
+        const subSnap = await getDocs(subColRef);
+
+        let copiedSubCount = 0;
+        for (const d of subSnap.docs) {
+          const item = d.data();
+          await setDoc(getSubdimensiRef(d.id), item);
+          copiedSubCount++;
+        }
+
+        showToast(`Berhasil mengambil ${copiedSubCount} Subdimensi Kokurikuler lama dari Tahun Pelajaran ${sourceYear}!`, "success");
+      }
+    } catch (err: any) {
+      console.error("Error importing previous data:", err);
+      alert(`Gagal mengambil data: ${err?.message || String(err)}`);
+    } finally {
+      setDbLoading(false);
+    }
   };
 
   // --- FILTERED COMPUTATIONS ---
@@ -4739,6 +4881,61 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       />
                     </div>
 
+                    {/* FITUR AMBIL DATA LAMA */}
+                    <div className="md:col-span-2 border-t border-slate-100 pt-5 mt-4">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-bold text-emerald-800 tracking-wider block uppercase">Fitur Salin / Ambil Data Master (Tahun Berbeda)</span>
+                        <span className="bg-emerald-100 text-emerald-700 text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase">Admin</span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 mb-4 leading-relaxed">
+                        Jika Anda beralih ke Tahun Pelajaran baru (sehingga semua data kosong), gunakan fitur ini untuk mengambil atau duplikasi data master dari tahun pelajaran sebelumnya tanpa perlu input ulang dari nol.
+                      </p>
+                      
+                      <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                          <div>
+                            <label className="block text-[11px] font-bold text-slate-600 mb-1">Tahun Pelajaran Asal</label>
+                            <input
+                              type="text"
+                              placeholder="Contoh: 2024/2025"
+                              value={sourceYearImport}
+                              onChange={(e) => setSourceYearImport(e.target.value)}
+                              className="w-full text-xs font-semibold border border-slate-200 px-3 py-2 rounded-lg bg-white placeholder-slate-400 focus:outline-emerald-600 text-slate-800"
+                            />
+                            <p className="text-[10px] text-slate-400 mt-1">Masukkan persis tahun asal.</p>
+                          </div>
+                          
+                          <div className="md:col-span-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleImportPreviousData('siswa', sourceYearImport)}
+                                className="flex items-center justify-center gap-1.5 px-3 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-[11px] font-bold transition shadow-sm cursor-pointer"
+                              >
+                                📥 Ambil Siswa Lama
+                              </button>
+                              
+                              <button
+                                type="button"
+                                onClick={() => handleImportPreviousData('intra', sourceYearImport)}
+                                className="flex items-center justify-center gap-1.5 px-3 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[11px] font-bold transition shadow-sm cursor-pointer"
+                              >
+                                📖 Ambil Intrakurikuler
+                              </button>
+                              
+                              <button
+                                type="button"
+                                onClick={() => handleImportPreviousData('kokuri', sourceYearImport)}
+                                className="flex items-center justify-center gap-1.5 px-3 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-[11px] font-bold transition shadow-sm cursor-pointer"
+                              >
+                                🎨 Ambil Kokurikuler
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="md:col-span-2 border-t border-slate-100 pt-4 mt-2">
                       <span className="text-xs font-bold text-emerald-800 tracking-wider block uppercase mb-3">Integrasi Model AI Penilai (Gemini / Groq)</span>
                       
@@ -5814,7 +6011,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
               <button
                 onClick={async () => {
                    try {
-                     await deleteDoc(doc(db, "subdimensiKokurikuler", subToDelete.id));
+                     await deleteDoc(getSubdimensiRef(subToDelete.id));
                      setSubToDelete(null);
                      showToast("Subdimensi berhasil dihapus", "success");
                    } catch (err) {
