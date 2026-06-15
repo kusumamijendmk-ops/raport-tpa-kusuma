@@ -4501,7 +4501,11 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                             <div className="z-10 space-y-6 flex flex-col min-h-full">
                               <div className="flex-1">
-                                {renderPageHeader(3 + katIdx)}
+                                {katIdx === 0 ? (
+                                  renderPageHeader(3 + katIdx)
+                                ) : (
+                                  <div className="pt-6"></div>
+                                )}
 
                                 <div className="space-y-6">
                                   {/* Section Title */}
@@ -4521,12 +4525,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                                   {/* TP Table */}
                                   <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm bg-white">
-                                    <table className="w-full text-left text-[11px] border-collapse leading-normal font-sans">
+                                    <table className="w-full text-left text-[12px] border-collapse leading-normal font-sans">
                                       <thead>
-                                        <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[10px] tracking-wide">
-                                          <th className="px-3.5 py-3 border-r border-slate-950 w-2/5">TUJUAN PEMBELAJARAN</th>
-                                          <th className="px-3.5 py-3 border-r border-slate-950 w-2/5">AKTIVITAS</th>
-                                          <th className="px-3.5 py-3 text-center w-40">DIMENSI KEMANDIRIAN</th>
+                                        <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[11px] tracking-wide">
+                                          <th className="px-3.5 py-3 border-r border-slate-950 w-[55%]">TUJUAN PEMBELAJARAN</th>
+                                          <th className="px-3.5 py-3 border-r border-slate-950 w-[25%]">AKTIVITAS</th>
+                                          <th className="px-3.5 py-3 text-center w-[20%]">DIMENSI KEMANDIRIAN</th>
                                         </tr>
                                       </thead>
                                       <tbody className="divide-y divide-slate-400 bg-white">
@@ -4544,14 +4548,14 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                                             return (
                                               <tr key={tp.id} className="align-top">
-                                                <td className="px-3.5 py-3 border-r border-slate-950 font-semibold text-slate-950 leading-relaxed text-left text-[11px]">
+                                                <td className="px-3.5 py-3 border-r border-slate-950 font-semibold text-slate-950 leading-relaxed text-left text-[12px]">
                                                   {tp.deskripsi}
                                                 </td>
-                                                <td className="px-3.5 py-3 border-r border-slate-950 font-semibold text-slate-700 italic leading-relaxed text-left text-[11px]">
+                                                <td className="px-3.5 py-3 border-r border-slate-950 font-semibold text-slate-700 italic leading-relaxed text-left text-[12px]">
                                                   {tp.aktivitasMetode || "—"}
                                                 </td>
                                                 <td className="px-3.5 py-3 text-center">
-                                                  <span className={`inline-block px-3.5 py-1 rounded-full border-[1.5px] text-[9px] font-black uppercase text-center tracking-wider min-w-[75px] ${ratingStyle}`}>
+                                                  <span className={`inline-block px-3.5 py-1 rounded-full border-[1.5px] text-[10px] font-black uppercase text-center tracking-wider min-w-[75px] ${ratingStyle}`}>
                                                     {score}
                                                   </span>
                                                 </td>
@@ -4607,9 +4611,9 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                               </h3>
 
                               <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm">
-                                <table className="w-full text-left text-[11px] border-collapse leading-normal bg-white">
+                                <table className="w-full text-left text-[12px] border-collapse leading-normal bg-white">
                                   <thead>
-                                    <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[10px] tracking-wide">
+                                    <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[11px] tracking-wide">
                                       <th className="px-3.5 py-3 w-40 border-r border-slate-950 uppercase">DIMENSI</th>
                                       <th className="px-3.5 py-3 uppercase">DESKRIPSI CAPAIAN</th>
                                     </tr>
@@ -4632,16 +4636,16 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                                           return (
                                             <tr key={sub.id} className="align-top">
-                                              <td className="px-4 py-4 border-r border-slate-950 font-bold text-slate-950 uppercase leading-relaxed text-[11px]">
+                                              <td className="px-4 py-4 border-r border-slate-950 font-bold text-slate-950 uppercase leading-relaxed text-[12px]">
                                                 {sub.namaSubdimensi.replace(/^Dimensi\s+/i, "")}
                                               </td>
-                                              <td className="px-4 py-4 leading-relaxed text-slate-900 font-bold text-justify text-[11px] whitespace-pre-wrap">
+                                              <td className="px-4 py-4 leading-relaxed text-slate-900 font-bold text-justify text-[12px] whitespace-pre-wrap">
                                                 <div className="flex flex-col justify-between min-h-[100px]">
-                                                  <p className="text-[11px] leading-relaxed text-slate-900 text-justify font-semibold whitespace-pre-wrap">
-                                                    {deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif dan berkembang konsisten dalam mewujudkan projek profil pancasila.`}
+                                                  <p className="text-[12px] leading-relaxed text-slate-900 text-justify font-semibold whitespace-pre-wrap">
+                                                    {deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif and berkembang konsisten dalam mewujudkan projek profil pancasila.`}
                                                   </p>
                                                   <div className="flex justify-end mt-3">
-                                                    <span className={`px-4 py-1 rounded-full border-[1.5px] text-[9px] font-black uppercase text-center tracking-wider ${badgeStyle}`}>
+                                                    <span className={`px-4 py-1 rounded-full border-[1.5px] text-[11px] font-black uppercase text-center tracking-wider ${badgeStyle}`}>
                                                       {score}
                                                     </span>
                                                   </div>
@@ -4700,9 +4704,9 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 </h3>
                                 
                                 <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm">
-                                  <table className="w-full text-left text-xs border-collapse font-sans">
+                                  <table className="w-full text-left text-[12px] border-collapse font-sans bg-white">
                                     <thead>
-                                      <tr className="bg-slate-50 text-slate-950 font-black border-b border-slate-950 text-[10px] tracking-wider uppercase">
+                                      <tr className="bg-slate-50 text-slate-950 font-black border-b border-slate-950 text-[11px] tracking-wider uppercase">
                                         <th className="px-3.5 py-2.5 border-r border-slate-950 uppercase">Keterangan</th>
                                         <th className="px-3.5 py-2.5 text-center w-24 uppercase">Jumlah</th>
                                       </tr>
@@ -4710,15 +4714,15 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                     <tbody className="divide-y divide-slate-400 text-slate-900 font-bold bg-white">
                                       <tr>
                                         <td className="px-3.5 py-2.5 text-slate-700 border-r border-slate-950 uppercase font-semibold">Sakit</td>
-                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.sakit}</td>
+                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.sakit} Hari</td>
                                       </tr>
                                       <tr>
                                         <td className="px-3.5 py-2.5 text-slate-700 border-r border-slate-950 uppercase font-semibold">Izin</td>
-                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.ijin}</td>
+                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.ijin} Hari</td>
                                       </tr>
                                       <tr>
                                         <td className="px-3.5 py-2.5 text-slate-750 border-r border-slate-950 uppercase font-semibold">Tanpa Keterangan</td>
-                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.tanpaKet}</td>
+                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.tanpaKet} Hari</td>
                                       </tr>
                                     </tbody>
                                   </table>
