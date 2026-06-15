@@ -4487,7 +4487,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                            {/* CONSOLIDATED LEARNING REPORTS PAGE */}
                       <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
-                        <div className="z-10 space-y-6 flex-1 flex flex-col justify-between min-h-full">
+                        <div className="z-10 space-y-6 block">
                           <div className="space-y-6">
                             {renderPageHeader(3)}
 
@@ -4503,7 +4503,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 const categoryDescription = catAssessment?.deskripsi || "";
 
                                 return (
-                                  <div key={kat.id} className="pt-2 keep-together">
+                                  <div key={kat.id} className="pt-2">
                                     <div className="flex items-center gap-2">
                                       <span className="inline-block w-[6px] h-[18px] bg-slate-950"></span>
                                       <h4 className="text-xs font-black text-slate-950 uppercase tracking-wide leading-tight">
@@ -4577,7 +4577,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                             </div>
                             
                           {/* II. KOKURIKULER */}
-                          <div className="space-y-3 pt-6 keep-together">
+                          <div className="space-y-3 pt-6">
                             <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                               II. KOKURIKULER
                             </h3>
