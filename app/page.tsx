@@ -4298,7 +4298,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 </text>
                                 
                                 <text className="font-sans text-[17px] font-black fill-[#2563EB] tracking-wider uppercase">
-                                  <textPath href="#bottom-curve" startOffset="50%" textAnchor="middle" side="left">
+                                  <textPath href="#bottom-curve" startOffset="50%" textAnchor="middle">
                                     K U S U M A
                                   </textPath>
                                 </text>
