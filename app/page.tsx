@@ -2119,7 +2119,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
         </header>
 
         {/* WORKSPACE AREA CONTAINER */}
-        <div className="flex-1 p-4 sm:p-6 overflow-y-auto print:p-0 print:overflow-visible">
+        <div className="flex-1 p-4 sm:p-6 overflow-visible print:p-0 print:overflow-visible">
           
           {/* TAB A: DASHBOARD */}
           {activeTab === "dashboard" && (
@@ -2609,63 +2609,65 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
               {/* LIST OF CLASSES */}
               <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                <table className="w-full text-left text-sm whitespace-nowrap">
-                  <thead className="bg-slate-50 text-xs font-semibold text-slate-600 border-b border-slate-200">
-                    <tr>
-                      <th className="px-6 py-4">Nama Kelompok & Usia</th>
-                      <th className="px-6 py-4">Wali Kelas</th>
-                      <th className="px-6 py-4">NUPTK / NGTY</th>
-                      <th className="px-6 py-4 text-center">Jumlah Murid</th>
-                      <th className="px-6 py-4 text-right">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {state.kelas.length > 0 ? (
-                      state.kelas.map((k, idx) => {
-                        const count = state.siswa.filter(s => s.idKelas === k.id).length;
-                        return (
-                          <tr key={k.id || `k-row-${idx}`} className="hover:bg-slate-50/70 block md:table-row">
-                            <td className="px-6 py-4">
-                              <strong className="text-slate-800 block font-medium">{k.namaKelas}</strong>
-                              <span className="text-[10px] text-slate-400">ID Kelas: {k.id}</span>
-                            </td>
-                            <td className="px-6 py-4 text-slate-700 font-medium">{k.waliKelas}</td>
-                            <td className="px-6 py-4 text-slate-500 font-mono text-xs">{k.nuptkNgty || "-"}</td>
-                            <td className="px-6 py-4 text-center">
-                              <span className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-full font-bold text-xs">{count} Siswa</span>
-                            </td>
-                            <td className="px-6 py-4 text-right">
-                              <div className="inline-flex gap-2">
-                                <button
-                                  onClick={() => {
-                                    setEditingKelas(k);
-                                    setKelasForm({ namaKelas: k.namaKelas, waliKelas: k.waliKelas, nuptkNgty: k.nuptkNgty });
-                                    setShowAddKelas(true);
-                                  }}
-                                  className="text-slate-600 hover:text-emerald-600 p-1 rounded hover:bg-slate-100"
-                                  title="Edit Kelas"
-                                >
-                                  <Edit3 className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteKelas(k.id)}
-                                  className="text-slate-400 hover:text-red-600 p-1 rounded hover:bg-red-50"
-                                  title="Hapus Kelas"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <tr key="empty-kelas">
-                        <td colSpan={5} className="text-center py-8 text-slate-400">Belum ada kelompok kelas. Kelola kelas baru dengan tombol Tambah Kelas.</td>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm whitespace-nowrap">
+                    <thead className="bg-slate-50 text-xs font-semibold text-slate-600 border-b border-slate-200">
+                      <tr>
+                        <th className="px-6 py-4">Nama Kelompok & Usia</th>
+                        <th className="px-6 py-4">Wali Kelas</th>
+                        <th className="px-6 py-4">NUPTK / NGTY</th>
+                        <th className="px-6 py-4 text-center">Jumlah Murid</th>
+                        <th className="px-6 py-4 text-right">Aksi</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {state.kelas.length > 0 ? (
+                        state.kelas.map((k, idx) => {
+                          const count = state.siswa.filter(s => s.idKelas === k.id).length;
+                          return (
+                            <tr key={k.id || `k-row-${idx}`} className="hover:bg-slate-50/70">
+                              <td className="px-6 py-4">
+                                <strong className="text-slate-800 block font-medium">{k.namaKelas}</strong>
+                                <span className="text-[10px] text-slate-400">ID Kelas: {k.id}</span>
+                              </td>
+                              <td className="px-6 py-4 text-slate-700 font-medium">{k.waliKelas}</td>
+                              <td className="px-6 py-4 text-slate-500 font-mono text-xs">{k.nuptkNgty || "-"}</td>
+                              <td className="px-6 py-4 text-center">
+                                <span className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-full font-bold text-xs">{count} Siswa</span>
+                              </td>
+                              <td className="px-6 py-4 text-right">
+                                <div className="inline-flex gap-2">
+                                  <button
+                                    onClick={() => {
+                                      setEditingKelas(k);
+                                      setKelasForm({ namaKelas: k.namaKelas, waliKelas: k.waliKelas, nuptkNgty: k.nuptkNgty });
+                                      setShowAddKelas(true);
+                                    }}
+                                    className="text-slate-600 hover:text-emerald-600 p-1 rounded hover:bg-slate-100"
+                                    title="Edit Kelas"
+                                  >
+                                    <Edit3 className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteKelas(k.id)}
+                                    className="text-slate-400 hover:text-red-600 p-1 rounded hover:bg-red-50"
+                                    title="Hapus Kelas"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr key="empty-kelas">
+                          <td colSpan={5} className="text-center py-8 text-slate-400">Belum ada kelompok kelas. Kelola kelas baru dengan tombol Tambah Kelas.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
             </div>
@@ -3005,62 +3007,64 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
               {/* LIST OF STUDENTS */}
               <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                <table className="w-full text-left text-sm whitespace-nowrap">
-                  <thead className="bg-slate-50 text-xs font-semibold text-slate-600 border-b border-slate-200">
-                    <tr>
-                      <th className="px-6 py-4">NISN</th>
-                      <th className="px-6 py-4">Nama Siswa</th>
-                      <th className="px-6 py-4">Kelas</th>
-                      <th className="px-6 py-4 text-right">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {filteredSiswa.length > 0 ? (
-                      filteredSiswa.map((s, idx) => (
-                        <tr key={s.id || `s-row-${idx}`} className="hover:bg-slate-50/70 block md:table-row">
-                          <td className="px-6 py-4 font-mono text-sm">
-                            {s.nisn || "-"}
-                          </td>
-                          <td className="px-6 py-4">
-                            <strong className="text-slate-800 block font-medium">{s.namaSiswa}</strong>
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className="text-xs bg-indigo-50 text-indigo-800 px-2.5 py-1 rounded-md font-semibold">
-                              {getSiswaClassLabel(s.idKelas)}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 text-right">
-                            <div className="inline-flex gap-2">
-                              <button
-                                onClick={() => {
-                                  setEditingSiswa(s);
-                                  setSiswaForm(s);
-                                  setShowAddSiswa(true);
-                                  window.scrollTo({ top: 0, behavior: "smooth" });
-                                }}
-                                className="text-slate-600 hover:text-emerald-600 p-1.5 rounded hover:bg-slate-100"
-                                title="Edit Biodata"
-                              >
-                                <Edit3 className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => setSiswaToDelete(s)}
-                                className="text-slate-400 hover:text-red-600 p-1.5 rounded hover:bg-red-50"
-                                title="Hapus Siswa"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr key="empty-siswa">
-                        <td colSpan={5} className="text-center py-8 text-slate-400">Tidak ada data siswa yang cocok dengan filter.</td>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm whitespace-nowrap">
+                    <thead className="bg-slate-50 text-xs font-semibold text-slate-600 border-b border-slate-200">
+                      <tr>
+                        <th className="px-6 py-4">NISN</th>
+                        <th className="px-6 py-4">Nama Siswa</th>
+                        <th className="px-6 py-4">Kelas</th>
+                        <th className="px-6 py-4 text-right">Aksi</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {filteredSiswa.length > 0 ? (
+                        filteredSiswa.map((s, idx) => (
+                          <tr key={s.id || `s-row-${idx}`} className="hover:bg-slate-50/70">
+                            <td className="px-6 py-4 font-mono text-sm">
+                              {s.nisn || "-"}
+                            </td>
+                            <td className="px-6 py-4">
+                              <strong className="text-slate-800 block font-medium">{s.namaSiswa}</strong>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className="text-xs bg-indigo-50 text-indigo-800 px-2.5 py-1 rounded-md font-semibold">
+                                {getSiswaClassLabel(s.idKelas)}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <div className="inline-flex gap-2">
+                                <button
+                                  onClick={() => {
+                                    setEditingSiswa(s);
+                                    setSiswaForm(s);
+                                    setShowAddSiswa(true);
+                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                  }}
+                                  className="text-slate-600 hover:text-emerald-600 p-1.5 rounded hover:bg-slate-100"
+                                  title="Edit Biodata"
+                                >
+                                  <Edit3 className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => setSiswaToDelete(s)}
+                                  className="text-slate-400 hover:text-red-600 p-1.5 rounded hover:bg-red-50"
+                                  title="Hapus Siswa"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr key="empty-siswa">
+                          <td colSpan={5} className="text-center py-8 text-slate-400">Tidak ada data siswa yang cocok dengan filter.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
             </div>
@@ -4199,60 +4203,63 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                   const printCity = printCityRaw.charAt(0).toUpperCase() + printCityRaw.slice(1);
                   const activeTps = state.tujuanPembelajaran.filter(tp => tp.idKelas === printSiswa.idKelas);
 
-                  // Reuse common header metadata block for pages 3, 4, 5, 6, and 7
-                  const renderPageHeader = (pageTitle: string, subTitle?: string) => (
-                    <div className="border-b-2 border-slate-900 pb-4 mb-5">
-                      <div className="text-center space-y-0.5 mb-4">
-                        <h2 className="text-[13px] font-black text-slate-950 uppercase tracking-widest font-sans">
-                          {pageTitle}
-                        </h2>
-                        {subTitle && (
-                          <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider font-mono">
-                            {subTitle}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-x-8 gap-y-1.5 text-[11px] leading-relaxed text-slate-900 font-medium">
-                        <div className="space-y-0.5">
-                          <table className="w-full">
-                            <tbody>
-                              <tr>
-                                <td className="w-28 text-slate-500 font-bold">Nama Sekolah</td>
-                                <td className="text-slate-950 font-black">: {state.dataSekolah.namaSekolah || "KB KUSUMA"}</td>
-                              </tr>
-                              <tr>
-                                <td className="text-slate-500 font-bold">Nama Peserta Didik</td>
-                                <td className="text-slate-950 font-black uppercase">: {printSiswa.namaSiswa}</td>
-                              </tr>
-                              <tr>
-                                <td className="text-slate-500 font-bold">NIK / NISN</td>
-                                <td className="text-slate-950 font-bold font-mono">: {printSiswa.nisn || "-"}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                  const renderPageHeader = (pageNo: number) => {
+                    return (
+                      <div className="w-full text-slate-950 font-sans mb-4 text-[11px] no-print-break keep-together">
+                        <div className="text-center font-bold text-sm tracking-wide uppercase mb-3 text-slate-950">
+                          LAPORAN HASIL PERKEMBANGAN PESERTA DIDIK
+                          <div className="text-xs font-semibold text-slate-800">TAMAN PENITIPAN ANAK (TPA)</div>
                         </div>
-                        <div className="space-y-0.5">
-                          <table className="w-full">
-                            <tbody>
-                              <tr>
-                                <td className="w-28 text-slate-500 font-bold">Kelas</td>
-                                <td className="text-slate-950 font-black">: {printKelasItem?.namaKelas || "AL FARABI"}</td>
-                              </tr>
-                              <tr>
-                                <td className="text-slate-500 font-bold">Sem / Tahun Pelajaran</td>
-                                <td className="text-slate-950 font-semibold">: {state.dataSekolah.semester} / {state.dataSekolah.thAjaran}</td>
-                              </tr>
-                              <tr>
-                                <td className="text-slate-500 font-bold">Tinggi / Berat Badan</td>
-                                <td className="text-slate-950 font-semibold">: {printSiswa.tb || "-"} cm / {printSiswa.bb || "-"} kg</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                        
+                        <div className="grid grid-cols-2 gap-x-8 text-[11px] text-slate-950 leading-relaxed font-semibold">
+                          <div>
+                            <table className="w-full border-none">
+                              <tbody>
+                                <tr className="align-top">
+                                  <td className="w-24 font-bold shrink-0">Nama Sekolah</td>
+                                  <td className="w-4 text-center shrink-0">:</td>
+                                  <td className="font-bold uppercase text-slate-900">{state.dataSekolah.namaSekolah || "TPA KUSUMA"}</td>
+                                </tr>
+                                <tr className="align-top">
+                                  <td className="w-24 font-bold shrink-0">Nama Peserta Didik</td>
+                                  <td className="w-4 text-center shrink-0">:</td>
+                                  <td className="font-black uppercase text-slate-900">{printSiswa.namaSiswa}</td>
+                                </tr>
+                                <tr className="align-top">
+                                  <td className="w-24 font-bold shrink-0">NIK / NISN</td>
+                                  <td className="w-4 text-center shrink-0">:</td>
+                                  <td className="font-bold font-mono text-slate-900">{printSiswa.nisn || "-"}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div>
+                            <table className="w-full border-none">
+                              <tbody>
+                                <tr className="align-top">
+                                  <td className="w-24 font-bold shrink-0">Kelas</td>
+                                  <td className="w-4 text-center shrink-0">:</td>
+                                  <td className="font-bold uppercase text-slate-900">{printKelasItem?.namaKelas || "-"}</td>
+                                </tr>
+                                <tr className="align-top">
+                                  <td className="w-24 font-bold shrink-0">Sem / Th. Ajaran</td>
+                                  <td className="w-4 text-center shrink-0">:</td>
+                                  <td className="font-bold text-slate-900">{state.dataSekolah.semester && state.dataSekolah.thAjaran ? `${state.dataSekolah.semester} / ${state.dataSekolah.thAjaran}` : "I (Ganjil) / 2025/2026"}</td>
+                                </tr>
+                                <tr className="align-top">
+                                  <td className="w-24 font-bold shrink-0">TB / BB</td>
+                                  <td className="w-4 text-center shrink-0">:</td>
+                                  <td className="font-bold text-slate-900">{printSiswa.tb ? `${printSiswa.tb} cm` : "-"} / {printSiswa.bb ? `${printSiswa.bb} kg` : "-"}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
+                        
+                        <div className="border-b-[2.5px] border-slate-900 mt-2 mb-3 w-full"></div>
                       </div>
-                    </div>
-                  );
+                    );
+                  };
 
                   return (
                     <div className="space-y-12 no-print-gap print:space-y-0 text-slate-950 font-arial">
@@ -4265,44 +4272,63 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                         </div>
 
                         {/* Top Header Logo Representation */}
-                        <div className="z-10 mt-10 space-y-4 flex flex-col items-center">
-                          {/* Recreated Logo from Screenshot */}
-                          <div className={`${state.dataSekolah.logo ? 'w-42 h-28 p-1' : 'w-28 h-28 rounded-full border border-sky-200 p-1.5'} relative flex items-center justify-center bg-white shadow-sm`}>
-                            {state.dataSekolah.logo ? (
+                        <div className="z-10 mt-6 space-y-4 flex flex-col items-center">
+                          {state.dataSekolah.logo ? (
+                            <div className="w-44 h-28 relative flex items-center justify-center bg-white p-1">
                               <img src={state.dataSekolah.logo} alt="Logo" className="max-w-full max-h-full object-contain" />
-                            ) : (
-                              <svg viewBox="0 0 100 100" className="w-full h-full">
-                                <circle cx="50" cy="50" r="46" fill="none" stroke="#0ea5e9" strokeWidth="2.5" />
-                                <circle cx="50" cy="50" r="38" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="2 2" />
-                                <circle cx="50" cy="54" r="26" fill="#facc15" stroke="#27272a" strokeWidth="1.5" />
-                                <circle cx="43" cy="48" r="3" fill="#27272a" />
-                                <circle cx="57" cy="48" r="3" fill="#27272a" />
-                                <path d="M 40 60 Q 50 72 60 60" fill="none" stroke="#27272a" strokeWidth="2.5" strokeLinecap="round" />
-                                <path d="M 22 28 C 30 14, 70 14, 78 28" fill="none" stroke="#0284c7" strokeWidth="3" strokeLinecap="round" />
+                            </div>
+                          ) : (
+                            <div className="flex flex-col items-center justify-center space-y-2 select-none">
+                              <svg width="200" height="200" viewBox="0 0 220 220" className="mx-auto">
+                                <circle cx="110" cy="110" r="100" fill="none" stroke="#2563EB" strokeWidth="8" />
+                                <circle cx="110" cy="110" r="92" fill="none" stroke="#60A5FA" strokeWidth="1.5" strokeDasharray="4,4" />
+                                
+                                <circle cx="110" cy="115" r="55" fill="#FACC15" stroke="#1E293B" strokeWidth="4" />
+                                <circle cx="90" cy="103" r="5" fill="#1E293B" />
+                                <circle cx="130" cy="103" r="5" fill="#1E293B" />
+                                <path d="M 85 120 Q 110 148 135 120" stroke="#1E293B" strokeWidth="5" strokeLinecap="round" fill="none" />
+                                
+                                <path id="top-curve" d="M 22 110 A 88 88 0 0 1 198 110" fill="none" />
+                                <path id="bottom-curve" d="M 198 114 A 88 88 0 0 1 22 114" fill="none" />
+                                
+                                <text className="font-sans text-[11px] font-black fill-[#2563EB] tracking-widest uppercase">
+                                  <textPath href="#top-curve" startOffset="50%" textAnchor="middle">
+                                    Pendidikan Anak Usia Dini
+                                  </textPath>
+                                </text>
+                                
+                                <text className="font-sans text-[17px] font-black fill-[#2563EB] tracking-wider uppercase">
+                                  <textPath href="#bottom-curve" startOffset="50%" textAnchor="middle" side="left">
+                                    K U S U M A
+                                  </textPath>
+                                </text>
                               </svg>
-                            )}
-                          </div>
+                              <div className="text-[10px] uppercase font-bold text-slate-800 tracking-wider">
+                                Media Mandiri Anak Berprestasi
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Main Title Block */}
                         <div className="z-10 space-y-4 my-auto">
-                          <h1 className="text-3xl font-black text-slate-950 uppercase tracking-widest leading-none font-display">
-                            Laporan Hasil
+                          <h1 className="text-3xl font-black text-slate-950 uppercase tracking-widest leading-none font-sans">
+                            LAPORAN HASIL
                           </h1>
                           <h2 className="text-sm font-extrabold text-slate-700 uppercase tracking-widest max-w-lg mx-auto leading-relaxed">
                             Capaian Perkembangan Peserta Didik
                           </h2>
                           <div className="inline-block bg-sky-50 text-sky-800 font-extrabold text-[11px] uppercase tracking-widest px-4 py-2 rounded-full border border-sky-200">
-                            Pendidikan Anak Usia Dini (PAUD)
+                            Taman Penitipan Anak (TPA)
                           </div>
                         </div>
 
                         {/* Named Student Card */}
-                        <div className="z-10 w-full max-w-md space-y-8 my-auto">
+                        <div className="z-10 w-full max-w-md space-y-6 my-auto">
                           <div className="space-y-1.5">
                             <span className="text-[10px] font-extrabold text-slate-400 tracking-widest uppercase block">Nama Peserta Didik</span>
                             <div className="border-[3px] border-slate-900 rounded-2xl py-4.5 px-6 bg-slate-50/80 shadow-md">
-                              <h3 className="text-lg md:text-xl font-black text-slate-950 tracking-wide uppercase leading-tight font-display">
+                              <h3 className="text-lg md:text-xl font-black text-slate-950 tracking-wide uppercase leading-tight font-sans">
                                 {printSiswa.namaSiswa}
                               </h3>
                             </div>
@@ -4318,8 +4344,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                         {/* Bottom Metadata Block */}
                         <div className="z-10 mb-8 mt-auto w-[85%] border-t-[3px] border-slate-100 pt-8 text-center space-y-2">
-                          <h4 className="text-2xl font-black text-slate-950 uppercase tracking-wider font-display">
-                            {state.dataSekolah.namaSekolah || "KB KUSUMA"}
+                          <h4 className="text-2xl font-black text-slate-950 uppercase tracking-wider font-sans">
+                            {state.dataSekolah.namaSekolah || "TPA KUSUMA"}
                           </h4>
                           {state.dataSekolah.npsn && (
                             <p className="text-xl font-black text-slate-950 tracking-wider">NPSN: {state.dataSekolah.npsn}</p>
@@ -4337,103 +4363,105 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                         <div className="z-10 space-y-6">
                           <div className="text-center space-y-2 pb-2 border-b border-slate-100">
-                            <span className="bg-red-500 text-white text-[9px] font-black uppercase px-3 py-1 rounded-full tracking-wider shadow-sm inline-block">
+                            <span className="bg-[#E1251B] text-white text-[9px] font-black uppercase px-4 py-1 rounded-full tracking-wider shadow-sm inline-block">
                               PAUD MERDEKA
                             </span>
-                            <h2 className="text-md font-black text-slate-950 uppercase tracking-widest block font-display">
-                              Keterangan Diri Anak Didik
+                            <h2 className="text-md font-black text-slate-950 uppercase tracking-widest block font-sans underline decoration-[#075985] decoration-[3px] underline-offset-8">
+                              KETERANGAN DIRI ANAK DIDIK
                             </h2>
                           </div>
 
                           {/* Data Table */}
-                          <div className="overflow-x-auto">
-                            <table className="w-full text-xs font-medium text-slate-900 leading-relaxed border-collapse">
-                              <tbody className="divide-y divide-slate-100">
+                          <div className="overflow-hidden">
+                            <table className="w-full text-xs font-semibold text-slate-900 leading-normal border-none">
+                              <tbody>
                                 <tr>
-                                  <td className="py-2 w-6 text-slate-450 font-bold">1.</td>
-                                  <td className="py-2 w-48 text-slate-600 font-bold">Nama Lengkap Siswa</td>
-                                  <td className="py-2 w-4 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 font-black text-slate-950 uppercase">{printSiswa.namaSiswa}</td>
+                                  <td className="py-2.5 w-6 text-slate-400 font-bold">1.</td>
+                                  <td className="py-2.5 w-48 text-slate-700 font-bold">Nama Lengkap</td>
+                                  <td className="py-2.5 w-4 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 font-bold text-slate-950 uppercase">{printSiswa.namaSiswa}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">2.</td>
-                                  <td className="py-2 text-slate-600 font-bold">NISN</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 font-bold text-slate-950 font-mono">{printSiswa.nisn || "-"}</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">2.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">NISN</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 font-bold text-slate-950 font-mono">{printSiswa.nisn || "-"}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">3.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Tempat, Tanggal Lahir</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-900 font-semibold uppercase">
-                                    {(printSiswa.tempatLahir || "-").toUpperCase()}, {(printSiswa.tglLahir || "-").toUpperCase()}
+                                  <td className="py-2.5 text-slate-400 font-bold">3.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Tempat, Tanggal Lahir</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold uppercase">
+                                    {(printSiswa.tempatLahir || "-").toUpperCase()}, {printSiswa.tglLahir || "-"}
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">4.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Jenis Kelamin</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-850 font-semibold">{printSiswa.jenisKelamin || "-"}</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">4.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Jenis Kelamin</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold uppercase">{printSiswa.jenisKelamin || "-"}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">5.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Agama</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-850 font-semibold uppercase">{printSiswa.agama || "-"}</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">5.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Agama</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold uppercase">{printSiswa.agama || "-"}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">6.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Anak Ke-</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-950 font-bold">{printSiswa.anakKe || "-"}</td>
-                                </tr>
-
-                                <tr className="bg-slate-50/50 font-bold uppercase text-[9px] tracking-widest text-sky-800">
-                                  <td colSpan={4} className="py-1.5 px-3 font-black">ORANG TUA / WALI</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">6.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Anak Ke-</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold">{printSiswa.anakKe || "-"}</td>
                                 </tr>
 
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">7.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Nama Ayah Kandung</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-850 font-bold uppercase">{printSiswa.namaAyah || "-"}</td>
+                                  <td colSpan={4} className="py-4 font-bold uppercase text-[11px] tracking-widest text-[#0D8276]">
+                                    ORANG TUA / WALI
+                                  </td>
+                                </tr>
+
+                                <tr>
+                                  <td className="py-2.5 text-slate-400 font-bold">7.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Nama Ayah</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold uppercase">{printSiswa.namaAyah || "-"}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">8.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Pekerjaan Ayah</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-800">{printSiswa.pekerjaanAyah || "-"}</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">8.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Pekerjaan Ayah</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold uppercase">{printSiswa.pekerjaanAyah || "-"}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">9.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Nama Ibu Kandung</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-850 font-bold uppercase">{printSiswa.namaIbu || "-"}</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">9.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Nama Ibu</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold uppercase">{printSiswa.namaIbu || "-"}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">10.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Pekerjaan Ibu</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-800">{printSiswa.pekerjaanIbu || "-"}</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">10.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Pekerjaan Ibu</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold uppercase">{printSiswa.pekerjaanIbu || "-"}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">11.</td>
-                                  <td className="py-2 text-slate-600 font-bold">No. Telepon / HP Wali</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 font-bold text-slate-900 font-mono">{printSiswa.noHp || "-"}</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">11.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">No. Telepon / HP</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 font-bold text-slate-950 font-mono">{printSiswa.noHp || "-"}</td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 text-slate-450 font-bold">12.</td>
-                                  <td className="py-2 text-slate-600 font-bold">Alamat Rumah Lengkap</td>
-                                  <td className="py-2 text-slate-400 font-medium">:</td>
-                                  <td className="py-2 text-slate-800 leading-normal text-justify">{printSiswa.alamat || "-"}</td>
+                                  <td className="py-2.5 text-slate-400 font-bold">12.</td>
+                                  <td className="py-2.5 text-slate-700 font-bold">Alamat Lengkap</td>
+                                  <td className="py-2.5 text-slate-400 font-medium">:</td>
+                                  <td className="py-2.5 text-slate-950 font-bold leading-normal uppercase">{printSiswa.alamat || "-"}</td>
                                 </tr>
                               </tbody>
                             </table>
                           </div>
 
                           {/* Sign Block & Picture Placement Area - Positioned closely inside the flow */}
-                          <div className="z-10 mt-10 flex justify-between items-start px-2">
+                          <div className="z-10 mt-10 flex justify-between items-start px-2 mt-auto">
                             {/* Photo Placeholder */}
                             <div className="w-[100px] h-[140px] border-2 border-dashed border-slate-400 bg-white flex flex-col items-center justify-center text-slate-400 select-none">
                               <span className="text-[11px] font-medium text-slate-400 mb-1">Tempel Foto</span>
@@ -4443,16 +4471,16 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                             {/* Signature stamp mock */}
                             <div className="text-center flex flex-col items-center justify-between h-[140px] w-64 pr-2">
                               <div className="space-y-1">
-                                <p className="text-xs text-slate-900 font-medium">
+                                <p className="text-xs text-slate-900 font-medium font-sans">
                                   {printCity}, {formatIndonesianDate(state.dataSekolah.tglRaport)}
                                 </p>
-                                <p className="text-xs font-bold text-slate-900">
+                                <p className="text-xs font-bold text-slate-900 font-sans">
                                   Kepala Sekolah
                                 </p>
                               </div>
                               <div className="w-full">
-                                <strong className="text-xs font-black text-slate-950 underline decoration-slate-900 underline-offset-4 block uppercase font-mono leading-none pb-1">
-                                  {state.dataSekolah.kepalaSekolah || "MIRAH TITIMIRANTI, S.P., S.Pd."}
+                                <strong className="text-xs font-black text-slate-950 underline decoration-slate-900 underline-offset-4 block uppercase leading-none pb-1 font-sans">
+                                  {state.dataSekolah.kepalaSekolah || "POPPY RISCA DEWANTI, S.T.P."}
                                 </strong>
                               </div>
                             </div>
@@ -4460,133 +4488,133 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                         </div>
                       </div>
 
-                      {/* INTRAKURIKULER: CONTINUOUS PAGES (STUDENT INFO ONLY ON FIRST PAGE) */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
-                        {/* Outer Frame (Shown on screen, hidden in print) */}
-                        <div className="absolute inset-4 border border-slate-150 rounded-xl pointer-events-none print:hidden"></div>
+                      {/* INTRAKURIKULER: CATEGORY BY CATEGORY PAGES */}
+                      {state.kategoriIntrakurikuler.map((kat, katIdx) => {
+                        const catTps = activeTps.filter(tp => tp.idKategori === kat.id);
+                        const catAssessment = state.nilaiIntrakurikuler.find(n => n.idSiswa === printSiswa.id && n.idTp === kat.id);
+                        const categoryDescription = catAssessment?.deskripsi || "";
 
-                        <div className="z-10 space-y-6 flex flex-col min-h-full">
-                          <div className="flex-1">
-                            {renderPageHeader("Laporan Hasil Perkembangan Peserta Didik", "Pendidikan Anak Usia Dini (PAUD) - Intrakurikuler")}
+                        return (
+                          <div key={kat.id} className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
+                            {/* Outer Frame (Shown on screen, hidden in print) */}
+                            <div className="absolute inset-4 border border-slate-150 rounded-xl pointer-events-none print:hidden"></div>
 
-                            <div className="space-y-8">
-                              {state.kategoriIntrakurikuler.map((kat, katIdx) => {
-                                const catTps = activeTps.filter(tp => tp.idKategori === kat.id);
-                                const catAssessment = state.nilaiIntrakurikuler.find(n => n.idSiswa === printSiswa.id && n.idTp === kat.id);
-                                const categoryDescription = catAssessment?.deskripsi || "";
+                            <div className="z-10 space-y-6 flex flex-col min-h-full">
+                              <div className="flex-1">
+                                {renderPageHeader(3 + katIdx)}
 
-                                return (
-                                  <div key={kat.id} className="space-y-4">
-                                    {/* Section Title */}
-                                    <div className="border-l-4 border-indigo-600 pl-3 py-1 bg-slate-50 rounded-r-md">
-                                      <span className="text-[10px] font-black uppercase text-indigo-700 tracking-widest block leading-none mb-1">
-                                        I. Capaian Pembelajaran
-                                      </span>
-                                      <h3 className="text-xs font-black text-slate-950 uppercase tracking-wide leading-tight">
-                                        {katIdx + 1}. {kat.namaKategori}
+                                <div className="space-y-6">
+                                  {/* Section Title */}
+                                  <div>
+                                    {katIdx === 0 && (
+                                      <h3 className="text-xs font-black text-slate-950 uppercase tracking-widest pl-1 mb-2">
+                                        I. CAPAIAN PEMBELAJARAN
                                       </h3>
-                                    </div>
-
-                                    {/* TP Table */}
-                                    <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm bg-white">
-                                      <table className="w-full text-left text-[12px] border-collapse leading-normal font-arial">
-                                        <thead style={{ display: "table-header-group" }}>
-                                          <tr className="bg-slate-100 text-slate-950 font-black uppercase border-b border-slate-950 text-[10px] tracking-wide">
-                                            <th className="px-3 py-2 w-10 text-center border-r border-slate-950">No</th>
-                                            <th className="px-3 py-2 border-r border-slate-950">Tujuan Pembelajaran</th>
-                                            <th className="px-3 py-2 w-24 text-center">Nilai</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-400 bg-white">
-                                          {catTps.length > 0 ? (
-                                            catTps.map((tp, idx) => {
-                                              const assessment = state.nilaiIntrakurikuler.find(n => n.idSiswa === printSiswa.id && n.idTp === tp.id);
-                                              const score = assessment?.nilai || "Cakap";
-
-                                              let ratingStyle = "text-slate-950 bg-slate-50 border-slate-600 border-2";
-                                              if (score.toLowerCase().includes("berkembang")) {
-                                                ratingStyle = "text-yellow-950 bg-yellow-50/80 border-yellow-500 border-2";
-                                              } else if (score.toLowerCase().includes("cakap")) {
-                                                ratingStyle = "text-blue-950 bg-blue-50/80 border-blue-500 border-2";
-                                              } else if (score.toLowerCase().includes("mahir")) {
-                                                ratingStyle = "text-green-950 bg-green-50/80 border-green-500 border-2";
-                                              }
-
-                                              return (
-                                                <tr key={tp.id} className="align-top">
-                                                  <td className="px-3 py-2 text-center font-bold text-slate-700 border-r border-slate-950">{idx + 1}</td>
-                                                  <td className="px-3 py-2 border-r border-slate-950 font-bold text-slate-950 leading-relaxed text-justify">
-                                                    {tp.deskripsi}
-                                                    {tp.aktivitasMetode && (
-                                                      <span className="text-[10px] text-slate-505 italic block mt-1">Aktivitas: {tp.aktivitasMetode}</span>
-                                                    )}
-                                                  </td>
-                                                  <td className="px-3 py-2 text-center font-extrabold">
-                                                    <span className={`px-2 py-0.5 rounded-md border text-[9px] font-black uppercase ${ratingStyle}`}>
-                                                      {score}
-                                                    </span>
-                                                  </td>
-                                                </tr>
-                                              );
-                                            })
-                                          ) : (
-                                            <tr>
-                                              <td colSpan={3} className="px-4 py-6 text-center text-slate-400 font-bold italic">
-                                                Belum ada indikator yang diinput.
-                                              </td>
-                                            </tr>
-                                          )}
-                                        </tbody>
-                                      </table>
-                                    </div>
-
-                                    {/* Narrative Description */}
-                                    <div className="space-y-1.5 keep-together">
-                                      <span className="text-[10px] font-black uppercase text-indigo-700 tracking-wider ml-1">Deskripsi Munculan Narasi:</span>
-                                      <div className="border border-slate-950 rounded-xl p-4 bg-slate-50/50 min-h-[140px] text-[12px] font-semibold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
-                                        {categoryDescription || `Ananda ${printSiswa.namaSiswa} telah menunjukkan penguasaan yang sangat baik pada bidang ${kat.namaKategori}. Ia mampu mengikuti instruksi dengan antusias and menunjukkan kemajuan yang membanggakan dalam setiap sub-pembelajaran.`}
-                                      </div>
+                                    )}
+                                    <div className="flex items-center gap-2">
+                                      <span className="inline-block w-[6px] h-[18px] bg-slate-950"></span>
+                                      <h4 className="text-xs font-black text-slate-950 uppercase tracking-wide leading-tight">
+                                        {kat.namaKategori}
+                                      </h4>
                                     </div>
                                   </div>
-                                );
-                              })}
+
+                                  {/* TP Table */}
+                                  <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm bg-white">
+                                    <table className="w-full text-left text-[11px] border-collapse leading-normal font-sans">
+                                      <thead>
+                                        <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[10px] tracking-wide">
+                                          <th className="px-3.5 py-3 border-r border-slate-950 w-2/5">TUJUAN PEMBELAJARAN</th>
+                                          <th className="px-3.5 py-3 border-r border-slate-950 w-2/5">AKTIVITAS</th>
+                                          <th className="px-3.5 py-3 text-center w-40">DIMENSI KEMANDIRIAN</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody className="divide-y divide-slate-400 bg-white">
+                                        {catTps.length > 0 ? (
+                                          catTps.map((tp) => {
+                                            const assessment = state.nilaiIntrakurikuler.find(n => n.idSiswa === printSiswa.id && n.idTp === tp.id);
+                                            const score = assessment?.nilai || "Cakap";
+
+                                            let ratingStyle = "bg-[#FFF5D5] text-[#A66908] border-[#A66908]";
+                                            if (score.toLowerCase().includes("cakap")) {
+                                              ratingStyle = "bg-[#E5F2FF] text-[#1B66C9] border-[#1B66C9]";
+                                            } else if (score.toLowerCase().includes("mahir")) {
+                                              ratingStyle = "bg-[#E2F7DF] text-[#1D741B] border-[#1D741B]";
+                                            }
+
+                                            return (
+                                              <tr key={tp.id} className="align-top">
+                                                <td className="px-3.5 py-3 border-r border-slate-950 font-semibold text-slate-950 leading-relaxed text-left text-[11px]">
+                                                  {tp.deskripsi}
+                                                </td>
+                                                <td className="px-3.5 py-3 border-r border-slate-950 font-semibold text-slate-700 italic leading-relaxed text-left text-[11px]">
+                                                  {tp.aktivitasMetode || "—"}
+                                                </td>
+                                                <td className="px-3.5 py-3 text-center">
+                                                  <span className={`inline-block px-3.5 py-1 rounded-full border-[1.5px] text-[9px] font-black uppercase text-center tracking-wider min-w-[75px] ${ratingStyle}`}>
+                                                    {score}
+                                                  </span>
+                                                </td>
+                                              </tr>
+                                            );
+                                          })
+                                        ) : (
+                                          <tr>
+                                            <td colSpan={3} className="px-4 py-8 text-center text-slate-400 font-bold italic">
+                                              Belum ada indikator yang diinput.
+                                            </td>
+                                          </tr>
+                                        )}
+                                      </tbody>
+                                    </table>
+                                  </div>
+
+                                  {/* Narrative Description */}
+                                  <div className="space-y-2 keep-together">
+                                    <div className="flex items-center gap-2 text-slate-950 font-black text-xs uppercase tracking-wide">
+                                      <span className="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                                      DESKRIPSI CAPAIAN
+                                    </div>
+                                    <div className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
+                                      {categoryDescription || `Pada aspek ${kat.namaKategori}, Ananda ${printSiswa.namaSiswa} telah menunjukkan penguasaan yang sangat baik.`}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Footer Marker */}
+                              <div className="text-[9px] text-slate-450 font-mono flex justify-between items-center pt-2 mt-auto border-t border-slate-200">
+                                <span className="uppercase tracking-wider font-semibold">Laporan Hasil Capaian Perkembangan Anak Didik (Intrakurikuler)</span>
+                                <span className="font-bold">Halaman {3 + katIdx}</span>
+                              </div>
                             </div>
                           </div>
+                        );
+                      })}
 
-                          {/* Footer Marker */}
-                          <div className="text-[9px] text-slate-400 font-mono flex justify-between items-center pt-2 mt-auto border-t border-slate-100">
-                            <span>Laporan Hasil Capaian Perkembangan Anak Didik (Intrakurikuler)</span>
-                            <span>Halaman 3 & 4</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* PAGE 6: KOKURIKULER (P5 PANEL) */}
+                      {/* PAGE: KOKURIKULER (P5 PANEL) */}
                       <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
                         {/* Outer Frame (Shown on screen, hidden in print to avoid clashing) */}
                         <div className="absolute inset-4 border border-slate-150 rounded-xl pointer-events-none print:hidden"></div>
 
                         <div className="z-10 space-y-5 flex-1 flex flex-col justify-between">
                           <div>
-                            {renderPageHeader("Laporan Perkembangan Peserta Didik", "Pendidikan Anak Usia Dini (PAUD) - Kokurikuler")}
+                            {renderPageHeader(3 + state.kategoriIntrakurikuler.length)}
 
                             <div className="space-y-4">
-                              <div className="border-l-4 border-indigo-650 pl-3 bg-slate-50 py-1.5 rounded-r">
-                                <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider font-display">
-                                  II. Capaian Kokurikuler (Projek Penguatan Profil Pelajar Pancasila - P5)
-                                </h3>
-                              </div>
+                              <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
+                                II. KOKURIKULER
+                              </h3>
 
-                              <div className="overflow-hidden border border-slate-950 rounded-lg shadow">
+                              <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm">
                                 <table className="w-full text-left text-[11px] border-collapse leading-normal bg-white">
                                   <thead>
-                                    <tr className="bg-slate-100 text-slate-950 font-black uppercase border-b border-slate-950 text-[10px] tracking-wide">
-                                      <th className="px-3.5 py-2.5 w-36 border-r border-slate-950">Dimensi P5</th>
-                                      <th className="px-3.5 py-2.5 border-r border-slate-950">Narasi / Deskripsi Capaian Projek</th>
-                                      <th className="px-3.5 py-2.5 text-center w-28">Predikat</th>
+                                    <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[10px] tracking-wide">
+                                      <th className="px-3.5 py-3 w-40 border-r border-slate-950 uppercase">DIMENSI</th>
+                                      <th className="px-3.5 py-3 uppercase">DESKRIPSI CAPAIAN</th>
                                     </tr>
                                   </thead>
-                                  <tbody className="divide-y divide-slate-400 text-slate-900 font-semibold">
+                                  <tbody className="divide-y divide-slate-400 text-slate-900 font-bold bg-white font-sans">
                                     {state.subdimensiKokurikuler.filter(sub => sub.idKelas === printSiswa.idKelas).length > 0 ? (
                                       state.subdimensiKokurikuler
                                         .filter(sub => sub.idKelas === printSiswa.idKelas)
@@ -4595,35 +4623,36 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                           const score = assessment?.nilai || "Cakap";
                                           const deskripsiAss = assessment?.deskripsi || "";
 
-                                          let badgeStyle = "text-slate-950 bg-slate-50 border-slate-600 border-2";
-                                          if (score.toLowerCase().includes("berkembang")) {
-                                            badgeStyle = "text-yellow-950 bg-yellow-50/80 border-yellow-500 border-2";
-                                          } else if (score.toLowerCase().includes("cakap")) {
-                                            badgeStyle = "text-blue-950 bg-blue-50/80 border-blue-500 border-2";
+                                          let badgeStyle = "bg-[#FFF5D5] text-[#A66908] border-[#A66908]";
+                                          if (score.toLowerCase().includes("cakap")) {
+                                            badgeStyle = "bg-[#E5F2FF] text-[#1B66C9] border-[#1B66C9]";
                                           } else if (score.toLowerCase().includes("mahir")) {
-                                            badgeStyle = "text-green-950 bg-green-50/80 border-green-500 border-2";
+                                            badgeStyle = "bg-[#E2F7DF] text-[#1D741B] border-[#1D741B]";
                                           }
 
-
                                           return (
-                                            <tr key={sub.id} className="hover:bg-slate-50/10 align-top">
-                                              <td className="px-3.5 py-3 border-r border-slate-950 font-bold text-slate-950">
+                                            <tr key={sub.id} className="align-top">
+                                              <td className="px-4 py-4 border-r border-slate-950 font-bold text-slate-950 uppercase leading-relaxed text-[11px]">
                                                 {sub.namaSubdimensi.replace(/^Dimensi\s+/i, "")}
                                               </td>
-                                              <td className="px-3.5 py-3 border-r border-slate-950 leading-relaxed text-slate-800 font-medium text-justify text-[11px] whitespace-pre-wrap">
-                                                {deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif dan berkembang konsisten dalam mewujudkan projek profil pancasila bertemakan sub-elemen ${sub.namaSubdimensi}.`}
-                                              </td>
-                                              <td className="px-3.5 py-3 text-center font-extrabold">
-                                                <span className={`px-2.5 py-1 rounded-md border text-[9px] font-black tracking-wide uppercase ${badgeStyle}`}>
-                                                  {score}
-                                                </span>
+                                              <td className="px-4 py-4 leading-relaxed text-slate-900 font-bold text-justify text-[11px] whitespace-pre-wrap">
+                                                <div className="flex flex-col justify-between min-h-[100px]">
+                                                  <p className="text-[11px] leading-relaxed text-slate-900 text-justify font-semibold whitespace-pre-wrap">
+                                                    {deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif dan berkembang konsisten dalam mewujudkan projek profil pancasila.`}
+                                                  </p>
+                                                  <div className="flex justify-end mt-3">
+                                                    <span className={`px-4 py-1 rounded-full border-[1.5px] text-[9px] font-black uppercase text-center tracking-wider ${badgeStyle}`}>
+                                                      {score}
+                                                    </span>
+                                                  </div>
+                                                </div>
                                               </td>
                                             </tr>
                                           );
                                         })
                                     ) : (
                                       <tr>
-                                        <td colSpan={3} className="px-4 py-8 text-center text-slate-400 italic font-bold">
+                                        <td colSpan={2} className="px-4 py-8 text-center text-slate-400 italic font-bold">
                                           Belum ada dimensi atau nilai projek kokurikuler yang dirangkai untuk kelompok kelas ini.
                                         </td>
                                       </tr>
@@ -4635,64 +4664,65 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           </div>
 
                           {/* Page index footer */}
-                          <div className="text-[9px] text-slate-400 font-mono flex justify-between items-center pt-2 mt-6 border-t border-slate-100">
-                            <span>Laporan Lanjutan Capaian Kokurikuler P5</span>
-                            <span>Lembaran 6 dari 7</span>
+                          <div className="text-[9px] text-slate-455 font-mono flex justify-between items-center pt-2 mt-6 border-t border-slate-200">
+                            <span className="uppercase tracking-wider font-semibold">Laporan Lanjutan Capaian Kokurikuler P5</span>
+                            <span className="font-bold">Halaman {3 + state.kategoriIntrakurikuler.length}</span>
                           </div>
                         </div>
                       </div>
 
-                      {/* PAGE 7: CATATAN GURU, ABSENSI, & TANDA TANGAN */}
-                      <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
+                      {/* PAGE 12: CATATAN GURU, ABSENSI, & TANDA TANGAN */}
+                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
                         {/* Outer Frame (Shown on screen, hidden in print to avoid clashing) */}
                         <div className="absolute inset-4 border border-slate-150 rounded-xl pointer-events-none print:hidden"></div>
 
                         <div className="z-10 space-y-6 flex-1 flex flex-col justify-between">
-                          <div className="space-y-5">
-                            {renderPageHeader("Laporan Perkembangan & Catatan Kelulusan", "Pendidikan Anak Usia Dini (PAUD) - Catatan Guru, Rekap Absensi, Pengesahan")}
+                          <div className="space-y-6">
+                            
+                            {/* Reusable Metadata and spacing for final page */}
+                            {renderPageHeader(4 + state.kategoriIntrakurikuler.length)}
 
-                            <div className="space-y-2 keep-together">
-                              <div className="border-l-4 border-indigo-700 pl-3 bg-slate-50 py-1 rounded-r">
-                                <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider font-display">
+                            <div className="grid grid-cols-5 gap-6 align-start leading-normal">
+                              {/* Left Column: Catatan Guru */}
+                              <div className="col-span-3 space-y-2.5 keep-together">
+                                <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                                   III. Catatan Guru Wali Kelas
                                 </h3>
+                                <div className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
+                                  {printCatatanSiswa}
+                                </div>
                               </div>
-                              <div className="border border-slate-950 rounded-xl p-4 bg-slate-50/50 min-h-[110px] text-[12px] font-semibold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
-                                {printCatatanSiswa}
-                              </div>
-                            </div>
 
-                            {/* Section IV: Kehadiran Absensi */}
-                            <div className="space-y-2.5">
-                              <div className="border-l-4 border-indigo-700 pl-3 bg-slate-50 py-1 rounded-r">
-                                <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider font-display">
-                                  IV. Kehadiran (Rekapitulasi Absensi Semester)
+                              {/* Right Column: Kehadiran Absensi */}
+                              <div className="col-span-2 space-y-2.5">
+                                <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
+                                  IV. Kehadiran
                                 </h3>
-                              </div>
-                              
-                              <div className="max-w-sm overflow-hidden border border-slate-950 rounded-lg shadow-sm">
-                                <table className="w-full text-left text-xs border-collapse">
-                                  <thead>
-                                    <tr className="bg-slate-100 text-slate-950 font-black border-b border-slate-950 text-[10px] tracking-wider uppercase">
-                                      <th className="px-3.5 py-1.5 border-r border-slate-950">Keterangan Harian</th>
-                                      <th className="px-3.5 py-1.5 text-center w-28">Jumlah Akumulasi</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody className="divide-y divide-slate-350 text-slate-900 font-bold bg-white">
-                                    <tr>
-                                      <td className="px-3.5 py-1.5 text-slate-700 border-r border-slate-950">1. Sakit</td>
-                                      <td className="px-3.5 py-1.5 text-center text-slate-950">{printAbsensi.sakit} Hari</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="px-3.5 py-1.5 text-slate-700 border-r border-slate-950">2. Izin</td>
-                                      <td className="px-3.5 py-1.5 text-center text-slate-950">{printAbsensi.ijin} Hari</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="px-3.5 py-1.5 text-slate-705 border-r border-slate-950">3. Tanpa Keterangan (Alpa)</td>
-                                      <td className="px-3.5 py-1.5 text-center text-slate-950">{printAbsensi.tanpaKet} Hari</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+                                
+                                <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm">
+                                  <table className="w-full text-left text-xs border-collapse font-sans">
+                                    <thead>
+                                      <tr className="bg-slate-50 text-slate-950 font-black border-b border-slate-950 text-[10px] tracking-wider uppercase">
+                                        <th className="px-3.5 py-2.5 border-r border-slate-950 uppercase">Keterangan</th>
+                                        <th className="px-3.5 py-2.5 text-center w-24 uppercase">Jumlah</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-400 text-slate-900 font-bold bg-white">
+                                      <tr>
+                                        <td className="px-3.5 py-2.5 text-slate-700 border-r border-slate-950 uppercase font-semibold">Sakit</td>
+                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.sakit}</td>
+                                      </tr>
+                                      <tr>
+                                        <td className="px-3.5 py-2.5 text-slate-700 border-r border-slate-950 uppercase font-semibold">Izin</td>
+                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.ijin}</td>
+                                      </tr>
+                                      <tr>
+                                        <td className="px-3.5 py-2.5 text-slate-750 border-r border-slate-950 uppercase font-semibold">Tanpa Keterangan</td>
+                                        <td className="px-3.5 py-2.5 text-center text-slate-950 font-black">{printAbsensi.tanpaKet}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -4701,37 +4731,39 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           <div className="pt-8 border-t border-slate-150 grid grid-cols-2 gap-y-12 text-center text-[12px] text-slate-900 leading-relaxed max-w-2xl mx-auto w-full">
                             {/* Top Left: Orang Tua */}
                             <div className="flex flex-col items-center justify-between">
-                              <p className="mb-20">Mengetahui,<br />Orang Tua/Wali,</p>
-                              <div className="border-b border-slate-900 w-3/4"></div>
+                              <p className="mb-20 font-bold">Mengetahui,<br />Orang Tua/Wali,</p>
+                              <div className="border-b-2 border-slate-900 w-3/4"></div>
                             </div>
 
                             {/* Top Right: Wali Kelas */}
                             <div className="flex flex-col items-center justify-between">
-                              <p className="mb-20">
+                              <p className="mb-20 font-bold">
                                 {printCity}, {formatIndonesianDate(state.dataSekolah.tglRaport)}<br />
                                 Wali Kelas,
                               </p>
                               <div>
-                                <p className="font-bold underline decoration-slate-900 underline-offset-2 uppercase">
+                                <p className="font-bold underline decoration-slate-900 underline-offset-4 uppercase">
                                   {printKelasItem?.waliKelas || "WALIKELAS PAUD"}
                                 </p>
-                                <p>NUPTK: {printKelasItem?.nuptkNgty || "6359752654300053"}</p>
+                                <p className="text-[10px] font-medium mt-1">NUPTK: {printKelasItem?.nuptkNgty || "-"}</p>
                               </div>
                             </div>
 
                             {/* Bottom Center: Kepala Sekolah */}
                             <div className="col-span-2 flex flex-col items-center justify-between mt-4">
-                              <p className="mb-20">Mengetahui,<br />Kepala Sekolah</p>
-                              <p className="font-bold underline decoration-slate-900 underline-offset-2 uppercase">
-                                {state.dataSekolah.kepalaSekolah || "MIRAH TITIMIRANTI, S.P., S.Pd."}
-                              </p>
+                              <p className="mb-20 font-bold">Mengetahui,<br />Kepala Sekolah</p>
+                              <div className="text-center">
+                                <p className="font-bold underline decoration-slate-900 underline-offset-4 uppercase">
+                                  {state.dataSekolah.kepalaSekolah || "POPPY RISCA DEWANTI, S.T.P."}
+                                </p>
+                              </div>
                             </div>
                           </div>
 
                           {/* Final footer marker */}
-                          <div className="text-[9px] text-slate-400 font-mono flex justify-between items-center pt-2 mt-6 border-t border-slate-100">
-                            <span>Laporan Penutup Hasil Akhir (Selesai)</span>
-                            <span>Lembaran 7 dari 7</span>
+                          <div className="text-[9px] text-slate-450 font-mono flex justify-between items-center pt-2 mt-6 border-t border-slate-200">
+                            <span className="uppercase tracking-wider font-semibold">Laporan Penutup Hasil Akhir (Selesai)</span>
+                            <span className="font-bold">Halaman {4 + state.kategoriIntrakurikuler.length}</span>
                           </div>
                         </div>
                       </div>
@@ -5099,7 +5131,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       <tbody>
                         {allUsersList.filter(u => u.username !== "admin_anchor" && u.email !== "admin_anchor").length > 0 ? (
                           allUsersList.filter(u => u.username !== "admin_anchor" && u.email !== "admin_anchor").map((usr, usrIdx) => (
-                            <tr key={usr.uid || `user-${usrIdx}`} className="border-b border-slate-50 hover:bg-slate-50/50 block md:table-row">
+                            <tr key={usr.uid || `user-${usrIdx}`} className="border-b border-slate-50 hover:bg-slate-50/50">
                               <td className="py-3 px-3 font-semibold text-slate-700">{usr.nama}</td>
                               <td className="py-3 px-3 text-slate-500 font-mono">{usr.username || (usr.email ? usr.email.split("@")[0] : "") || "—"}</td>
                               <td className="py-3 px-3 font-mono text-slate-550">
