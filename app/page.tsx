@@ -4363,9 +4363,6 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                         <div className="z-10 space-y-6">
                           <div className="text-center space-y-2 pb-2 border-b border-slate-100">
-                            <span className="bg-[#E1251B] text-white text-[9px] font-black uppercase px-4 py-1 rounded-full tracking-wider shadow-sm inline-block">
-                              PAUD MERDEKA
-                            </span>
                             <h2 className="text-md font-black text-slate-950 uppercase tracking-widest block font-sans underline decoration-[#075985] decoration-[3px] underline-offset-8">
                               KETERANGAN DIRI ANAK DIDIK
                             </h2>
@@ -4391,8 +4388,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   <td className="py-2.5 text-slate-400 font-bold">3.</td>
                                   <td className="py-2.5 text-slate-700 font-bold">Tempat, Tanggal Lahir</td>
                                   <td className="py-2.5 text-slate-400 font-medium">:</td>
-                                  <td className="py-2.5 text-slate-950 font-bold uppercase">
-                                    {(printSiswa.tempatLahir || "-").toUpperCase()}, {printSiswa.tglLahir || "-"}
+                                  <td className="py-2.5 text-slate-950 font-bold">
+                                    <span className="uppercase">{printSiswa.tempatLahir || "-"}</span>, <span className="capitalize">{formatIndonesianDate(printSiswa.tglLahir) || "-"}</span>
                                   </td>
                                 </tr>
                                 <tr>
@@ -4479,7 +4476,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 </p>
                               </div>
                               <div className="w-full">
-                                <strong className="text-xs font-black text-slate-950 underline decoration-slate-900 underline-offset-4 block uppercase leading-none pb-1 font-sans">
+                                <strong className="text-xs font-black text-slate-950 underline decoration-slate-900 underline-offset-4 block leading-none pb-1 font-sans">
                                   {state.dataSekolah.kepalaSekolah || "POPPY RISCA DEWANTI, S.T.P."}
                                 </strong>
                               </div>
@@ -4585,6 +4582,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   </div>
                                 </div>
                               </div>
+
+                              {/* Footer Marker */}
+                              <div className="text-[9px] text-slate-450 font-mono flex justify-between items-center pt-2 mt-auto border-t border-slate-200">
+                                <span className="uppercase tracking-wider font-semibold">Laporan Hasil Capaian Perkembangan Anak Didik (Intrakurikuler)</span>
+                                <span className="font-bold">Halaman {3 + katIdx}</span>
+                              </div>
                             </div>
                           </div>
                         );
@@ -4660,10 +4663,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                               </div>
                             </div>
 
-                            {/* GRID: CATATAN GURU & KEHADIRAN ABSENSI */}
-                            <div className="grid grid-cols-5 gap-6 align-start leading-normal">
-                              {/* Left Column: Catatan Guru */}
-                              <div className="col-span-3 space-y-2.5 keep-together">
+                            {/* SECTION: CATATAN GURU & KEHADIRAN ABSENSI */}
+                            <div className="space-y-6 align-start leading-normal">
+                              {/* Catatan Guru */}
+                              <div className="space-y-2.5 keep-together">
                                 <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                                   III. Catatan Guru Wali Kelas
                                 </h3>
@@ -4672,8 +4675,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 </div>
                               </div>
 
-                              {/* Right Column: Kehadiran Absensi */}
-                              <div className="col-span-2 space-y-2.5">
+                              {/* Kehadiran Absensi */}
+                              <div className="space-y-2.5 w-1/2">
                                 <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                                   IV. Kehadiran
                                 </h3>
@@ -4722,7 +4725,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 Wali Kelas,
                               </p>
                               <div>
-                                <p className="font-bold underline decoration-slate-900 underline-offset-4 uppercase">
+                                <p className="font-bold underline decoration-slate-900 underline-offset-4">
                                   {printKelasItem?.waliKelas || "WALIKELAS PAUD"}
                                 </p>
                                 <p className="text-[10px] font-medium mt-1">NUPTK: {printKelasItem?.nuptkNgty || "-"}</p>
@@ -4733,7 +4736,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                             <div className="col-span-2 flex flex-col items-center justify-between mt-4">
                               <p className="mb-20 font-bold">Mengetahui,<br />Kepala Sekolah</p>
                               <div className="text-center">
-                                <p className="font-bold underline decoration-slate-900 underline-offset-4 uppercase">
+                                <p className="font-bold underline decoration-slate-900 underline-offset-4">
                                   {state.dataSekolah.kepalaSekolah || "POPPY RISCA DEWANTI, S.T.P."}
                                 </p>
                               </div>
