@@ -4265,94 +4265,98 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                     <div className="space-y-12 no-print-gap print:space-y-0 text-slate-950 font-arial">
                       
                       {/* PAGE 1: COVER PAGE */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col justify-between items-center text-center min-h-[960px] print:min-h-0 print:h-[257mm] print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
-                        {/* Outer Frame with Double Border for Classic Cover Look */}
-                        <div className="absolute inset-4 border-2 border-slate-950 rounded-xl pointer-events-none p-1 print:inset-6">
-                          <div className="w-full h-full border border-slate-300 rounded-lg"></div>
-                        </div>
+                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col items-center min-h-[960px] print:min-h-0 print:h-[257mm] print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
+                        {/* Outer Frame with Single Border */}
+                        <div className="absolute inset-4 border border-slate-400 rounded-2xl pointer-events-none p-1 print:inset-0 print:border-slate-800 print:border-[1.5px] print:rounded-xl"></div>
 
-                        {/* Top Header Logo Representation */}
-                        <div className="z-10 mt-6 space-y-4 flex flex-col items-center">
-                          {state.dataSekolah.logo ? (
-                            <div className="w-44 h-28 relative flex items-center justify-center bg-white p-1">
-                              <img src={state.dataSekolah.logo} alt="Logo" className="max-w-full max-h-full object-contain" />
-                            </div>
-                          ) : (
-                            <div className="flex flex-col items-center justify-center space-y-2 select-none">
-                              <svg width="200" height="200" viewBox="0 0 220 220" className="mx-auto">
-                                <circle cx="110" cy="110" r="100" fill="none" stroke="#2563EB" strokeWidth="8" />
-                                <circle cx="110" cy="110" r="92" fill="none" stroke="#60A5FA" strokeWidth="1.5" strokeDasharray="4,4" />
-                                
-                                <circle cx="110" cy="115" r="55" fill="#FACC15" stroke="#1E293B" strokeWidth="4" />
-                                <circle cx="90" cy="103" r="5" fill="#1E293B" />
-                                <circle cx="130" cy="103" r="5" fill="#1E293B" />
-                                <path d="M 85 120 Q 110 148 135 120" stroke="#1E293B" strokeWidth="5" strokeLinecap="round" fill="none" />
-                                
-                                <path id="top-curve" d="M 22 110 A 88 88 0 0 1 198 110" fill="none" />
-                                <path id="bottom-curve" d="M 198 114 A 88 88 0 0 1 22 114" fill="none" />
-                                
-                                <text className="font-sans text-[11px] font-black fill-[#2563EB] tracking-widest uppercase">
-                                  <textPath href="#top-curve" startOffset="50%" textAnchor="middle">
-                                    Pendidikan Anak Usia Dini
-                                  </textPath>
-                                </text>
-                                
-                                <text className="font-sans text-[17px] font-black fill-[#2563EB] tracking-wider uppercase">
-                                  <textPath href="#bottom-curve" startOffset="50%" textAnchor="middle">
-                                    K U S U M A
-                                  </textPath>
-                                </text>
-                              </svg>
-                              <div className="text-[10px] uppercase font-bold text-slate-800 tracking-wider">
-                                Media Mandiri Anak Berprestasi
+                        <div className="flex-1 w-full flex flex-col justify-between items-center py-16 print:py-16 pb-8 print:pb-8">
+                          {/* Top Header Logo Representation */}
+                          <div className="z-10 flex flex-col items-center justify-center">
+                            {state.dataSekolah.logo ? (
+                              <div className="w-40 h-40 relative flex items-center justify-center bg-white p-1 mb-2">
+                                <img src={state.dataSekolah.logo} alt="Logo" className="max-w-full max-h-full object-contain" />
+                              </div>
+                            ) : (
+                              <div className="flex flex-col items-center justify-center select-none mb-2">
+                                <svg width="130" height="130" viewBox="0 0 220 220" className="mx-auto">
+                                  <circle cx="110" cy="110" r="100" fill="#60A5FA" stroke="#1E293B" strokeWidth="6" />
+                                  
+                                  <circle cx="110" cy="120" r="50" fill="#FACC15" stroke="#1E293B" strokeWidth="4" />
+                                  <circle cx="85" cy="105" r="5" fill="#1E293B" />
+                                  <circle cx="135" cy="105" r="5" fill="#1E293B" />
+                                  <path d="M 85 125 Q 110 155 135 125" stroke="#1E293B" strokeWidth="5" strokeLinecap="round" fill="none" />
+                                  
+                                  {/* Petals */}
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(0 110 110) translate(0 0)" />
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(72 110 110) translate(0 0)" />
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(144 110 110) translate(0 0)" />
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(216 110 110) translate(0 0)" />
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(288 110 110) translate(0 0)" />
+
+                                  <path id="top-curve" d="M 22 110 A 88 88 0 0 1 198 110" fill="none" />
+                                  <path id="bottom-curve" d="M 198 120 A 88 88 0 0 1 22 120" fill="none" />
+                                  
+                                  <text className="font-sans text-[16px] font-black fill-[#1E293B] tracking-widest uppercase cursor-default select-none">
+                                    <textPath href="#top-curve" startOffset="50%" textAnchor="middle">
+                                      Pendidikan Anak Usia Dini
+                                    </textPath>
+                                  </text>
+                                  
+                                  <text className="font-sans text-[22px] font-black fill-[#1E293B] tracking-[0.3em] uppercase cursor-default select-none">
+                                    <textPath href="#bottom-curve" startOffset="50%" textAnchor="middle">
+                                      K U S U M A
+                                    </textPath>
+                                  </text>
+                                </svg>
+                                <div className="text-[10px] uppercase font-black text-slate-900 tracking-wide mt-2 font-sans md:text-[11px]" style={{fontFamily: "'Comic Sans MS', cursive, sans-serif"}}>
+                                  MEDIA MANDIRI ANAK BERPRESTASI
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Main Title Block */}
+                          <div className="z-10 space-y-3 text-center my-10">
+                            <h1 className="text-[26px] font-black text-[#1E293B] uppercase tracking-wide leading-none font-sans">
+                              LAPORAN HASIL
+                            </h1>
+                            <h2 className="text-[15px] font-bold text-[#334155] uppercase tracking-wide px-8 leading-relaxed font-sans">
+                              CAPAIAN PERKEMBANGAN PESERTA DIDIK<br/>
+                              TAMAN PENITIPAN ANAK (TPA)
+                            </h2>
+                          </div>
+
+                          {/* Named Student Card */}
+                          <div className="z-10 w-full max-w-[400px] flex flex-col items-center space-y-10 my-8">
+                            <div className="space-y-2 w-full text-center">
+                              <span className="text-[11px] font-bold text-slate-500 tracking-[0.2em] uppercase block font-sans">NAMA PESERTA DIDIK</span>
+                              <div className="border-[1.5px] border-slate-700 rounded-xl py-3 px-6 shrink-0 w-full bg-white relative">
+                                <h3 className="text-[17px] font-black text-slate-950 tracking-wide uppercase leading-tight font-sans">
+                                  {printSiswa.namaSiswa}
+                                </h3>
                               </div>
                             </div>
-                          )}
-                        </div>
 
-                        {/* Main Title Block */}
-                        <div className="z-10 space-y-4 my-auto">
-                          <h1 className="text-3xl font-black text-slate-950 uppercase tracking-widest leading-none font-sans">
-                            LAPORAN HASIL
-                          </h1>
-                          <h2 className="text-sm font-extrabold text-slate-700 uppercase tracking-widest max-w-lg mx-auto leading-relaxed">
-                            Capaian Perkembangan Peserta Didik
-                          </h2>
-                          <div className="inline-block bg-sky-50 text-sky-800 font-extrabold text-[11px] uppercase tracking-widest px-4 py-2 rounded-full border border-sky-200">
-                            Taman Penitipan Anak (TPA)
-                          </div>
-                        </div>
-
-                        {/* Named Student Card */}
-                        <div className="z-10 w-full max-w-md space-y-6 my-auto">
-                          <div className="space-y-1.5">
-                            <span className="text-[10px] font-extrabold text-slate-400 tracking-widest uppercase block">Nama Peserta Didik</span>
-                            <div className="border-[3px] border-slate-900 rounded-2xl py-4.5 px-6 bg-slate-50/80 shadow-md">
-                              <h3 className="text-lg md:text-xl font-black text-slate-950 tracking-wide uppercase leading-tight font-sans">
-                                {printSiswa.namaSiswa}
-                              </h3>
+                            <div className="space-y-1 text-center">
+                              <span className="text-[11px] font-bold text-slate-500 tracking-[0.2em] uppercase block font-sans">NISN</span>
+                              <h4 className="text-xl font-black text-slate-950 tracking-wide font-sans">
+                                {printSiswa.nisn || "----------"}
+                              </h4>
                             </div>
                           </div>
 
-                          <div className="space-y-1.5">
-                            <span className="text-[10px] font-extrabold text-slate-400 tracking-widest uppercase block">NISN</span>
-                            <div className="text-lg font-black text-slate-900 font-mono tracking-[0.25em]">
-                              {printSiswa.nisn || "----------"}
-                            </div>
+                          {/* Bottom Metadata Block */}
+                          <div className="z-10 w-full max-w-[500px] mb-6 mt-14 border-t-[1.5px] border-slate-300 pt-8 text-center flex flex-col items-center">
+                            <h3 className="text-[16px] font-black text-slate-950 uppercase tracking-widest font-sans mb-1.5">
+                              {state.dataSekolah.namaSekolah || "KB KUSUMA"}
+                            </h3>
+                            <h4 className="text-[15px] font-black text-slate-950 uppercase tracking-widest font-sans mb-2.5">
+                              NPSN: {state.dataSekolah.npsn || "69835194"}
+                            </h4>
+                            <p className="text-[11px] font-semibold text-slate-600 uppercase tracking-wide leading-relaxed font-sans max-w-[340px] auto mx-auto">
+                              {state.dataSekolah.alamat || "MIJEN RT. 01 RW. 01, DESA MIJEN, KEC. MIJEN KAB. DEMAK, JAWA TENGAH 59584"}
+                            </p>
                           </div>
-                        </div>
-
-                        {/* Bottom Metadata Block */}
-                        <div className="z-10 mb-8 mt-auto w-[85%] border-t-[3px] border-slate-100 pt-8 text-center space-y-2">
-                          <h4 className="text-2xl font-black text-slate-950 uppercase tracking-wider font-sans">
-                            {state.dataSekolah.namaSekolah || "TPA KUSUMA"}
-                          </h4>
-                          {state.dataSekolah.npsn && (
-                            <p className="text-xl font-black text-slate-950 tracking-wider">NPSN: {state.dataSekolah.npsn}</p>
-                          )}
-                          <p className="text-sm text-slate-600 font-bold leading-relaxed uppercase max-w-lg mx-auto whitespace-pre-wrap">
-                            {state.dataSekolah.alamat || "Alamat Lembaga Utama belum didokumentasikan."}
-                          </p>
                         </div>
                       </div>
 
