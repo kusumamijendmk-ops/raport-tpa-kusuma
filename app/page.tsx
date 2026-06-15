@@ -4477,7 +4477,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                               </div>
                               <div className="w-full">
                                 <strong className="text-xs font-black text-slate-950 underline decoration-slate-900 underline-offset-4 block leading-none pb-1 font-sans">
-                                  {state.dataSekolah.kepalaSekolah || "POPPY RISCA DEWANTI, S.T.P."}
+                                  {(state.dataSekolah.kepalaSekolah || "POPPY RISCA DEWANTI, S.T.P.").replace(/S\.SOS/g, "S.Sos").replace(/S\.SOS\./g, "S.Sos.")}
                                 </strong>
                               </div>
                             </div>
@@ -4485,44 +4485,35 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                         </div>
                       </div>
 
-                           {/* INTRAKURIKULER: CATEGORY BY CATEGORY PAGES */}
-                      {state.kategoriIntrakurikuler.map((kat, katIdx) => {
-                        const catTps = activeTps.filter(tp => tp.idKategori === kat.id);
-                        const catAssessment = state.nilaiIntrakurikuler.find(n => n.idSiswa === printSiswa.id && n.idTp === kat.id);
-                        const categoryDescription = catAssessment?.deskripsi || "";
+                           {/* CONSOLIDATED LEARNING REPORTS PAGE */}
+                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
+                        <div className="z-10 space-y-6 flex-1 flex flex-col justify-between min-h-full">
+                          <div className="space-y-6">
+                            {renderPageHeader(3)}
 
-                        return (
-                          <div key={kat.id} className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
-                            {/* Outer Frame (Shown on screen, hidden in print) */}
-                            <div className="absolute inset-4 border border-slate-150 rounded-xl pointer-events-none print:hidden"></div>
+                            {/* I. CAPAIAN PEMBELAJARAN */}
+                            <div className="space-y-6">
+                              <h3 className="text-xs font-black text-slate-950 uppercase tracking-widest pl-1 mb-2">
+                                I. CAPAIAN PEMBELAJARAN
+                              </h3>
 
-                            <div className="z-10 space-y-6 flex flex-col min-h-full">
-                              <div className="flex-1">
-                                {katIdx === 0 ? (
-                                  renderPageHeader(3 + katIdx)
-                                ) : (
-                                  <div className="pt-6"></div>
-                                )}
+                              {state.kategoriIntrakurikuler.map((kat, katIdx) => {
+                                const catTps = activeTps.filter(tp => tp.idKategori === kat.id);
+                                const catAssessment = state.nilaiIntrakurikuler.find(n => n.idSiswa === printSiswa.id && n.idTp === kat.id);
+                                const categoryDescription = catAssessment?.deskripsi || "";
 
-                                <div className="space-y-6">
-                                  {/* Section Title */}
-                                  <div>
-                                    {katIdx === 0 && (
-                                      <h3 className="text-xs font-black text-slate-950 uppercase tracking-widest pl-1 mb-2">
-                                        I. CAPAIAN PEMBELAJARAN
-                                      </h3>
-                                    )}
+                                return (
+                                  <div key={kat.id} className="pt-2 keep-together">
                                     <div className="flex items-center gap-2">
                                       <span className="inline-block w-[6px] h-[18px] bg-slate-950"></span>
                                       <h4 className="text-xs font-black text-slate-950 uppercase tracking-wide leading-tight">
                                         {kat.namaKategori}
                                       </h4>
                                     </div>
-                                  </div>
 
-                                  {/* TP Table */}
-                                  <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm bg-white">
-                                    <table className="w-full text-left text-[12px] border-collapse leading-normal font-sans">
+                                    {/* TP Table */}
+                                    <div className="mt-3 overflow-hidden border border-slate-950 rounded-lg shadow-sm bg-white">
+                                      <table className="w-full text-left text-[12px] border-collapse leading-normal font-sans">
                                       <thead>
                                         <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[11px] tracking-wide">
                                           <th className="px-3.5 py-3 border-r border-slate-950 text-center w-[45%]">TUJUAN PEMBELAJARAN</th>
@@ -4571,51 +4562,35 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   </div>
 
                                   {/* Narrative Description */}
-                                  <div className="space-y-2 keep-together">
-                                    <div className="flex items-center gap-2 text-slate-950 font-black text-xs uppercase tracking-wide">
-                                      <span className="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
-                                      DESKRIPSI CAPAIAN
-                                    </div>
-                                    <div className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
-                                      {categoryDescription || `Pada aspek ${kat.namaKategori}, Ananda ${printSiswa.namaSiswa} telah menunjukkan penguasaan yang sangat baik.`}
+                                    <div className="space-y-2 keep-together pt-4">
+                                      <div className="flex items-center gap-2 text-slate-950 font-black text-xs uppercase tracking-wide">
+                                        <span className="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                                        DESKRIPSI CAPAIAN
+                                      </div>
+                                      <div className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
+                                        {categoryDescription || `Pada aspek ${kat.namaKategori}, Ananda ${printSiswa.namaSiswa} telah menunjukkan penguasaan yang sangat baik.`}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
-
-                              {/* Footer Marker */}
-                              <div className="text-[9px] text-slate-450 font-mono flex justify-between items-center pt-2 mt-auto border-t border-slate-200">
-                                <span className="uppercase tracking-wider font-semibold">Laporan Hasil Capaian Perkembangan Anak Didik (Intrakurikuler)</span>
-                                <span className="font-bold">Halaman {3 + katIdx}</span>
-                              </div>
+                                );
+                              })}
                             </div>
-                          </div>
-                        );
-                      })}
-
-                      {/* PAGE 6: CONSOLIDATED PAGE: KOKURIKULER P5, CATATAN GURU, ABSENSI, & SIGNATURES */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
-                        {/* Outer Frame (Shown on screen, hidden in print) */}
-                        <div className="absolute inset-4 border border-slate-150 rounded-xl pointer-events-none print:hidden"></div>
-
-                        <div className="z-10 space-y-6 flex-1 flex flex-col justify-between min-h-full">
-                          <div className="space-y-6">
                             
-                            {/* II. KOKURIKULER */}
-                            <div className="space-y-3">
-                              <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
-                                II. KOKURIKULER
-                              </h3>
+                          {/* II. KOKURIKULER */}
+                          <div className="space-y-3 pt-6 keep-together">
+                            <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
+                              II. KOKURIKULER
+                            </h3>
 
-                              <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm">
-                                <table className="w-full text-left text-[12px] border-collapse leading-normal bg-white">
-                                  <thead>
-                                    <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[11px] tracking-wide">
-                                      <th className="px-3.5 py-3 w-48 border-r border-slate-950 uppercase text-center">DIMENSI</th>
-                                      <th className="px-3.5 py-3 uppercase text-center">DESKRIPSI CAPAIAN</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody className="divide-y divide-slate-400 text-slate-900 font-bold bg-white font-sans">
+                            <div className="overflow-hidden border border-slate-950 rounded-lg shadow-sm bg-white">
+                              <table className="w-full text-left text-[12px] border-collapse leading-normal bg-white font-sans">
+                                <thead>
+                                  <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[11px] tracking-wide">
+                                    <th className="px-3.5 py-3 w-48 border-r border-slate-950 uppercase text-center">DIMENSI</th>
+                                    <th className="px-3.5 py-3 uppercase text-center">DESKRIPSI CAPAIAN</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-400 text-slate-900 font-bold bg-white">
                                     {state.subdimensiKokurikuler.filter(sub => sub.idKelas === printSiswa.idKelas).length > 0 ? (
                                       state.subdimensiKokurikuler
                                         .filter(sub => sub.idKelas === printSiswa.idKelas)
@@ -4711,7 +4686,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           </div>
 
                           {/* Section V: Signature Block */}
-                          <div className="pt-8 border-t border-slate-150 grid grid-cols-2 gap-y-12 text-center text-[12px] text-slate-900 leading-relaxed max-w-2xl mx-auto w-full">
+                          <div className="keep-together pt-12 border-t border-slate-150 grid grid-cols-2 gap-y-12 text-center text-[12px] text-slate-900 leading-relaxed max-w-2xl mx-auto w-full">
                             {/* Top Left: Orang Tua */}
                             <div className="flex flex-col items-center justify-between">
                               <p className="mb-20 font-bold">Mengetahui,<br />Orang Tua/Wali,</p>
@@ -4726,7 +4701,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                               </p>
                               <div>
                                 <p className="font-bold underline decoration-slate-900 underline-offset-4">
-                                  {printKelasItem?.waliKelas || "WALIKELAS PAUD"}
+                                  {(printKelasItem?.waliKelas || "WALIKELAS PAUD").replace(/S\.SOS/g, "S.Sos").replace(/S\.SOS\./g, "S.Sos.")}
                                 </p>
                                 <p className="text-[10px] font-medium mt-1">NUPTK: {printKelasItem?.nuptkNgty || "-"}</p>
                               </div>
@@ -4737,16 +4712,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                               <p className="mb-20 font-bold">Mengetahui,<br />Kepala Sekolah</p>
                               <div className="text-center">
                                 <p className="font-bold underline decoration-slate-900 underline-offset-4">
-                                  {state.dataSekolah.kepalaSekolah || "POPPY RISCA DEWANTI, S.T.P."}
+                                  {(state.dataSekolah.kepalaSekolah || "POPPY RISCA DEWANTI, S.T.P.").replace(/S\.SOS/g, "S.Sos").replace(/S\.SOS\./g, "S.Sos.")}
                                 </p>
                               </div>
                             </div>
-                          </div>
-
-                          {/* Final footer marker */}
-                          <div className="text-[9px] text-slate-455 font-mono flex justify-between items-center pt-2 mt-6 border-t border-slate-200">
-                            <span className="uppercase tracking-wider font-semibold">Laporan Penutup Hasil Akhir (Selesai)</span>
-                            <span className="font-bold">Halaman {3 + state.kategoriIntrakurikuler.length}</span>
                           </div>
                         </div>
                       </div>
