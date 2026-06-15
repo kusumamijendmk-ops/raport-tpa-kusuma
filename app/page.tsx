@@ -4585,12 +4585,6 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   </div>
                                 </div>
                               </div>
-
-                              {/* Footer Marker */}
-                              <div className="text-[9px] text-slate-450 font-mono flex justify-between items-center pt-2 mt-auto border-t border-slate-200">
-                                <span className="uppercase tracking-wider font-semibold">Laporan Hasil Capaian Perkembangan Anak Didik (Intrakurikuler)</span>
-                                <span className="font-bold">Halaman {3 + katIdx}</span>
-                              </div>
                             </div>
                           </div>
                         );
