@@ -4488,7 +4488,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                         </div>
                       </div>
 
-                      {/* INTRAKURIKULER: CATEGORY BY CATEGORY PAGES */}
+                           {/* INTRAKURIKULER: CATEGORY BY CATEGORY PAGES */}
                       {state.kategoriIntrakurikuler.map((kat, katIdx) => {
                         const catTps = activeTps.filter(tp => tp.idKategori === kat.id);
                         const catAssessment = state.nilaiIntrakurikuler.find(n => n.idSiswa === printSiswa.id && n.idTp === kat.id);
@@ -4528,8 +4528,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                     <table className="w-full text-left text-[12px] border-collapse leading-normal font-sans">
                                       <thead>
                                         <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[11px] tracking-wide">
-                                          <th className="px-3.5 py-3 border-r border-slate-950 w-[55%]">TUJUAN PEMBELAJARAN</th>
-                                          <th className="px-3.5 py-3 border-r border-slate-950 w-[25%]">AKTIVITAS</th>
+                                          <th className="px-3.5 py-3 border-r border-slate-950 text-center w-[45%]">TUJUAN PEMBELAJARAN</th>
+                                          <th className="px-3.5 py-3 border-r border-slate-950 text-center w-[35%]">AKTIVITAS</th>
                                           <th className="px-3.5 py-3 text-center w-[20%]">DIMENSI KEMANDIRIAN</th>
                                         </tr>
                                       </thead>
@@ -4555,7 +4555,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                                   {tp.aktivitasMetode || "—"}
                                                 </td>
                                                 <td className="px-3.5 py-3 text-center">
-                                                  <span className={`inline-block px-3.5 py-1 rounded-full border-[1.5px] text-[10px] font-black uppercase text-center tracking-wider min-w-[75px] ${ratingStyle}`}>
+                                                  <span className={`inline-block px-3.5 py-1 rounded-full border-[1.5px] text-[10px] font-black uppercase text-center tracking-wider min-w-[70px] ${ratingStyle}`}>
                                                     {score}
                                                   </span>
                                                 </td>
@@ -4596,16 +4596,16 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                         );
                       })}
 
-                      {/* PAGE: KOKURIKULER (P5 PANEL) */}
+                      {/* PAGE 6: CONSOLIDATED PAGE: KOKURIKULER P5, CATATAN GURU, ABSENSI, & SIGNATURES */}
                       <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
-                        {/* Outer Frame (Shown on screen, hidden in print to avoid clashing) */}
+                        {/* Outer Frame (Shown on screen, hidden in print) */}
                         <div className="absolute inset-4 border border-slate-150 rounded-xl pointer-events-none print:hidden"></div>
 
-                        <div className="z-10 space-y-5 flex-1 flex flex-col justify-between">
-                          <div>
-                            {renderPageHeader(3 + state.kategoriIntrakurikuler.length)}
-
-                            <div className="space-y-4">
+                        <div className="z-10 space-y-6 flex-1 flex flex-col justify-between min-h-full">
+                          <div className="space-y-6">
+                            
+                            {/* II. KOKURIKULER */}
+                            <div className="space-y-3">
                               <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                                 II. KOKURIKULER
                               </h3>
@@ -4614,8 +4614,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 <table className="w-full text-left text-[12px] border-collapse leading-normal bg-white">
                                   <thead>
                                     <tr className="bg-slate-50 text-slate-950 font-black uppercase border-b border-slate-950 text-[11px] tracking-wide">
-                                      <th className="px-3.5 py-3 w-40 border-r border-slate-950 uppercase">DIMENSI</th>
-                                      <th className="px-3.5 py-3 uppercase">DESKRIPSI CAPAIAN</th>
+                                      <th className="px-3.5 py-3 w-48 border-r border-slate-950 uppercase text-center">DIMENSI</th>
+                                      <th className="px-3.5 py-3 uppercase text-center">DESKRIPSI CAPAIAN</th>
                                     </tr>
                                   </thead>
                                   <tbody className="divide-y divide-slate-400 text-slate-900 font-bold bg-white font-sans">
@@ -4636,16 +4636,16 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
 
                                           return (
                                             <tr key={sub.id} className="align-top">
-                                              <td className="px-4 py-4 border-r border-slate-950 font-bold text-slate-950 uppercase leading-relaxed text-[12px]">
+                                              <td className="px-4 py-4 border-r border-slate-950 font-bold text-slate-955 uppercase leading-relaxed text-[12px]">
                                                 {sub.namaSubdimensi.replace(/^Dimensi\s+/i, "")}
                                               </td>
                                               <td className="px-4 py-4 leading-relaxed text-slate-900 font-bold text-justify text-[12px] whitespace-pre-wrap">
-                                                <div className="flex flex-col justify-between min-h-[100px]">
+                                                <div className="flex flex-col justify-between min-h-[80px]">
                                                   <p className="text-[12px] leading-relaxed text-slate-900 text-justify font-semibold whitespace-pre-wrap">
-                                                    {deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif and berkembang konsisten dalam mewujudkan projek profil pancasila.`}
+                                                    {deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif dan berkembang konsisten dalam mewujudkan projek profil pancasila.`}
                                                   </p>
-                                                  <div className="flex justify-end mt-3">
-                                                    <span className={`px-4 py-1 rounded-full border-[1.5px] text-[11px] font-black uppercase text-center tracking-wider ${badgeStyle}`}>
+                                                  <div className="flex justify-end mt-2">
+                                                    <span className={`px-4 py-0.5 rounded-full border-[1.5px] text-[10px] font-black uppercase text-center tracking-wider ${badgeStyle}`}>
                                                       {score}
                                                     </span>
                                                   </div>
@@ -4665,27 +4665,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 </table>
                               </div>
                             </div>
-                          </div>
 
-                          {/* Page index footer */}
-                          <div className="text-[9px] text-slate-455 font-mono flex justify-between items-center pt-2 mt-6 border-t border-slate-200">
-                            <span className="uppercase tracking-wider font-semibold">Laporan Lanjutan Capaian Kokurikuler P5</span>
-                            <span className="font-bold">Halaman {3 + state.kategoriIntrakurikuler.length}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* PAGE 12: CATATAN GURU, ABSENSI, & TANDA TANGAN */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-9 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
-                        {/* Outer Frame (Shown on screen, hidden in print to avoid clashing) */}
-                        <div className="absolute inset-4 border border-slate-150 rounded-xl pointer-events-none print:hidden"></div>
-
-                        <div className="z-10 space-y-6 flex-1 flex flex-col justify-between">
-                          <div className="space-y-6">
-                            
-                            {/* Reusable Metadata and spacing for final page */}
-                            {renderPageHeader(4 + state.kategoriIntrakurikuler.length)}
-
+                            {/* GRID: CATATAN GURU & KEHADIRAN ABSENSI */}
                             <div className="grid grid-cols-5 gap-6 align-start leading-normal">
                               {/* Left Column: Catatan Guru */}
                               <div className="col-span-3 space-y-2.5 keep-together">
@@ -4707,8 +4688,8 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                   <table className="w-full text-left text-[12px] border-collapse font-sans bg-white">
                                     <thead>
                                       <tr className="bg-slate-50 text-slate-950 font-black border-b border-slate-950 text-[11px] tracking-wider uppercase">
-                                        <th className="px-3.5 py-2.5 border-r border-slate-950 uppercase">Keterangan</th>
-                                        <th className="px-3.5 py-2.5 text-center w-24 uppercase">Jumlah</th>
+                                        <th className="px-3.5 py-2.5 border-r border-slate-950 uppercase text-center">Keterangan</th>
+                                        <th className="px-3.5 py-2.5 text-center w-24 uppercase font-bold">Jumlah</th>
                                       </tr>
                                     </thead>
                                     <tbody className="divide-y divide-slate-400 text-slate-900 font-bold bg-white">
@@ -4729,6 +4710,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 </div>
                               </div>
                             </div>
+
                           </div>
 
                           {/* Section V: Signature Block */}
@@ -4765,9 +4747,9 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           </div>
 
                           {/* Final footer marker */}
-                          <div className="text-[9px] text-slate-450 font-mono flex justify-between items-center pt-2 mt-6 border-t border-slate-200">
+                          <div className="text-[9px] text-slate-455 font-mono flex justify-between items-center pt-2 mt-6 border-t border-slate-200">
                             <span className="uppercase tracking-wider font-semibold">Laporan Penutup Hasil Akhir (Selesai)</span>
-                            <span className="font-bold">Halaman {4 + state.kategoriIntrakurikuler.length}</span>
+                            <span className="font-bold">Halaman {3 + state.kategoriIntrakurikuler.length}</span>
                           </div>
                         </div>
                       </div>
