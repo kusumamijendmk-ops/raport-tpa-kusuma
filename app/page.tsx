@@ -4265,7 +4265,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                     <div className="space-y-12 no-print-gap print:space-y-0 text-slate-950 font-arial">
                       
                       {/* PAGE 1: COVER PAGE */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col justify-between items-center text-center min-h-[960px] print:min-h-0 print:h-[296mm] print:w-[210mm] print:border-none print:shadow-none print:p-14 print:m-0 animate-fade-in font-sans relative">
+                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col justify-between items-center text-center min-h-[960px] print:min-h-0 print:h-[257mm] print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
                         {/* Outer Frame with Double Border for Classic Cover Look */}
                         <div className="absolute inset-4 border-2 border-slate-950 rounded-xl pointer-events-none p-1 print:inset-6">
                           <div className="w-full h-full border border-slate-300 rounded-lg"></div>
@@ -4357,7 +4357,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       </div>
 
                       {/* PAGE 2: BIODATA PAGE (KETERANGAN DIRI) */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col justify-between min-h-[960px] print:min-h-0 print:h-[296mm] print:w-[210mm] print:border-none print:shadow-none print:p-14 print:m-0 animate-fade-in font-sans relative">
+                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col justify-between min-h-[960px] print:min-h-0 print:h-[257mm] print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
                         {/* Outer Border */}
                         <div className="absolute inset-4 border border-slate-200 rounded-xl pointer-events-none p-1 print:inset-6"></div>
 
@@ -4486,7 +4486,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       </div>
 
                            {/* CONSOLIDATED LEARNING REPORTS PAGE */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-[210mm] print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
+                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
                         <div className="z-10 space-y-6 block">
                           <div className="space-y-6">
                             {renderPageHeader(3)}
@@ -4651,7 +4651,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                               </div>
 
                               {/* Kehadiran Absensi */}
-                              <div className="space-y-2.5 w-1/2">
+                              <div className="space-y-2.5 w-1/2 keep-together">
                                 <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                                   IV. Kehadiran
                                 </h3>

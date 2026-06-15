@@ -63,6 +63,7 @@
 
     .keep-together {
       page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .print-arial-large, .print-arial-large * {
