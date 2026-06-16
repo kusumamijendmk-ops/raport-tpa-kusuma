@@ -4490,7 +4490,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       </div>
 
                            {/* CONSOLIDATED LEARNING REPORTS PAGE */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
+                      <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
                         <div className="z-10 space-y-6 block">
                           <div className="space-y-6">
                             {renderPageHeader(3)}
