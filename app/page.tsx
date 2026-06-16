@@ -23,28 +23,6 @@ import {
 } from "firebase/firestore";
 
 import * as XLSX from "xlsx";
-import dynamic from "next/dynamic";
-import "react-quill-new/dist/quill.snow.css";
-
-const ReactQuill = dynamic(() => import("react-quill-new"), { 
-  ssr: false,
-  loading: () => <div className="h-40 w-full animate-pulse bg-slate-100 rounded-xl border border-slate-200"></div>
-});
-
-const quillModules = {
-  toolbar: [
-    [{ 'header': [false] }],
-    ['bold', 'italic', 'underline'],
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-    ['clean']
-  ],
-};
-
-const quillFormats = [
-  'header',
-  'bold', 'italic', 'underline',
-  'list', 'bullet',
-];
 
 const formatIndonesianDate = (dateStr: string): string => {
   if (!dateStr) return "19 Desember 2025";
@@ -3584,24 +3562,20 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                           <span className="text-[11px] text-slate-400 font-medium font-sans">Rekap aspek</span>
                                         </div>
 
-                                        <div className="relative group quill-editor-wrapper">
-                                          <div className="bg-white rounded-xl overflow-hidden border border-slate-200 focus-within:ring-2 focus-within:ring-emerald-600 transition-all">
-                                            <ReactQuill
-                                              theme="snow"
-                                              value={currentCatDesc}
-                                              onChange={(val) => handleUpdateDescriptionIntra(s.id, kat.id, val)}
-                                              modules={quillModules}
-                                              formats={quillFormats}
-                                              placeholder={`Tuliskan deskripsi narasi perkembangan gabungan (rekap) untuk aspek ${kat.namaKategori}...`}
-                                              className="bg-white min-h-[150px]"
-                                            />
-                                          </div>
+                                        <div className="relative group">
+                                          <textarea
+                                            value={currentCatDesc}
+                                            onChange={(e) => handleUpdateDescriptionIntra(s.id, kat.id, e.target.value)}
+                                            placeholder={`Tuliskan deskripsi narasi perkembangan gabungan (rekap) untuk aspek ${kat.namaKategori}...`}
+                                            rows={3}
+                                            className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-white focus:outline-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner font-sans min-h-[100px]"
+                                          />
                                           <button
                                             type="button"
                                             onClick={() => composeAiItemText(s.id, kat.id, "intra")}
                                             disabled={!hasAnyGrades || isGenerating}
                                             title={hasAnyGrades ? "Tulis rekap deskripsi otomatis dengan AI" : "Beri minimal satu predikat TP di atas untuk mengaktifkan AI"}
-                                            className="absolute right-2 top-2 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100 cursor-pointer z-10"
+                                            className="absolute right-3 top-3 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100 cursor-pointer"
                                           >
                                             {isGenerating ? (
                                               <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
@@ -3790,23 +3764,19 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                         </div>
                                       )}
 
-                                      <div className="relative group quill-editor-wrapper">
-                                        <div className="bg-white rounded-xl overflow-hidden border border-slate-200 focus-within:ring-2 focus-within:ring-emerald-600 transition-all">
-                                          <ReactQuill
-                                            theme="snow"
-                                            value={currentDesc}
-                                            onChange={(val) => handleUpdateDescriptionKokuri(s.id, sub.id, val)}
-                                            modules={quillModules}
-                                            formats={quillFormats}
-                                            placeholder={`Tuliskan narasi perkembangan untuk subdimensi Projek ini...`}
-                                            className="bg-white min-h-[150px]"
-                                          />
-                                        </div>
+                                      <div className="relative group">
+                                        <textarea
+                                          value={currentDesc}
+                                          onChange={(e) => handleUpdateDescriptionKokuri(s.id, sub.id, e.target.value)}
+                                          placeholder={`Tuliskan narasi perkembangan untuk subdimensi Projek ini...`}
+                                          rows={3}
+                                          className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-slate-50/30 focus:bg-white focus:outline-emerald-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner min-h-[100px]"
+                                        />
                                         <button
                                           onClick={() => composeAiItemText(s.id, sub.id, "kokuri")}
                                           disabled={!currentGrade || isGenerating}
                                           title="Tulis deskripsi dengan AI"
-                                          className="absolute right-2 top-2 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100 z-10"
+                                          className="absolute right-3 top-3 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100"
                                         >
                                           {isGenerating ? (
                                             <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
@@ -3925,19 +3895,13 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 <label className="block text-xs font-bold text-slate-600">Narasi Perkembangan Ananda</label>
                                 <span className="text-[10px] text-slate-400 font-mono italic">Ketik manual atau biarkan AI membantu menyusun narasi</span>
                               </div>
-                              <div className="quill-editor-wrapper">
-                                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 focus-within:ring-2 focus-within:ring-emerald-600 transition-all">
-                                  <ReactQuill
-                                    theme="snow"
-                                    value={noteText}
-                                    onChange={(val) => handleSaveCatatan(s.id, val)}
-                                    modules={quillModules}
-                                    formats={quillFormats}
-                                    placeholder="Ketik deskripsi perkembangan ananda di sini secara bebas..."
-                                    className="bg-white min-h-[300px]"
-                                  />
-                                </div>
-                              </div>
+                              <textarea
+                                rows={10}
+                                placeholder="Ketik deskripsi perkembangan ananda di sini secara bebas..."
+                                value={noteText}
+                                onChange={(e) => handleSaveCatatan(s.id, e.target.value)}
+                                className="w-full text-sm font-medium border border-slate-200 p-4 rounded-xl focus:outline-emerald-600 leading-relaxed text-slate-700 bg-slate-50/20 shadow-inner h-64"
+                              />
                             </div>
 
                             {/* AI ACTION PANEL FOR THIS STUDENT */}
@@ -4302,52 +4266,98 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       
                       {/* PAGE 1: COVER PAGE */}
                       <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col items-center min-h-[960px] print:min-h-0 print:h-[257mm] print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
-                        {/* Outer Frame - Elegant thin border */}
+                        {/* Outer Frame with Single Border */}
                         <div className="absolute inset-4 border border-slate-400 rounded-2xl pointer-events-none p-1 print:inset-0 print:border-slate-800 print:border-[3px] print:rounded-xl"></div>
 
-                        {/* Top Header Logo */}
-                        <div className="z-10 mt-16 mb-8 flex flex-col items-center">
-                          <div className="w-44 h-44 flex items-center justify-center">
-                             {state.dataSekolah.logo ? (
-                               <img src={state.dataSekolah.logo} alt="Logo" className="max-w-full max-h-full object-contain" />
-                             ) : (
-                               <div className="w-32 h-32 rounded-full border-2 border-slate-200 flex items-center justify-center text-slate-400 font-bold">LOGO</div>
-                             )}
-                          </div>
-                        </div>
+                        <div className="flex-1 w-full flex flex-col justify-between items-center py-16 print:py-16 pb-8 print:pb-8">
+                          {/* Top Header Logo Representation */}
+                          <div className="z-10 flex flex-col items-center justify-center">
+                            {state.dataSekolah.logo ? (
+                              <div className="w-40 h-40 relative flex items-center justify-center bg-white p-1 mb-2">
+                                <img src={state.dataSekolah.logo} alt="Logo" className="max-w-full max-h-full object-contain" />
+                              </div>
+                            ) : (
+                              <div className="flex flex-col items-center justify-center select-none mb-2">
+                                <svg width="130" height="130" viewBox="0 0 220 220" className="mx-auto">
+                                  <circle cx="110" cy="110" r="100" fill="#60A5FA" stroke="#1E293B" strokeWidth="6" />
+                                  
+                                  <circle cx="110" cy="120" r="50" fill="#FACC15" stroke="#1E293B" strokeWidth="4" />
+                                  <circle cx="85" cy="105" r="5" fill="#1E293B" />
+                                  <circle cx="135" cy="105" r="5" fill="#1E293B" />
+                                  <path d="M 85 125 Q 110 155 135 125" stroke="#1E293B" strokeWidth="5" strokeLinecap="round" fill="none" />
+                                  
+                                  {/* Petals */}
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(0 110 110) translate(0 0)" />
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(72 110 110) translate(0 0)" />
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(144 110 110) translate(0 0)" />
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(216 110 110) translate(0 0)" />
+                                  <path d="M 110 70 A 30 30 0 0 1 110 10 A 30 30 0 0 1 110 70" fill="#A3E635" stroke="#1E293B" strokeWidth="4" transform="rotate(288 110 110) translate(0 0)" />
 
-                        {/* Main Title Block */}
-                        <div className="z-10 space-y-3 text-center my-10">
-                          <h1 className="text-[26px] font-black text-slate-900 uppercase tracking-wider font-display">
-                            LAPORAN HASIL
-                          </h1>
-                          <div className="space-y-1">
-                            <h2 className="text-[16px] font-bold text-slate-800 uppercase tracking-wide px-4">
-                              CAPAIAN PERKEMBANGAN PESERTA DIDIK
-                            </h2>
-                            <h2 className="text-[16px] font-bold text-slate-800 uppercase tracking-wide px-4">
-                              PENDIDIKAN ANAK USIA DINI (PAUD)
+                                  <path id="top-curve" d="M 22 110 A 88 88 0 0 1 198 110" fill="none" />
+                                  <path id="bottom-curve" d="M 198 120 A 88 88 0 0 1 22 120" fill="none" />
+                                  
+                                  <text className="font-sans text-[16px] font-black fill-[#1E293B] tracking-widest uppercase cursor-default select-none">
+                                    <textPath href="#top-curve" startOffset="50%" textAnchor="middle">
+                                      Pendidikan Anak Usia Dini
+                                    </textPath>
+                                  </text>
+                                  
+                                  <text className="font-sans text-[22px] font-black fill-[#1E293B] tracking-[0.3em] uppercase cursor-default select-none">
+                                    <textPath href="#bottom-curve" startOffset="50%" textAnchor="middle">
+                                      K U S U M A
+                                    </textPath>
+                                  </text>
+                                </svg>
+                                <div className="text-[10px] uppercase font-black text-slate-900 tracking-wide mt-2 font-sans md:text-[11px]" style={{fontFamily: "'Comic Sans MS', cursive, sans-serif"}}>
+                                  MEDIA MANDIRI ANAK BERPRESTASI
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Main Title Block */}
+                          <div className="z-10 space-y-3 text-center my-10">
+                            <h1 className="text-[26px] font-black text-[#1E293B] uppercase tracking-wide leading-none font-sans">
+                              LAPORAN HASIL
+                            </h1>
+                            <h2 className="text-[15px] font-bold text-[#334155] uppercase tracking-wide px-8 leading-relaxed font-sans">
+                              CAPAIAN PERKEMBANGAN PESERTA DIDIK<br/>
+                              TAMAN PENITIPAN ANAK (TPA)
                             </h2>
                           </div>
-                        </div>
 
-                        {/* Named Student Section */}
-                        <div className="z-10 w-full flex flex-col items-center mt-10 mb-8 px-10">
-                          <span className="text-[11px] font-bold text-slate-500 tracking-[0.15em] uppercase block mb-3">NAMA PESERTA DIDIK</span>
-                          <div className="w-full border border-slate-750 rounded-[14px] py-3 px-6 bg-white shadow-sm flex items-center justify-center">
-                            <h3 className="text-[22px] font-black text-slate-950 tracking-wider uppercase leading-tight font-display text-center">
-                              {printSiswa.namaSiswa}
+                          {/* Named Student Card */}
+                          <div className="z-10 w-full max-w-[400px] flex flex-col items-center space-y-10 my-8">
+                            <div className="space-y-2 w-full text-center">
+                              <span className="text-[11px] font-bold text-slate-500 tracking-[0.2em] uppercase block font-sans">NAMA PESERTA DIDIK</span>
+                              <div className="border-[1.5px] border-slate-700 rounded-xl py-3 px-6 shrink-0 w-full bg-white relative">
+                                <h3 className="text-[17px] font-black text-slate-950 tracking-wide uppercase leading-tight font-sans">
+                                  {printSiswa.namaSiswa}
+                                </h3>
+                              </div>
+                            </div>
+
+                            <div className="space-y-1 text-center">
+                              <span className="text-[11px] font-bold text-slate-500 tracking-[0.2em] uppercase block font-sans">NISN</span>
+                              <h4 className="text-xl font-black text-slate-950 tracking-wide font-sans">
+                                {printSiswa.nisn || "----------"}
+                              </h4>
+                            </div>
+                          </div>
+
+                          {/* Bottom Metadata Block */}
+                          <div className="z-10 w-full max-w-[500px] mb-6 mt-14 border-t-[1.5px] border-slate-300 pt-8 text-center flex flex-col items-center">
+                            <h3 className="text-[16px] font-black text-slate-950 uppercase tracking-widest font-sans mb-1.5">
+                              {state.dataSekolah.namaSekolah || "KB KUSUMA"}
                             </h3>
+                            <h4 className="text-[15px] font-black text-slate-950 uppercase tracking-widest font-sans mb-2.5">
+                              NPSN: {state.dataSekolah.npsn || "69835194"}
+                            </h4>
+                            <p className="text-[11px] font-semibold text-slate-600 uppercase tracking-wide leading-relaxed font-sans max-w-[340px] auto mx-auto">
+                              {state.dataSekolah.alamat || "MIJEN RT. 01 RW. 01, DESA MIJEN, KEC. MIJEN KAB. DEMAK, JAWA TENGAH 59584"}
+                            </p>
                           </div>
                         </div>
-
-                        <div className="z-10 flex flex-col items-center mt-12">
-                          <span className="text-[11px] font-bold text-slate-500 tracking-[0.15em] uppercase block mb-2">NISN</span>
-                          <div className="text-[22px] font-black text-slate-900 tracking-[0.1em]">
-                            {printSiswa.nisn || "----------"}
-                          </div>
-                        </div>
-
                       </div>
 
                       {/* PAGE 2: BIODATA PAGE (KETERANGAN DIRI) */}
@@ -4561,10 +4571,9 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                         <span className="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
                                         DESKRIPSI CAPAIAN
                                       </div>
-                                      <div 
-                                        className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify shadow-inner narrative-box rich-text-print"
-                                        dangerouslySetInnerHTML={{ __html: categoryDescription || `Pada aspek ${kat.namaKategori}, Ananda ${printSiswa.namaSiswa} telah menunjukkan penguasaan yang sangat baik.` }}
-                                      />
+                                      <div className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
+                                        {categoryDescription || `Pada aspek ${kat.namaKategori}, Ananda ${printSiswa.namaSiswa} telah menunjukkan penguasaan yang sangat baik.`}
+                                      </div>
                                     </div>
                                   </div>
                                 );
@@ -4606,12 +4615,11 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                               <td className="px-4 py-4 border-r border-slate-950 font-bold text-slate-955 uppercase leading-relaxed text-[12px]">
                                                 {sub.namaSubdimensi.replace(/^Dimensi\s+/i, "")}
                                               </td>
-                                              <td className="px-4 py-4 leading-relaxed text-slate-900 font-bold text-justify text-[12px]">
+                                              <td className="px-4 py-4 leading-relaxed text-slate-900 font-bold text-justify text-[12px] whitespace-pre-wrap">
                                                 <div className="flex flex-col justify-between min-h-[80px]">
-                                                  <div 
-                                                    className="text-[12px] leading-relaxed text-slate-900 text-justify font-semibold rich-text-print"
-                                                    dangerouslySetInnerHTML={{ __html: deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif dan berkembang konsisten dalam mewujudkan projek profil pancasila.` }}
-                                                  />
+                                                  <p className="text-[12px] leading-relaxed text-slate-900 text-justify font-semibold whitespace-pre-wrap">
+                                                    {deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif dan berkembang konsisten dalam mewujudkan projek profil pancasila.`}
+                                                  </p>
                                                   <div className="flex justify-end mt-2">
                                                     <span className={`px-4 py-0.5 rounded-full border-[1.5px] text-[10px] font-black uppercase text-center tracking-wider ${badgeStyle}`}>
                                                       {score}
@@ -4641,10 +4649,9 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                                   III. Catatan Guru Wali Kelas
                                 </h3>
-                                <div 
-                                  className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify shadow-inner narrative-box rich-text-print"
-                                  dangerouslySetInnerHTML={{ __html: printCatatanSiswa }}
-                                />
+                                <div className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
+                                  {printCatatanSiswa}
+                                </div>
                               </div>
 
                               {/* Kehadiran Absensi */}
