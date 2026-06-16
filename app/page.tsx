@@ -1865,11 +1865,13 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
       <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           @page {
-            size: 8.5in 13in;
-            margin: 1cm !important;
+            size: A4;
+            margin: 1.2cm !important;
           }
           body {
             font-family: Arial, sans-serif !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
           .print-arial-large {
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
@@ -4301,7 +4303,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                     <div className="space-y-12 no-print-gap print:space-y-0 text-slate-950 font-arial">
                       
                       {/* PAGE 1: COVER PAGE */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col items-center min-h-[960px] print:min-h-0 print:h-[257mm] print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
+                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col items-center min-h-[960px] print:min-h-0 print:h-[265mm] print:w-full print:max-w-none print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
                         {/* Outer Frame with Rounded Corners - as seen in reference */}
                         <div className="absolute inset-8 border-[1px] border-slate-800 rounded-3xl pointer-events-none p-1 print:inset-0 print:border-slate-900 print:border-[2.5px] print:rounded-[40px]"></div>
 
@@ -4412,7 +4414,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       </div>
 
                       {/* PAGE 2: BIODATA PAGE (KETERANGAN DIRI) */}
-                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col justify-between min-h-[960px] print:min-h-0 print:h-[257mm] print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
+                      <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col justify-between min-h-[960px] print:min-h-0 print:h-[265mm] print:w-full print:max-w-none print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
                         {/* Outer Border */}
                         <div className="absolute inset-4 border border-slate-200 rounded-xl pointer-events-none p-1 print:inset-6"></div>
 
@@ -4541,7 +4543,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       </div>
 
                            {/* CONSOLIDATED LEARNING REPORTS PAGE */}
-                      <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
+                      <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 max-w-3xl mx-auto block min-h-[960px] print:min-h-0 print:h-auto print:w-full print:max-w-none print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in relative text-slate-950 print-arial-large">
                         <div className="z-10 space-y-6 block">
                           <div className="space-y-6">
                             {renderPageHeader(3)}

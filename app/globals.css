@@ -33,12 +33,15 @@
   /* Dynamic styles for printing standard report forms */
   @media print {
     @page {
-      margin: 2cm;
+      size: A4;
+      margin: 1.2cm !important;
     }
     body {
       background: white !important;
       color: black !important;
       font-size: 11pt !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
     
     .no-print {
