@@ -4267,7 +4267,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                       {/* PAGE 1: COVER PAGE */}
                       <div className="print-page-break bg-white border border-slate-200 rounded-2xl shadow-lg p-12 max-w-3xl mx-auto flex flex-col items-center min-h-[960px] print:min-h-0 print:h-[257mm] print:w-full print:border-none print:shadow-none print:p-0 print:m-0 animate-fade-in font-sans relative">
                         {/* Outer Frame with Single Border */}
-                        <div className="absolute inset-4 border border-slate-400 rounded-2xl pointer-events-none p-1 print:inset-0 print:border-slate-800 print:border-[1.5px] print:rounded-xl"></div>
+                        <div className="absolute inset-4 border border-slate-400 rounded-2xl pointer-events-none p-1 print:inset-0 print:border-slate-800 print:border-[3px] print:rounded-xl"></div>
 
                         <div className="flex-1 w-full flex flex-col justify-between items-center py-16 print:py-16 pb-8 print:pb-8">
                           {/* Top Header Logo Representation */}
@@ -4655,7 +4655,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                               </div>
 
                               {/* Kehadiran Absensi */}
-                              <div className="space-y-2.5 w-1/2 keep-together">
+                              <div className="space-y-2.5 w-1/2">
                                 <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                                   IV. Kehadiran
                                 </h3>
@@ -4690,7 +4690,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           </div>
 
                           {/* Section V: Signature Block */}
-                          <div className="keep-together pt-12 border-t border-slate-150 grid grid-cols-2 gap-y-12 text-center text-[12px] text-slate-900 leading-relaxed max-w-2xl mx-auto w-full">
+                          <div className="pt-12 border-t border-slate-150 grid grid-cols-2 gap-y-12 text-center text-[12px] text-slate-900 leading-relaxed max-w-2xl mx-auto w-full">
                             {/* Top Left: Orang Tua */}
                             <div className="flex flex-col items-center justify-between">
                               <p className="mb-20 font-bold">Mengetahui,<br />Orang Tua/Wali,</p>
