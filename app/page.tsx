@@ -4305,7 +4305,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                         {/* Outer Frame with Rounded Corners - as seen in reference */}
                         <div className="absolute inset-8 border-[1px] border-slate-800 rounded-3xl pointer-events-none p-1 print:inset-0 print:border-slate-900 print:border-[2.5px] print:rounded-[40px]"></div>
 
-                        <div className="flex-1 w-full flex flex-col justify-between items-center py-20 print:py-24">
+                        <div className="flex-1 w-full flex flex-col justify-between items-center py-12 print:py-6">
                           {/* Top Header Logo Section */}
                           <div className="z-10 flex flex-col items-center justify-center mb-4">
                             {state.dataSekolah.logo ? (
@@ -4352,7 +4352,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           </div>
 
                           {/* Main Titles */}
-                          <div className="z-10 space-y-2 text-center mt-8 mb-12">
+                          <div className="z-10 space-y-2 text-center mt-4 mb-6 print:mt-2 print:mb-4">
                             <h1 className="text-[32px] font-black text-[#1E293B] uppercase tracking-wider leading-none font-sans">
                               LAPORAN HASIL
                             </h1>
@@ -4367,27 +4367,27 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           </div>
 
                           {/* Student Info Box */}
-                          <div className="z-10 w-full max-w-[500px] flex flex-col items-center space-y-12 my-6">
-                            <div className="space-y-3 w-full text-center">
+                          <div className="z-10 w-full max-w-[500px] flex flex-col items-center space-y-6 print:space-y-4 my-4 print:my-2">
+                            <div className="space-y-2 w-full text-center">
                               <span className="text-[13px] font-bold text-slate-500 tracking-[0.1em] uppercase block">NAMA PESERTA DIDIK</span>
-                              <div className="border-[1.5px] border-slate-900 rounded-2xl py-5 px-8 bg-white shadow-sm w-full">
-                                <h3 className="text-[24px] font-black text-slate-950 tracking-wide uppercase leading-tight font-sans">
+                              <div className="border-[1.5px] border-slate-900 rounded-2xl py-4 px-6 bg-white shadow-sm w-full">
+                                <h3 className="text-[22px] font-black text-slate-950 tracking-wide uppercase leading-tight font-sans">
                                   {printSiswa.namaSiswa}
                                 </h3>
                               </div>
                             </div>
 
-                            <div className="space-y-2 text-center">
+                            <div className="space-y-1 text-center">
                               <span className="text-[13px] font-bold text-slate-500 tracking-[0.1em] uppercase block">NISN</span>
-                              <h4 className="text-[28px] font-black text-slate-900 tracking-[0.15em] font-sans">
+                              <h4 className="text-[26px] font-black text-slate-900 tracking-[0.15em] font-sans">
                                 {printSiswa.nisn || "----------"}
                               </h4>
                             </div>
                           </div>
 
                           {/* Bottom Footer Section */}
-                          <div className="z-10 w-full max-w-[550px] mt-12 text-center">
-                            <div className="w-full border-t border-slate-400 mb-10 opacity-50"></div>
+                          <div className="z-10 w-full max-w-[550px] mt-6 print:mt-3 text-center">
+                            <div className="w-full border-t border-slate-400 mb-6 print:mb-3 opacity-50"></div>
                             
                             <h3 className="text-[18px] font-black text-slate-900 uppercase tracking-widest font-sans mb-1">
                               {state.dataSekolah.namaSekolah || "KB KUSUMA"}
