@@ -23,6 +23,28 @@ import {
 } from "firebase/firestore";
 
 import * as XLSX from "xlsx";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
+
+const ReactQuill = dynamic(() => import("react-quill-new"), { 
+  ssr: false,
+  loading: () => <div className="h-40 w-full animate-pulse bg-slate-100 rounded-xl border border-slate-200"></div>
+});
+
+const quillModules = {
+  toolbar: [
+    [{ 'header': [false] }],
+    ['bold', 'italic', 'underline'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    ['clean']
+  ],
+};
+
+const quillFormats = [
+  'header',
+  'bold', 'italic', 'underline',
+  'list', 'bullet',
+];
 
 const formatIndonesianDate = (dateStr: string): string => {
   if (!dateStr) return "19 Desember 2025";
@@ -3562,20 +3584,24 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                           <span className="text-[11px] text-slate-400 font-medium font-sans">Rekap aspek</span>
                                         </div>
 
-                                        <div className="relative group">
-                                          <textarea
-                                            value={currentCatDesc}
-                                            onChange={(e) => handleUpdateDescriptionIntra(s.id, kat.id, e.target.value)}
-                                            placeholder={`Tuliskan deskripsi narasi perkembangan gabungan (rekap) untuk aspek ${kat.namaKategori}...`}
-                                            rows={3}
-                                            className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-white focus:outline-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner font-sans min-h-[100px]"
-                                          />
+                                        <div className="relative group quill-editor-wrapper">
+                                          <div className="bg-white rounded-xl overflow-hidden border border-slate-200 focus-within:ring-2 focus-within:ring-emerald-600 transition-all">
+                                            <ReactQuill
+                                              theme="snow"
+                                              value={currentCatDesc}
+                                              onChange={(val) => handleUpdateDescriptionIntra(s.id, kat.id, val)}
+                                              modules={quillModules}
+                                              formats={quillFormats}
+                                              placeholder={`Tuliskan deskripsi narasi perkembangan gabungan (rekap) untuk aspek ${kat.namaKategori}...`}
+                                              className="bg-white min-h-[150px]"
+                                            />
+                                          </div>
                                           <button
                                             type="button"
                                             onClick={() => composeAiItemText(s.id, kat.id, "intra")}
                                             disabled={!hasAnyGrades || isGenerating}
                                             title={hasAnyGrades ? "Tulis rekap deskripsi otomatis dengan AI" : "Beri minimal satu predikat TP di atas untuk mengaktifkan AI"}
-                                            className="absolute right-3 top-3 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100 cursor-pointer"
+                                            className="absolute right-2 top-2 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100 cursor-pointer z-10"
                                           >
                                             {isGenerating ? (
                                               <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
@@ -3764,19 +3790,23 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                         </div>
                                       )}
 
-                                      <div className="relative group">
-                                        <textarea
-                                          value={currentDesc}
-                                          onChange={(e) => handleUpdateDescriptionKokuri(s.id, sub.id, e.target.value)}
-                                          placeholder={`Tuliskan narasi perkembangan untuk subdimensi Projek ini...`}
-                                          rows={3}
-                                          className="w-full text-sm border border-slate-200 p-3 pr-12 rounded-xl bg-slate-50/30 focus:bg-white focus:outline-emerald-600 transition-all font-medium text-slate-700 leading-relaxed shadow-inner min-h-[100px]"
-                                        />
+                                      <div className="relative group quill-editor-wrapper">
+                                        <div className="bg-white rounded-xl overflow-hidden border border-slate-200 focus-within:ring-2 focus-within:ring-emerald-600 transition-all">
+                                          <ReactQuill
+                                            theme="snow"
+                                            value={currentDesc}
+                                            onChange={(val) => handleUpdateDescriptionKokuri(s.id, sub.id, val)}
+                                            modules={quillModules}
+                                            formats={quillFormats}
+                                            placeholder={`Tuliskan narasi perkembangan untuk subdimensi Projek ini...`}
+                                            className="bg-white min-h-[150px]"
+                                          />
+                                        </div>
                                         <button
                                           onClick={() => composeAiItemText(s.id, sub.id, "kokuri")}
                                           disabled={!currentGrade || isGenerating}
                                           title="Tulis deskripsi dengan AI"
-                                          className="absolute right-3 top-3 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100"
+                                          className="absolute right-2 top-2 p-2 rounded-lg bg-emerald-50 text-[#086B00] hover:bg-[#086B00] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm border border-emerald-100 z-10"
                                         >
                                           {isGenerating ? (
                                             <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
@@ -3895,13 +3925,19 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 <label className="block text-xs font-bold text-slate-600">Narasi Perkembangan Ananda</label>
                                 <span className="text-[10px] text-slate-400 font-mono italic">Ketik manual atau biarkan AI membantu menyusun narasi</span>
                               </div>
-                              <textarea
-                                rows={10}
-                                placeholder="Ketik deskripsi perkembangan ananda di sini secara bebas..."
-                                value={noteText}
-                                onChange={(e) => handleSaveCatatan(s.id, e.target.value)}
-                                className="w-full text-sm font-medium border border-slate-200 p-4 rounded-xl focus:outline-emerald-600 leading-relaxed text-slate-700 bg-slate-50/20 shadow-inner h-64"
-                              />
+                              <div className="quill-editor-wrapper">
+                                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 focus-within:ring-2 focus-within:ring-emerald-600 transition-all">
+                                  <ReactQuill
+                                    theme="snow"
+                                    value={noteText}
+                                    onChange={(val) => handleSaveCatatan(s.id, val)}
+                                    modules={quillModules}
+                                    formats={quillFormats}
+                                    placeholder="Ketik deskripsi perkembangan ananda di sini secara bebas..."
+                                    className="bg-white min-h-[300px]"
+                                  />
+                                </div>
+                              </div>
                             </div>
 
                             {/* AI ACTION PANEL FOR THIS STUDENT */}
@@ -4571,9 +4607,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                         <span className="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
                                         DESKRIPSI CAPAIAN
                                       </div>
-                                      <div className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
-                                        {categoryDescription || `Pada aspek ${kat.namaKategori}, Ananda ${printSiswa.namaSiswa} telah menunjukkan penguasaan yang sangat baik.`}
-                                      </div>
+                                      <div 
+                                        className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify shadow-inner narrative-box rich-text-print"
+                                        dangerouslySetInnerHTML={{ __html: categoryDescription || `Pada aspek ${kat.namaKategori}, Ananda ${printSiswa.namaSiswa} telah menunjukkan penguasaan yang sangat baik.` }}
+                                      />
                                     </div>
                                   </div>
                                 );
@@ -4615,11 +4652,12 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                               <td className="px-4 py-4 border-r border-slate-950 font-bold text-slate-955 uppercase leading-relaxed text-[12px]">
                                                 {sub.namaSubdimensi.replace(/^Dimensi\s+/i, "")}
                                               </td>
-                                              <td className="px-4 py-4 leading-relaxed text-slate-900 font-bold text-justify text-[12px] whitespace-pre-wrap">
+                                              <td className="px-4 py-4 leading-relaxed text-slate-900 font-bold text-justify text-[12px]">
                                                 <div className="flex flex-col justify-between min-h-[80px]">
-                                                  <p className="text-[12px] leading-relaxed text-slate-900 text-justify font-semibold whitespace-pre-wrap">
-                                                    {deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif dan berkembang konsisten dalam mewujudkan projek profil pancasila.`}
-                                                  </p>
+                                                  <div 
+                                                    className="text-[12px] leading-relaxed text-slate-900 text-justify font-semibold rich-text-print"
+                                                    dangerouslySetInnerHTML={{ __html: deskripsiAss || `Ananda ${printSiswa.namaSiswa} menunjukkan performa keterlibatan yang positif dan berkembang konsisten dalam mewujudkan projek profil pancasila.` }}
+                                                  />
                                                   <div className="flex justify-end mt-2">
                                                     <span className={`px-4 py-0.5 rounded-full border-[1.5px] text-[10px] font-black uppercase text-center tracking-wider ${badgeStyle}`}>
                                                       {score}
@@ -4649,9 +4687,10 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                                 <h3 className="text-xs font-black uppercase text-slate-950 tracking-wider pl-1 font-sans">
                                   III. Catatan Guru Wali Kelas
                                 </h3>
-                                <div className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify whitespace-pre-wrap shadow-inner narrative-box">
-                                  {printCatatanSiswa}
-                                </div>
+                                <div 
+                                  className="border border-slate-950 rounded-xl p-5 bg-slate-50/50 min-h-[140px] text-[12px] font-bold text-slate-900 leading-relaxed text-justify shadow-inner narrative-box rich-text-print"
+                                  dangerouslySetInnerHTML={{ __html: printCatatanSiswa }}
+                                />
                               </div>
 
                               {/* Kehadiran Absensi */}
@@ -4690,7 +4729,7 @@ Tuliskan ulasan dalam bahasa Indonesia yang hangat, bersahabat, profesional, pos
                           </div>
 
                           {/* Section V: Signature Block */}
-                          <div className="pt-12 border-t border-slate-150 grid grid-cols-2 gap-y-12 text-center text-[12px] text-slate-900 leading-relaxed max-w-2xl mx-auto w-full">
+                          <div className="pt-12 border-t border-slate-150 grid grid-cols-2 gap-y-12 text-center text-[12px] text-slate-900 leading-relaxed max-w-2xl mx-auto w-full break-before-avoid">
                             {/* Top Left: Orang Tua */}
                             <div className="flex flex-col items-center justify-between">
                               <p className="mb-20 font-bold">Mengetahui,<br />Orang Tua/Wali,</p>
